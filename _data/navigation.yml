@@ -2,7 +2,7 @@
 
 - title: About Me
   url:
-  excerpt:
+  excerpt: introduce my self
   image:
 
 - title: Research Blog
@@ -16,6 +16,6 @@
   image: 
 
 - title: facebook
-  url: https://www.facebook.com/heerak.lim
+  url:
   excerpt:
   image: facebook.jpeg
