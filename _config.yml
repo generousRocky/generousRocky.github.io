@@ -3,7 +3,7 @@
 title: "Rocky's Research Blog"
 description: "This is a Research Blog of Rocky Lim"
 logo: git_icon.png
-teaser: teaser.png # 400x250 px default teaser image used in image archive grid
+teaser: teaser.jpg # 400x250 px default teaser image used in image archive grid
 locale: en
 url: https://rockylim92.github.io/
 url: https://localhost:4000
