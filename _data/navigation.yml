@@ -1,11 +1,21 @@
 # Site navigation links
 
+- title: About Me
+  url:
+  excerpt:
+  image:
+
+- title: Research Blog
+  url:
+  excerpt:
+  image:
+
+- title: Study Blog
+  url:
+  excerpt:
+  image: 
+
 - title: facebook
   url: https://www.facebook.com/heerak.lim
   excerpt:
   image: facebook.jpeg
-
-- title: facebook
-  url:
-  excerpt:
-  image:   
