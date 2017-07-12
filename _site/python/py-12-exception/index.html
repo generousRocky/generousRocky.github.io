@@ -1,0 +1,141 @@
+<h1 id="파이썬-파트12-예외처리">파이썬 파트12. 예외처리</h1>
+<blockquote>
+  <p><a href="http://tryhelloworld.co.kr/courses/%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EC%9E%85%EB%AC%B8">try hello world 파이썬 입문 강의 </a></p>
+</blockquote>
+
+<h2 id="try--except">try / except</h2>
+<ul>
+  <li>파이썬으로 프로그래밍 중에 다양한 에러가 발생할 수 있다. 이 에러가 발생하는 예외상황은 유연하게 프로그래밍을 할 수 있는 도구가 되기도 한다.</li>
+</ul>
+
+<h3 id="에러-예시">에러 예시</h3>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># IndexError</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">IndexError</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+
+<span class="c"># ValueError</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s">'abc'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="nb">ValueError</span><span class="p">:</span> <span class="n">invalid</span> <span class="n">literal</span> <span class="k">for</span> <span class="nb">int</span><span class="p">()</span> <span class="k">with</span> <span class="n">base</span> <span class="mi">10</span><span class="p">:</span> <span class="s">'abc'</span>
+</code></pre>
+</div>
+
+<h3 id="try--except문-사용-예시">try / except문 사용 예시</h3>
+<ul>
+  <li>에러가 발생할 것 같은 코드를 try안에 넣고 except 뒤에 발생할 수 있는 에러의 이름을 적어두면,
+에러 발생시 <code class="highlighter-rouge">프로그램이 멈추지 않고</code> 별도 처리가 가능하다.</li>
+</ul>
+
+<center>
+<figure>
+<img src="/assets/post-img/python/exception.png" alt="views" />
+<figcaption>exception 처리</figcaption>
+</figure>
+</center>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">text</span> <span class="o">=</span> <span class="s">'100</span><span class="si">%</span><span class="s">'</span>
+
+<span class="k">try</span> <span class="p">:</span>
+    <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="c"># 에러가 발생할 가능성이 있는 코드</span>
+<span class="k">except</span> <span class="nb">ValueError</span> <span class="p">:</span>  <span class="c"># 에러 종류</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'{}는 숫자가 아닙니다.'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>  <span class="c">#에러가 발생 했을 경우 처리할 코드</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>경우에 따라 예외 처리 대신 if else를 사용 할 수 있다. <br />
+더 간결한 것이나, if문을 사용하는 것이 좋다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># try-except 문</span>
+<span class="k">def</span> <span class="nf">safe_pop_print</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    <span class="k">except</span> <span class="nb">IndexError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'{} index의 값을 가져올 수 없습니다.'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+
+<span class="n">safe_pop_print</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="mi">5</span><span class="p">)</span> <span class="c"># 5 index의 값을 가져올 수 없습니다.</span>
+
+<span class="c"># if 문</span>
+<span class="k">def</span> <span class="nf">safe_pop_print</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'{} index의 값을 가져올 수 없습니다.'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+
+<span class="n">safe_pop_print</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="mi">5</span><span class="p">)</span> <span class="c"># 5 index의 값을 가져올 수 없습니다.</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>try 문으로만 해결이 가능한 문제도 있다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">your_module</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'모듈이 없습니다.'</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h2 id="예외-이름을-모르는-경우-처리-방법">예외 이름을 모르는 경우 처리 방법</h2>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 모든 에러 처리</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c"># 에러가 발생할 가능성이 있는 코드</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="s">'abc'</span>
+    <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'에러발생'</span><span class="p">)</span>
+
+<span class="c"># 에러 이름 확인</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c"># 에러가 발생할 가능성이 있는 코드</span>
+
+<span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span> <span class="c"># 에러 종류</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'에러가 발생 했습니다'</span><span class="p">,</span> <span class="n">ex</span><span class="p">)</span> <span class="c"># ex는 발생한 에러의 이름을 받아오는 변수</span>
+    <span class="c"># 에러가 발생 했습니다 list index out of range</span>
+</code></pre>
+</div>
+
+<h2 id="에러를-직접-일으키는-방법---raise">에러를 직접 일으키는 방법 - raise</h2>
+<ul>
+  <li>사용자가 직접 에러를 발생시키는 기능</li>
+  <li>많이 사용하면 코드를 읽기 어려워진다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 올바른 값을 넣지 않으면 에러를 발생시키고 적당한 문구를 표시한다.</span>
+<span class="k">def</span> <span class="nf">rsp</span><span class="p">(</span><span class="n">mine</span><span class="p">,</span> <span class="n">yours</span><span class="p">):</span>
+    <span class="n">allowed</span> <span class="o">=</span> <span class="p">[</span><span class="s">'가위'</span><span class="p">,</span><span class="s">'바위'</span><span class="p">,</span> <span class="s">'보'</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">mine</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span>
+    <span class="k">if</span> <span class="n">yours</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">rsp</span><span class="p">(</span><span class="s">'가위'</span><span class="p">,</span> <span class="s">'바'</span><span class="p">)</span>
+<span class="k">except</span> <span class="nb">ValueError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'잘못된 값을 넣었습니다!'</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># 190이 넘는 학생을 발견하면 반복을 종료한다.</span>
+<span class="n">school</span> <span class="o">=</span> <span class="p">{</span><span class="s">'1반'</span> <span class="p">:</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">156</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">199</span><span class="p">],</span> <span class="s">'2반'</span> <span class="p">:</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">195</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">199</span><span class="p">]}</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">class_number</span><span class="p">,</span> <span class="n">students</span> <span class="ow">in</span> <span class="n">school</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">student</span> <span class="ow">in</span> <span class="n">students</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">student</span> <span class="o">&gt;</span> <span class="mi">190</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">class_number</span><span class="p">,</span> <span class="s">'190을 넘는 학생이 있습니다.'</span><span class="p">)</span>
+                <span class="c"># break # 바로 상위 for문은 종료되지만 최고 상위 for문은 종료되지 않는다.</span>
+                <span class="k">raise</span> <span class="nb">StopIteration</span>
+                <span class="c"># 예외가 try 문 안에 있지 않으면 에러 발생시 프로그램이 멈춘다.</span>
+<span class="k">except</span> <span class="nb">StopIteration</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'정상종료'</span><span class="p">)</span>                
+</code></pre>
+</div>
