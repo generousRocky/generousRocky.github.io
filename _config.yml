@@ -2,8 +2,8 @@
 
 title: "Rocky's Research Blog"
 description: "This is a Research Blog of Rocky Lim"
-logo: # 120x120 px default image used for Twitter summary card
-teaser: # 400x250 px default teaser image used in image archive grid
+logo: git_icon.png
+teaser: teaser.png # 400x250 px default teaser image used in image archive grid
 locale: en
 url: https://rockylim92.github.io/
 url: https://localhost:4000
