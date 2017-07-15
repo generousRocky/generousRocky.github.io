@@ -1,1 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-13T01:00:09+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle></feed>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-14T18:08:13+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">Workload Analysis Logging by using FUSE(Filesystem in Userspace)</title><link href="http://localhost:4000/test/" rel="alternate" type="text/html" title="Workload Analysis Logging by using FUSE(Filesystem in Userspace)" /><published>2016-12-16T01:22:48+09:00</published><updated>2016-12-16T01:22:48+09:00</updated><id>http://localhost:4000/test</id><content type="html" xml:base="http://localhost:4000/test/">&lt;p&gt;&lt;img src=&quot;{{ site.url }}{{ site.baseurl }}/images/WLAFS.png&quot; alt=&quot;alt&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;wla-file-system&quot;&gt;WLA file system&lt;/h1&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#wla-file-system&quot; id=&quot;markdown-toc-wla-file-system&quot;&gt;WLA file system&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#개요&quot; id=&quot;markdown-toc-개요&quot;&gt;개요&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#abstraction&quot; id=&quot;markdown-toc-abstraction&quot;&gt;Abstraction&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
+
+&lt;p&gt;파일시스템과 리눅스 커널에서 대해서 공부하면서, 공부한 내용을 활용하여 간단한 프로젝트를 진행했습니다. FUSE 플랫폼을 사용하여 나만의 파일시스템을 구축하였습니다. 새로운 파일시스템이 마운트 된 디렉토리 내에서 발생하는 모든 transaction을 분석하여 간단한 Workload 통계량을 Log로서 남겨주는 기능을 합니다. 따라서 본 파일시스템을 Workload Analysis Filesystem(WLA File System, 또는 WLAFS) 라고 명명하였습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;abstraction&quot;&gt;Abstraction&lt;/h2&gt;
+
+&lt;p&gt;One of the most difficult tasks in the performance management of a computer system is the activity of statistically analyzing the amount of work done by the computer system from the user to process the requested work, that is, analyzing the workload of the computer system. Typically, workload analysis is an essential activity to calculate a performance baseline for a computer system. Here, the term baseline refers to a reference value used when comparing an object or phenomenon. In the case of performance management, the baseline is used as a reference value for determining a performance target for a target system. This workload analysis process is very important in terms of extracting performance baselines for performance testing&lt;/p&gt;
+
+&lt;p&gt;In general, it is very difficult to provide a standardized workload analysis procedure and method because the applications used in each computer system and the pattern in which the users use the work are different. A workload can exist for any resource available on a computer system, such as storage, memory, processor, or internet access. In this project, we analyze the pattern of workload for storage related to file input / output and storage, and design a new file system for this.&lt;/p&gt;
+
+&lt;p&gt;Developing an in-kernel file system is a very challenging task. This is because you need to understand complex kernel code analysis and data structures, and it is also very difficult to load them into existing kernels. Debugging kernel code also requires repetitive system reboots. Therefore, developing a file system in the user space can greatly improve the problems listed above. The Fuse File System is an open source framework for designing and developing file systems at the User Space Level, and the project is underway at http://fuse.sourceforge.net/. FUSE is built-in since the Linux kernel 2.6.15. In this project, we use FUSE to design and develop Userspace File System for workload pattern analysis.&lt;/p&gt;
+
+&lt;p&gt;FUSE works independently with the system’s In-kernel file system. Therefore, using FUSE can provide a standardized Workload Pattern Analysis framework regardless of the file system used in different computer systems. This project aims to design and develop a file system for workload pattern analysis using FUSE based on the above background. We will also apply the developed file system to the actual system and analyze and verify the workload pattern according to various test scenarios.&lt;/p&gt;</content><author><name>Rocky Lim</name></author><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22WLAFS.png%22%7D" /></entry></feed>

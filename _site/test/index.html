@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Workload Analysis Logging by using FUSE(Filesystem in Userspace) • Rocky's Research Blog</title>
+    <meta name="description" content="
+
+">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="Workload Analysis Logging by using FUSE(Filesystem in Userspace)">
+	<meta name="twitter:description" content="
+
+">
+	
+	
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Workload Analysis Logging by using FUSE(Filesystem in Userspace)">
+	<meta property="og:description" content="
+
+">
+	<meta property="og:url" content="http://localhost:4000/test/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/test/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" >Research Blog</a></li>
+  
+    
+    <li><a href="http://localhost:4000" >Study Blog</a></li>
+  
+    
+    <li><a href="http://localhost:4000/portfolio/" >Portfolio</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000">
+        <img src="http://localhost:4000/images/abount_me.jpg" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">introduce my self</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research Blog</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Study Blog</div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/portfolio/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Portfolio</div>
+        <p class="excerpt">Things I’ve designed, illustrated, developed, coded, and whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+		<div class="page-title">
+			<h1>Workload Analysis Logging by using FUSE(Filesystem in Userspace)</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p><img src="{{ site.url }}{{ site.baseurl }}/images/WLAFS.png" alt="alt" /></p>
+
+<h1 id="wla-file-system">WLA file system</h1>
+
+<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#wla-file-system" id="markdown-toc-wla-file-system">WLA file system</a>    <ul>
+      <li><a href="#개요" id="markdown-toc-개요">개요</a></li>
+      <li><a href="#abstraction" id="markdown-toc-abstraction">Abstraction</a></li>
+    </ul>
+  </li>
+</ul>
+
+</nav>
+
+<h2 id="개요">개요</h2>
+
+<p>파일시스템과 리눅스 커널에서 대해서 공부하면서, 공부한 내용을 활용하여 간단한 프로젝트를 진행했습니다. FUSE 플랫폼을 사용하여 나만의 파일시스템을 구축하였습니다. 새로운 파일시스템이 마운트 된 디렉토리 내에서 발생하는 모든 transaction을 분석하여 간단한 Workload 통계량을 Log로서 남겨주는 기능을 합니다. 따라서 본 파일시스템을 Workload Analysis Filesystem(WLA File System, 또는 WLAFS) 라고 명명하였습니다.</p>
+
+<h2 id="abstraction">Abstraction</h2>
+
+<p>One of the most difficult tasks in the performance management of a computer system is the activity of statistically analyzing the amount of work done by the computer system from the user to process the requested work, that is, analyzing the workload of the computer system. Typically, workload analysis is an essential activity to calculate a performance baseline for a computer system. Here, the term baseline refers to a reference value used when comparing an object or phenomenon. In the case of performance management, the baseline is used as a reference value for determining a performance target for a target system. This workload analysis process is very important in terms of extracting performance baselines for performance testing</p>
+
+<p>In general, it is very difficult to provide a standardized workload analysis procedure and method because the applications used in each computer system and the pattern in which the users use the work are different. A workload can exist for any resource available on a computer system, such as storage, memory, processor, or internet access. In this project, we analyze the pattern of workload for storage related to file input / output and storage, and design a new file system for this.</p>
+
+<p>Developing an in-kernel file system is a very challenging task. This is because you need to understand complex kernel code analysis and data structures, and it is also very difficult to load them into existing kernels. Debugging kernel code also requires repetitive system reboots. Therefore, developing a file system in the user space can greatly improve the problems listed above. The Fuse File System is an open source framework for designing and developing file systems at the User Space Level, and the project is underway at http://fuse.sourceforge.net/. FUSE is built-in since the Linux kernel 2.6.15. In this project, we use FUSE to design and develop Userspace File System for workload pattern analysis.</p>
+
+<p>FUSE works independently with the system’s In-kernel file system. Therefore, using FUSE can provide a standardized Workload Pattern Analysis framework regardless of the file system used in different computer systems. This project aims to design and develop a file system for workload pattern analysis using FUSE based on the above background. We will also apply the developed file system to the actual system and analyze and verify the workload pattern according to various test scenarios.</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/" alt="">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author"></span></h3>
+	<p class="author-bio"></p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Workload%20Analysis%20Logging%20by%20using%20FUSE(Filesystem%20in%20Userspace)&amp;url=http://localhost:4000/test/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/test/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/test/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2016-12-16T01:22:48Z" itemprop="datePublished">December 16, 2016</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="http://localhost:4000" ></a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2017 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+  </body>
+
+</html>
