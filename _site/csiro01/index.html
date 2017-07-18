@@ -2,21 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Workload Analysis Logging by using FUSE(Filesystem in Userspace) • Rocky's Research Blog</title>
-    <meta name="description" content="
-
-
-
-">
+    <title>CSIRO) Radio Tomography System using low-power Sensor Network Device (1) • Rocky's Research Blog</title>
+    <meta name="description" content="What is radio tomographic imaging?">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="Workload Analysis Logging by using FUSE(Filesystem in Userspace)">
-	<meta name="twitter:description" content="
-
-
-
-">
+	<meta name="twitter:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)">
+	<meta name="twitter:description" content="What is radio tomographic imaging?">
 	
 	<meta name="twitter:creator" content="@">
 	
@@ -26,16 +18,12 @@
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="Workload Analysis Logging by using FUSE(Filesystem in Userspace)">
-	<meta property="og:description" content="
-
-
-
-">
-	<meta property="og:url" content="http://localhost:4000/test/">
+	<meta property="og:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)">
+	<meta property="og:description" content="What is radio tomographic imaging?">
+	<meta property="og:url" content="http://localhost:4000/csiro01/">
 	<meta property="og:site_name" content="Rocky's Research Blog">
 
-    <link rel="canonical" href="http://localhost:4000/test/">
+    <link rel="canonical" href="http://localhost:4000/csiro01/">
 
     <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
@@ -123,36 +111,19 @@
 		
 		
 		<div class="page-title">
-			<h1>Workload Analysis Logging by using FUSE(Filesystem in Userspace)</h1>
+			<h1>CSIRO) Radio Tomography System using low-power Sensor Network Device (1)</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
-				<nav class="toc">
-
+				<nav class="toc" markdown="1">
+*  Auto generated table of contents
+{:toc}
 </nav>
 
-<h3 id="wla-file-system">WLA file system</h3>
+
 <p style="text-align: center;">
-	<img src="http://localhost:4000/images/WLAFS.png" alt="Drawing" style="width: 380px;" />
+	<img src="http://localhost:4000/images/csiro_1_1.png" alt="Drawing" style="width: 400px;"/>
 </p>
-
-<h3 id="개요">개요</h3>
-
-<p>파일시스템과 리눅스 커널에서 대해서 공부하면서, 공부한 내용을 활용하여 간단한 프로젝트를 진행했습니다. FUSE 플랫폼을 사용하여 나만의 파일시스템을 구축하였습니다. 새로운 파일시스템이 마운트 된 디렉토리 내에서 발생하는 모든 transaction을 분석하여 간단한 Workload 통계량을 Log로서 남겨주는 기능을 합니다. 따라서 본 파일시스템을 Workload Analysis Filesystem(WLA File System, 또는 WLAFS) 라고 naming 하였습니다.</p>
-
-<p><strong><a href="https://github.com/RockyLim92/fuse_wla" title="WLAFS page">소스코드 보기</a></strong><br />
-<strong>GitHub Link: <a href="https://github.com/RockyLim92/fuse_wla">https://github.com/RockyLim92/fuse_wla</a></strong></p>
-
-<h3 id="abstraction">Abstraction</h3>
-
-<p>One of the most difficult tasks in the performance management of a computer system is the activity of statistically analyzing the amount of work done by the computer system from the user to process the requested work, that is, analyzing the workload of the computer system. Typically, workload analysis is an essential activity to calculate a performance baseline for a computer system. Here, the term baseline refers to a reference value used when comparing an object or phenomenon. In the case of performance management, the baseline is used as a reference value for determining a performance target for a target system. This workload analysis process is very important in terms of extracting performance baselines for performance testing</p>
-
-<p>In general, it is very difficult to provide a standardized workload analysis procedure and method because the applications used in each computer system and the pattern in which the users use the work are different. A workload can exist for any resource available on a computer system, such as storage, memory, processor, or internet access. In this project, we analyze the pattern of workload for storage related to file input / output and storage, and design a new file system for this.</p>
-
-<p>Developing an in-kernel file system is a very challenging task. This is because you need to understand complex kernel code analysis and data structures, and it is also very difficult to load them into existing kernels. Debugging kernel code also requires repetitive system reboots. Therefore, developing a file system in the user space can greatly improve the problems listed above. The Fuse File System is an open source framework for designing and developing file systems at the User Space Level, and the project is underway at http://fuse.sourceforge.net/. FUSE is built-in since the Linux kernel 2.6.15. In this project, we use FUSE to design and develop Userspace File System for workload pattern analysis.</p>
-
-<p>FUSE works independently with the system’s In-kernel file system. Therefore, using FUSE can provide a standardized Workload Pattern Analysis framework regardless of the file system used in different computer systems. This project aims to design and develop a file system for workload pattern analysis using FUSE based on the above background. We will also apply the developed file system to the actual system and analyze and verify the workload pattern according to various test scenarios.</p>
-
 				<hr />
 				<footer class="page-footer">
 					
@@ -165,13 +136,13 @@
 	<p class="author-bio">What do you want, jewels? I am a very extravagant man.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Workload%20Analysis%20Logging%20by%20using%20FUSE(Filesystem%20in%20Userspace)&amp;url=http://localhost:4000/test/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/test/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/test/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=CSIRO)%20Radio%20Tomography%20System%20using%20low-power%20Sensor%20Network%20Device%20(1)&amp;url=http://localhost:4000/csiro01/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/csiro01/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/csiro01/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2016-12-16T01:22:48Z" itemprop="datePublished">December 16, 2016</time></p>
+	<p>Updated <time datetime="2017-02-10T19:01:50Z" itemprop="datePublished">February 10, 2017</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>

@@ -1,4 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-18T23:24:29+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">OpenSSD) Jasmine Technical Resources Document 번역</title><link href="http://localhost:4000/jasmine/" rel="alternate" type="text/html" title="OpenSSD) Jasmine Technical Resources Document 번역" /><published>2016-12-19T19:01:50+09:00</published><updated>2016-12-19T19:01:50+09:00</updated><id>http://localhost:4000/jasmine</id><content type="html" xml:base="http://localhost:4000/jasmine/">&lt;nav class=&quot;toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-19T00:22:56+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (1)</title><link href="http://localhost:4000/csiro01/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro01</id><content type="html" xml:base="http://localhost:4000/csiro01/">&lt;nav class=&quot;toc&quot; markdown=&quot;1&quot;&gt;
+*  Auto generated table of contents
+{:toc}
+&lt;/nav&gt;
+
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/csiro_1_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 400px;&quot;/&gt;
+&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">What is radio tomographic imaging?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_1_1.png%22%7D" /></entry><entry><title type="html">Publication) Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform</title><link href="http://localhost:4000/KIISE/" rel="alternate" type="text/html" title="Publication) Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform" /><published>2016-12-21T19:01:50+09:00</published><updated>2016-12-21T19:01:50+09:00</updated><id>http://localhost:4000/KIISE</id><content type="html" xml:base="http://localhost:4000/KIISE/">&lt;nav class=&quot;toc&quot;&gt;
+
+&lt;/nav&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/KIISE.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 700px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h3 id=&quot;abstractionko-kr&quot;&gt;Abstraction(KO-KR)&lt;/h3&gt;
+
+&lt;p&gt;SSD에서 Flash Translation Layer (FTL)은 논리적인 주소를 물리적으로 주소로 바꾸어 주는 역할을 수행한다. FTL은 SSD의 성능에 크게 영향을 미친다. 선택적 캐싱 기반 페이지 매핑 FTL은 자주 접근되는 페이지 매핑 엔트리만 메모리에 유지하며 페이지 매핑 테이블을 구현하는 방식이며 Garbage Collection 오버헤드를 최소화하여 SSD 성능을 높인다. 하지만, 워크로드의 특성상 Locality가 낮은 경우 캐시 미스가 발생하여 성능이 낮아지는 문제점을 가진다. 본 논문에서는 이러한 선택적 캐싱 기반 페이지 매핑 FTL의 캐시 된 매핑 테이블 크기에 따라 성능 분석을 수행한다. 특히 성능 예측 모델 개발을 위해 OpenSSD 플랫폼 상에서 선택적 캐싱 기반 페이지 매핑 FTL을 실제 구현하였으며 파일 시스템 성능 분석 도구를 이용하여 FTL 성능 예측 모델의 정확성을 검증하였다.&lt;/p&gt;
+
+&lt;h3 id=&quot;abstractionen&quot;&gt;Abstraction(EN)&lt;/h3&gt;
+
+&lt;p&gt;Flash Translation Layer(FTL) play a role that translate logical address to physical address in SSD. FTL have an important effect upon the performance of SSD. Demand-based Selective Caching of Page-level Address Mappings FTL(DFTL) is approach that store only continual page mapping entry. In this approach it increases the performance of the SSD by minimizing Garbage Collection overhead. However, Due to the nature of the workload, cache miss occurs when the locality is low, which results in a lower performance. In this pater, In this paper, performance analysis is performed according to the cached mapping table size of the selective caching-based page mapping FTL. In particular, to develop a performance prediction model, we implemented the selective caching - based page mapping FTL on the OpenSSD platform and verified the accuracy of the FTL performance prediction model using the file system performance analysis tool.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://www.eiric.or.kr/community/post2.php?m=view&amp;amp;gubun=201612&amp;amp;num=7239&amp;amp;pg=5&amp;amp;seGubun=&amp;amp;seGubun1=&amp;amp;SnxGubun=%C6%F7%BD%BA%C5%CD&amp;amp;searchBy=&amp;amp;searchWord=​&quot; title=&quot;KISSE download&quot;&gt;Download Link&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22KIISE.png%22%7D" /></entry><entry><title type="html">OpenSSD) Jasmine Technical Resources Document 번역</title><link href="http://localhost:4000/jasmine/" rel="alternate" type="text/html" title="OpenSSD) Jasmine Technical Resources Document 번역" /><published>2016-12-19T19:01:50+09:00</published><updated>2016-12-19T19:01:50+09:00</updated><id>http://localhost:4000/jasmine</id><content type="html" xml:base="http://localhost:4000/jasmine/">&lt;nav class=&quot;toc&quot;&gt;
 
 &lt;/nav&gt;
 
@@ -6,10 +30,13 @@
 	&lt;img src=&quot;http://localhost:4000/images/jasmine.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
 &lt;/p&gt;
 
+&lt;h3 id=&quot;what-i-did&quot;&gt;What I did&lt;/h3&gt;
 &lt;p&gt;SSD의 FTL(Flash Translation Layer)개발 도구인 OpenSSD Jasmine 보드의 레퍼런스 메뉴얼 및 개발 가이드를 번역했습니다. 기존의 레퍼런스 메뉴얼과 개발 가이드는 국문으로 된 문서만 제공했는데, OpenSSD를 활용한 프로젝트를 진행하면서 영문으로 된 레퍼런스 메뉴얼과 개발가이드를 만들었으며  OpenSSD 프로젝트 공식 위키에 역자로서 이름을 올리게 되었습니다.&lt;/p&gt;
 
+&lt;h3 id=&quot;what-is-openssd-project&quot;&gt;What is OpenSSD Project&lt;/h3&gt;
 &lt;p&gt;The OpenSSD Project is an initiative to promote research and education on the recent SSD (Solid State Drive) technology by providing easy access to OpenSSD platforms on which open source SSD firmware can be developed. Currently, we have offered an OpenSSD platform based on the commercially successful BarefootTM controller from Indilinx Co., Ltd. In addition, we now support an FPGA-based OpenSSD platform whose hardware and software designs are modifiable. This site is also intended to be a forum to share various simulators, tools, and workload generators and traces related to SSDs, among researchers in academia and industry.&lt;/p&gt;
 
+&lt;h3 id=&quot;some-links&quot;&gt;some Links&lt;/h3&gt;
 &lt;p&gt;OpenSSD project :
 &lt;strong&gt;&lt;a href=&quot;http://www.openssd-project.org/wiki/The_OpenSSD_Project&quot;&gt;http://www.openssd-project.org/wiki/The_OpenSSD_Project&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
@@ -18,27 +45,22 @@
 
 &lt;p&gt;The Jasmine OpenSSD Platform: FTL Developer’s Guide (v1.2, in English) (By Preethika Kasu, Donghyun Kang, Heerak Lim) :
 &lt;strong&gt;&lt;a href=&quot;http://www.openssd-project.org/mediawiki/images/Jasmine_FTL_Dev_Guide_v.1.2e.pdf&quot;&gt;http://www.openssd-project.org/mediawiki/images/Jasmine_FTL_Dev_Guide_v.1.2e.pdf&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22jasmine.png%22%7D" /></entry><entry><title type="html">Workload Analysis Logging by using FUSE(Filesystem in Userspace)</title><link href="http://localhost:4000/test/" rel="alternate" type="text/html" title="Workload Analysis Logging by using FUSE(Filesystem in Userspace)" /><published>2016-12-16T01:22:48+09:00</published><updated>2016-12-16T01:22:48+09:00</updated><id>http://localhost:4000/test</id><content type="html" xml:base="http://localhost:4000/test/">&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#wla-file-system&quot; id=&quot;markdown-toc-wla-file-system&quot;&gt;WLA file system&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#개요&quot; id=&quot;markdown-toc-개요&quot;&gt;개요&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#abstraction&quot; id=&quot;markdown-toc-abstraction&quot;&gt;Abstraction&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 
 &lt;/nav&gt;
 
-&lt;h2 id=&quot;wla-file-system&quot;&gt;WLA file system&lt;/h2&gt;
+&lt;h3 id=&quot;wla-file-system&quot;&gt;WLA file system&lt;/h3&gt;
 &lt;p style=&quot;text-align: center;&quot;&gt;
 	&lt;img src=&quot;http://localhost:4000/images/WLAFS.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
 &lt;/p&gt;
 
-&lt;h2 id=&quot;개요&quot;&gt;개요&lt;/h2&gt;
+&lt;h3 id=&quot;개요&quot;&gt;개요&lt;/h3&gt;
 
 &lt;p&gt;파일시스템과 리눅스 커널에서 대해서 공부하면서, 공부한 내용을 활용하여 간단한 프로젝트를 진행했습니다. FUSE 플랫폼을 사용하여 나만의 파일시스템을 구축하였습니다. 새로운 파일시스템이 마운트 된 디렉토리 내에서 발생하는 모든 transaction을 분석하여 간단한 Workload 통계량을 Log로서 남겨주는 기능을 합니다. 따라서 본 파일시스템을 Workload Analysis Filesystem(WLA File System, 또는 WLAFS) 라고 naming 하였습니다.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/RockyLim92/fuse_wla&quot; title=&quot;WLAFS page&quot;&gt;소스코드 보기&lt;/a&gt;&lt;br /&gt;
-GitHub Link: &lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/fuse_wla&quot;&gt;https://github.com/RockyLim92/fuse_wla&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/fuse_wla&quot; title=&quot;WLAFS page&quot;&gt;소스코드 보기&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;
+&lt;strong&gt;GitHub Link: &lt;a href=&quot;https://github.com/RockyLim92/fuse_wla&quot;&gt;https://github.com/RockyLim92/fuse_wla&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;abstraction&quot;&gt;Abstraction&lt;/h2&gt;
+&lt;h3 id=&quot;abstraction&quot;&gt;Abstraction&lt;/h3&gt;
 
 &lt;p&gt;One of the most difficult tasks in the performance management of a computer system is the activity of statistically analyzing the amount of work done by the computer system from the user to process the requested work, that is, analyzing the workload of the computer system. Typically, workload analysis is an essential activity to calculate a performance baseline for a computer system. Here, the term baseline refers to a reference value used when comparing an object or phenomenon. In the case of performance management, the baseline is used as a reference value for determining a performance target for a target system. This workload analysis process is very important in terms of extracting performance baselines for performance testing&lt;/p&gt;
 

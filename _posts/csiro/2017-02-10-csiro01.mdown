@@ -1,0 +1,19 @@
+---
+layout: article
+title:  "CSIRO) Radio Tomography System using low-power Sensor Network Device (1)"
+date:   2017-02-10 10:01:50
+author: Rocky Lim
+excerpt: What is radio tomographic imaging?
+image:
+  feature:
+  teaser: csiro_1_1.png
+comments: true
+locale: "vn"
+---
+
+{% include toc.html %}
+
+
+<p style="text-align: center;">
+	<img src="{{ site.url }}/images/csiro_1_1.png" alt="Drawing" style="width: 400px;"/>
+</p>
