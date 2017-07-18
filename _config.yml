@@ -28,11 +28,11 @@ gems:
 
 # Site owner
 owner:
-  name:
-  email:
-  twitter:
+  name: rockylim
+  email: rockylim@snu.ac.kr
+  twitter: 
   google:
-    ad-client:
+    ad-client: lrocky1229
     ad-slot:
   bio:
   avatar: bio-photo.jpg # 160x160 px image for author byline

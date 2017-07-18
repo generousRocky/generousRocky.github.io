@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Workload Analysis Logging by using FUSE(Filesystem in Userspace) • Rocky's Research Blog</title>
+    <title>OpenSSD) Jasmine Technical Resources Document 번역 • Rocky's Research Blog</title>
     <meta name="description" content="
 
 
@@ -11,7 +11,7 @@
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="Workload Analysis Logging by using FUSE(Filesystem in Userspace)">
+	<meta name="twitter:title" content="OpenSSD) Jasmine Technical Resources Document 번역">
 	<meta name="twitter:description" content="
 
 
@@ -26,16 +26,16 @@
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="Workload Analysis Logging by using FUSE(Filesystem in Userspace)">
+	<meta property="og:title" content="OpenSSD) Jasmine Technical Resources Document 번역">
 	<meta property="og:description" content="
 
 
 
 ">
-	<meta property="og:url" content="http://localhost:4000/test/">
+	<meta property="og:url" content="http://localhost:4000/jasmine/">
 	<meta property="og:site_name" content="Rocky's Research Blog">
 
-    <link rel="canonical" href="http://localhost:4000/test/">
+    <link rel="canonical" href="http://localhost:4000/jasmine/">
 
     <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
@@ -123,40 +123,30 @@
 		
 		
 		<div class="page-title">
-			<h1>Workload Analysis Logging by using FUSE(Filesystem in Userspace)</h1>
+			<h1>OpenSSD) Jasmine Technical Resources Document 번역</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
 				<nav class="toc">
-<ul id="markdown-toc">
-  <li><a href="#wla-file-system" id="markdown-toc-wla-file-system">WLA file system</a></li>
-  <li><a href="#개요" id="markdown-toc-개요">개요</a></li>
-  <li><a href="#abstraction" id="markdown-toc-abstraction">Abstraction</a></li>
-</ul>
 
 </nav>
 
-<h2 id="wla-file-system">WLA file system</h2>
 <p style="text-align: center;">
-	<img src="http://localhost:4000/images/WLAFS.png" alt="Drawing" style="width: 380px;" />
+	<img src="http://localhost:4000/images/jasmine.png" alt="Drawing" style="width: 800px;" />
 </p>
 
-<h2 id="개요">개요</h2>
+<p>SSD의 FTL(Flash Translation Layer)개발 도구인 OpenSSD Jasmine 보드의 레퍼런스 메뉴얼 및 개발 가이드를 번역했습니다. 기존의 레퍼런스 메뉴얼과 개발 가이드는 국문으로 된 문서만 제공했는데, OpenSSD를 활용한 프로젝트를 진행하면서 영문으로 된 레퍼런스 메뉴얼과 개발가이드를 만들었으며  OpenSSD 프로젝트 공식 위키에 역자로서 이름을 올리게 되었습니다.</p>
 
-<p>파일시스템과 리눅스 커널에서 대해서 공부하면서, 공부한 내용을 활용하여 간단한 프로젝트를 진행했습니다. FUSE 플랫폼을 사용하여 나만의 파일시스템을 구축하였습니다. 새로운 파일시스템이 마운트 된 디렉토리 내에서 발생하는 모든 transaction을 분석하여 간단한 Workload 통계량을 Log로서 남겨주는 기능을 합니다. 따라서 본 파일시스템을 Workload Analysis Filesystem(WLA File System, 또는 WLAFS) 라고 naming 하였습니다.</p>
+<p>The OpenSSD Project is an initiative to promote research and education on the recent SSD (Solid State Drive) technology by providing easy access to OpenSSD platforms on which open source SSD firmware can be developed. Currently, we have offered an OpenSSD platform based on the commercially successful BarefootTM controller from Indilinx Co., Ltd. In addition, we now support an FPGA-based OpenSSD platform whose hardware and software designs are modifiable. This site is also intended to be a forum to share various simulators, tools, and workload generators and traces related to SSDs, among researchers in academia and industry.</p>
 
-<p><a href="https://github.com/RockyLim92/fuse_wla" title="WLAFS page">소스코드 보기</a><br />
-GitHub Link: <strong><a href="https://github.com/RockyLim92/fuse_wla">https://github.com/RockyLim92/fuse_wla</a></strong></p>
+<p>OpenSSD project :
+<strong><a href="http://www.openssd-project.org/wiki/The_OpenSSD_Project">http://www.openssd-project.org/wiki/The_OpenSSD_Project</a></strong></p>
 
-<h2 id="abstraction">Abstraction</h2>
+<p>The Jasmine OpenSSD Platform: Technical Reference Manual (v1.4, in English) (By Preethika Kasu, Donghyun Kang, Heerak Lim) :
+<strong><a href="http://www.openssd-project.org/mediawiki/images/Jasmine_Tech_Ref_Manual_v.1.4e.pdf">http://www.openssd-project.org/mediawiki/images/Jasmine_Tech_Ref_Manual_v.1.4e.pdf</a></strong></p>
 
-<p>One of the most difficult tasks in the performance management of a computer system is the activity of statistically analyzing the amount of work done by the computer system from the user to process the requested work, that is, analyzing the workload of the computer system. Typically, workload analysis is an essential activity to calculate a performance baseline for a computer system. Here, the term baseline refers to a reference value used when comparing an object or phenomenon. In the case of performance management, the baseline is used as a reference value for determining a performance target for a target system. This workload analysis process is very important in terms of extracting performance baselines for performance testing</p>
-
-<p>In general, it is very difficult to provide a standardized workload analysis procedure and method because the applications used in each computer system and the pattern in which the users use the work are different. A workload can exist for any resource available on a computer system, such as storage, memory, processor, or internet access. In this project, we analyze the pattern of workload for storage related to file input / output and storage, and design a new file system for this.</p>
-
-<p>Developing an in-kernel file system is a very challenging task. This is because you need to understand complex kernel code analysis and data structures, and it is also very difficult to load them into existing kernels. Debugging kernel code also requires repetitive system reboots. Therefore, developing a file system in the user space can greatly improve the problems listed above. The Fuse File System is an open source framework for designing and developing file systems at the User Space Level, and the project is underway at http://fuse.sourceforge.net/. FUSE is built-in since the Linux kernel 2.6.15. In this project, we use FUSE to design and develop Userspace File System for workload pattern analysis.</p>
-
-<p>FUSE works independently with the system’s In-kernel file system. Therefore, using FUSE can provide a standardized Workload Pattern Analysis framework regardless of the file system used in different computer systems. This project aims to design and develop a file system for workload pattern analysis using FUSE based on the above background. We will also apply the developed file system to the actual system and analyze and verify the workload pattern according to various test scenarios.</p>
+<p>The Jasmine OpenSSD Platform: FTL Developer’s Guide (v1.2, in English) (By Preethika Kasu, Donghyun Kang, Heerak Lim) :
+<strong><a href="http://www.openssd-project.org/mediawiki/images/Jasmine_FTL_Dev_Guide_v.1.2e.pdf">http://www.openssd-project.org/mediawiki/images/Jasmine_FTL_Dev_Guide_v.1.2e.pdf</a></strong></p>
 
 				<hr />
 				<footer class="page-footer">
@@ -170,13 +160,13 @@ GitHub Link: <strong><a href="https://github.com/RockyLim92/fuse_wla">https://gi
 	<p class="author-bio">What do you want, jewels? I am a very extravagant man.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Workload%20Analysis%20Logging%20by%20using%20FUSE(Filesystem%20in%20Userspace)&amp;url=http://localhost:4000/test/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/test/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/test/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=OpenSSD)%20Jasmine%20Technical%20Resources%20Document%20번역&amp;url=http://localhost:4000/jasmine/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/jasmine/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/jasmine/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2016-12-16T01:22:48Z" itemprop="datePublished">December 16, 2016</time></p>
+	<p>Updated <time datetime="2016-12-19T19:01:50Z" itemprop="datePublished">December 19, 2016</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>
