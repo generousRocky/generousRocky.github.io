@@ -1,4 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-19T15:46:53+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (1)</title><link href="http://localhost:4000/csiro01/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro01</id><content type="html" xml:base="http://localhost:4000/csiro01/">&lt;nav class=&quot;toc&quot; markdown=&quot;1&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-19T16:19:00+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (3)</title><link href="http://localhost:4000/csiro03/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (3)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro03</id><content type="html" xml:base="http://localhost:4000/csiro03/">&lt;h2 id=&quot;how-to-get-started-contiki-with-a-cc2650-board-in-linux&quot;&gt;How to get started Contiki with a CC2650 board in Linux&lt;/h2&gt;
+
+&lt;p&gt;this description assumes you’ll follow all steps by &lt;strong&gt;“root”&lt;/strong&gt; and you are using &lt;strong&gt;ubunutu 14.04&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;At first, download or clone the example source codes and tools from the github project(https://github.com/csiro-wsn/contiki-examples) or my github repository (&lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples&quot;&gt;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples&lt;/a&gt;&lt;/strong&gt;). I recommend to use mine because there are a few syntax errors in “tools/tools_intall.sh” in csiro github.&lt;/p&gt;
+
+&lt;p&gt;First of all, install git and i386 libraries. The followings are the install script.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install libc6:i386 libx11-6:i386 libasound2:i386 libatk1.0-0:i386 libcairo2:i386 libcups2:i386 libdbus-glib-1-2:i386 libgconf-2-4:i386 libgdk-pixbuf2.0-0:i386 libgtk-3-0:i386 libice6:i386 libncurses5:i386 libsm6:i386 liborbit2:i386 libudev1:i386 libusb-0.1-4:i386 libstdc++6:i386 libxt6:i386 libxtst6:i386 libgnomeui-0:i386 libusb-1.0-0-dev:i386 libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 unzip
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Second, install tool chain by running “tools/tools_intall.sh” shell script file. After then, you can compile some example codes or your own contiki code for CC2650. The following is compile command.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make TARGET=srf06-cc26xx BOARD=sensortag/cc2650
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To grogram your .elf file to CC2650 board, use Uniflash(&lt;strong&gt;&lt;a href=&quot;http://www.ti.com/tool/uniflash&quot;&gt;http://www.ti.com/tool/uniflash&lt;/a&gt;&lt;/strong&gt;). If you get the error message about “libgcrypt.so.11” during the installation, install libgcrypt11_1.5.3.-5 library&lt;/p&gt;
+
+&lt;p&gt;After install Uniflash, update Uniflash by “Help”
+Go to “/opt/ti/uniflash_3.4/ccs_base/common/uscif/xds110/” and connect your device into your Linux.
+Type&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./xdsdfu –m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and wait a little and type again&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./xdsdfu –f firmware.bin –r
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is kind of initializing command at the first time&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">How to get started Contiki with a CC2650 board in Linux</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22ubuntu14_04_02.jpg%22,%20%22teaser%22=%3E%22ubuntu14_04.jpg%22%7D" /></entry><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (2)</title><link href="http://localhost:4000/csiro02/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (2)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro02</id><content type="html" xml:base="http://localhost:4000/csiro02/">&lt;nav class=&quot;toc&quot;&gt;
+
+&lt;/nav&gt;
+
+&lt;p&gt;In this project, I used TI CC2650 Sensortag to develop radio tomography in low-power sensor network device. I developed Contiki application and programmed it to the CC2650. By using CC2650 and Contiki, this radio tomography system could achieve low-power consumption.&lt;/p&gt;
+
+&lt;h3 id=&quot;ti-sensortag-cc2650&quot;&gt;TI Sensortag CC2650&lt;/h3&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/csiro_2_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 400px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The CC2650 device is a wireless MCU targeting Bluetooth Smart, ZigBee and 6LoWPAN, and ZigBee RF4CE remote control applications. The device is a member of the CC26xx family of cost-effective, ultra-low power, 2.4-GHz RF devices. The ability to consume very low active RF and MCU currents and low-power mode currents provides excellent battery life for the device. This ability also lets the device operate on small coin cell batteries and in energy-harvesting applications. [1]&lt;/p&gt;
+
+&lt;h3 id=&quot;contiki&quot;&gt;Contiki&lt;/h3&gt;
+
+&lt;p&gt;Contiki is an open source operating system for the Internet of Things. Contiki connects tiny low-cost, low-power microcontrollers to the Internet. Contiki is a powerful toolbox for building complex wireless systems. [2]&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;__&lt;br /&gt;&lt;br /&gt;
+[1] Multi-Standard CC2650 SensorTag Design Guide, &lt;strong&gt;&lt;a href=&quot;http://www.ti.com/lit/ug/tidu862/tidu862.pdf&quot;&gt;http://www.ti.com/lit/ug/tidu862/tidu862.pdf&lt;/a&gt;&lt;/strong&gt; &lt;br /&gt;
+[2] Contiki, &lt;strong&gt;&lt;a href=&quot;http://www.contiki-os.org&quot;&gt;http://www.contiki-os.org&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">TI Sensortag CC2650 and Contiki</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_2_1.png%22%7D" /></entry><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (1)</title><link href="http://localhost:4000/csiro01/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro01</id><content type="html" xml:base="http://localhost:4000/csiro01/">&lt;nav class=&quot;toc&quot; markdown=&quot;1&quot;&gt;
 *  Auto generated table of contents
 {:toc}
 &lt;/nav&gt;
