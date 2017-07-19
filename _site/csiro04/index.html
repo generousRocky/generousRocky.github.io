@@ -2,13 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CSIRO) Radio Tomography System using low-power Sensor Network Device (2) • Rocky's Research Blog</title>
-    <meta name="description" content="TI Sensortag CC2650 and Contiki">
+    <title>CSIRO) Radio Tomography System using low-power Sensor Network Device (4) • Rocky's Research Blog</title>
+    <meta name="description" content="How to design Device Application for RTI">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (2)">
-	<meta name="twitter:description" content="TI Sensortag CC2650 and Contiki">
+	<meta name="twitter:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (4)">
+	<meta name="twitter:description" content="How to design Device Application for RTI">
 	
 	<meta name="twitter:creator" content="@">
 	
@@ -18,12 +18,12 @@
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (2)">
-	<meta property="og:description" content="TI Sensortag CC2650 and Contiki">
-	<meta property="og:url" content="http://localhost:4000/csiro02/">
+	<meta property="og:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (4)">
+	<meta property="og:description" content="How to design Device Application for RTI">
+	<meta property="og:url" content="http://localhost:4000/csiro04/">
 	<meta property="og:site_name" content="Rocky's Research Blog">
 
-    <link rel="canonical" href="http://localhost:4000/csiro02/">
+    <link rel="canonical" href="http://localhost:4000/csiro04/">
 
     <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
@@ -111,30 +111,33 @@
 		
 		
 		<div class="page-title">
-			<h1>CSIRO) Radio Tomography System using low-power Sensor Network Device (2)</h1>
+			<h1>CSIRO) Radio Tomography System using low-power Sensor Network Device (4)</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
-				<nav class="toc">
+				<h3 id="how-to-design-device-application-for-rti">How to design Device Application for RTI</h3>
 
-</nav>
+<p>There are two device application. One is for nodes consist of radio tomography network and the other is a master node which schedules other nodes and collects raw data from them. To be specific, master node sends command packet to other nodes so that the other nodes broadcast packet. In this way master node can control or schedule the other nodes by adjusting signal interval time or iteration number.<br /></p>
 
-<p>In this project, I used TI CC2650 Sensortag to develop radio tomography in low-power sensor network device. I developed Contiki application and programmed it to the CC2650. By using CC2650 and Contiki, this radio tomography system could achieve low-power consumption.</p>
+<p>In radio tomography system, radio interference brings about severe problem in the system because Received Signal Strength Index(RSSI) is the most important information to detect object. If more than two nodes broadcast at the same time, the RSSI of the network would be messed up at that time . To avoid this problem,  I made time slot and every pre-defined time slot, only one node can broadcast so that there is no signal interference.<br /></p>
 
-<h3 id="ti-sensortag-cc2650">TI Sensortag CC2650</h3>
+<p>The following is example of radio tomography network of N =5, iteration =3. (N = number of node)</p>
+
 <p style="text-align: center;">
-	<img src="http://localhost:4000/images/csiro_2_1.png" alt="Drawing" style="width: 600px;" />
+	<img src="http://localhost:4000/images/csiro_4_1.png" alt="Drawing" style="width: 800px;" />
 </p>
 
-<p>The CC2650 device is a wireless MCU targeting Bluetooth Smart, ZigBee and 6LoWPAN, and ZigBee RF4CE remote control applications. The device is a member of the CC26xx family of cost-effective, ultra-low power, 2.4-GHz RF devices. The ability to consume very low active RF and MCU currents and low-power mode currents provides excellent battery life for the device. This ability also lets the device operate on small coin cell batteries and in energy-harvesting applications. [1]</p>
+<p>As the above graph, master node sends command packet to each node. The command packet is also broadcasted but for the visibility of graph, I drew a single dotted black arrow on the graph. In each scheduling time slot, a node broadcast packet 3 times (red dotted arrow, iteration =3). The packet carries the RSSI information of previous cycle from each other nodes so that the master node receives those packet and send it to test pc by serial communication.</p>
 
-<h3 id="contiki">Contiki</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>N 3 -46 -45 -43 0 -43
+</code></pre>
+</div>
 
-<p>Contiki is an open source operating system for the Internet of Things. Contiki connects tiny low-cost, low-power microcontrollers to the Internet. Contiki is a powerful toolbox for building complex wireless systems. [2]</p>
+<p>The above string is packet data that node 3 broadcast. “N” mean normal and “3” mean node ID and each numbers in minus sign are the average RSSI from each other node. There is “0” RSSI that indicate “from node 3 to node3”</p>
 
-<p><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong>__<br /><br />
-[1] Multi-Standard CC2650 SensorTag Design Guide, <strong><a href="http://www.ti.com/lit/ug/tidu862/tidu862.pdf">http://www.ti.com/lit/ug/tidu862/tidu862.pdf</a></strong> <br />
-[2] Contiki, <strong><a href="http://www.contiki-os.org">http://www.contiki-os.org</a></strong></p>
+<p>The followings are github link of source code for device application (contiki application code)<br /><br />
+Normal node: <strong><a href="https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography">https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography</a></strong><br />
+Master node: <strong><a href="https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater">https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater</a></strong></p>
 
 				<hr />
 				<footer class="page-footer">
@@ -148,9 +151,9 @@
 	<p class="author-bio">What do you want, jewels? I am a very extravagant man.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=CSIRO)%20Radio%20Tomography%20System%20using%20low-power%20Sensor%20Network%20Device%20(2)&amp;url=http://localhost:4000/csiro02/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/csiro02/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/csiro02/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=CSIRO)%20Radio%20Tomography%20System%20using%20low-power%20Sensor%20Network%20Device%20(4)&amp;url=http://localhost:4000/csiro04/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/csiro04/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/csiro04/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">

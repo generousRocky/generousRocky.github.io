@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-19T16:19:00+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (3)</title><link href="http://localhost:4000/csiro03/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (3)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro03</id><content type="html" xml:base="http://localhost:4000/csiro03/">&lt;h2 id=&quot;how-to-get-started-contiki-with-a-cc2650-board-in-linux&quot;&gt;How to get started Contiki with a CC2650 board in Linux&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-19T18:51:26+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (4)</title><link href="http://localhost:4000/csiro04/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (4)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro04</id><content type="html" xml:base="http://localhost:4000/csiro04/">&lt;h3 id=&quot;how-to-design-device-application-for-rti&quot;&gt;How to design Device Application for RTI&lt;/h3&gt;
+
+&lt;p&gt;There are two device application. One is for nodes consist of radio tomography network and the other is a master node which schedules other nodes and collects raw data from them. To be specific, master node sends command packet to other nodes so that the other nodes broadcast packet. In this way master node can control or schedule the other nodes by adjusting signal interval time or iteration number.&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;In radio tomography system, radio interference brings about severe problem in the system because Received Signal Strength Index(RSSI) is the most important information to detect object. If more than two nodes broadcast at the same time, the RSSI of the network would be messed up at that time . To avoid this problem,  I made time slot and every pre-defined time slot, only one node can broadcast so that there is no signal interference.&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;The following is example of radio tomography network of N =5, iteration =3. (N = number of node)&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/csiro_4_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As the above graph, master node sends command packet to each node. The command packet is also broadcasted but for the visibility of graph, I drew a single dotted black arrow on the graph. In each scheduling time slot, a node broadcast packet 3 times (red dotted arrow, iteration =3). The packet carries the RSSI information of previous cycle from each other nodes so that the master node receives those packet and send it to test pc by serial communication.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;N 3 -46 -45 -43 0 -43
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The above string is packet data that node 3 broadcast. “N” mean normal and “3” mean node ID and each numbers in minus sign are the average RSSI from each other node. There is “0” RSSI that indicate “from node 3 to node3”&lt;/p&gt;
+
+&lt;p&gt;The followings are github link of source code for device application (contiki application code)&lt;br /&gt;&lt;br /&gt;
+Normal node: &lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography&quot;&gt;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;
+Master node: &lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater&quot;&gt;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">How to design Device Application for RTI</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_4_1.png%22%7D" /></entry><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (3)</title><link href="http://localhost:4000/csiro03/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (3)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro03</id><content type="html" xml:base="http://localhost:4000/csiro03/">&lt;h3 id=&quot;how-to-get-started-contiki-with-a-cc2650-board-in-linux&quot;&gt;How to get started Contiki with a CC2650 board in Linux&lt;/h3&gt;
 
 &lt;p&gt;this description assumes you’ll follow all steps by &lt;strong&gt;“root”&lt;/strong&gt; and you are using &lt;strong&gt;ubunutu 14.04&lt;/strong&gt;&lt;/p&gt;
 
@@ -40,7 +62,7 @@ Type&lt;/p&gt;
 
 &lt;h3 id=&quot;ti-sensortag-cc2650&quot;&gt;TI Sensortag CC2650&lt;/h3&gt;
 &lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/csiro_2_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 400px;&quot; /&gt;
+	&lt;img src=&quot;http://localhost:4000/images/csiro_2_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
 &lt;/p&gt;
 
 &lt;p&gt;The CC2650 device is a wireless MCU targeting Bluetooth Smart, ZigBee and 6LoWPAN, and ZigBee RF4CE remote control applications. The device is a member of the CC26xx family of cost-effective, ultra-low power, 2.4-GHz RF devices. The ability to consume very low active RF and MCU currents and low-power mode currents provides excellent battery life for the device. This ability also lets the device operate on small coin cell batteries and in energy-harvesting applications. [1]&lt;/p&gt;
@@ -51,36 +73,35 @@ Type&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;__&lt;br /&gt;&lt;br /&gt;
 [1] Multi-Standard CC2650 SensorTag Design Guide, &lt;strong&gt;&lt;a href=&quot;http://www.ti.com/lit/ug/tidu862/tidu862.pdf&quot;&gt;http://www.ti.com/lit/ug/tidu862/tidu862.pdf&lt;/a&gt;&lt;/strong&gt; &lt;br /&gt;
-[2] Contiki, &lt;strong&gt;&lt;a href=&quot;http://www.contiki-os.org&quot;&gt;http://www.contiki-os.org&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">TI Sensortag CC2650 and Contiki</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_2_1.png%22%7D" /></entry><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (1)</title><link href="http://localhost:4000/csiro01/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro01</id><content type="html" xml:base="http://localhost:4000/csiro01/">&lt;nav class=&quot;toc&quot; markdown=&quot;1&quot;&gt;
-*  Auto generated table of contents
-{:toc}
+[2] Contiki, &lt;strong&gt;&lt;a href=&quot;http://www.contiki-os.org&quot;&gt;http://www.contiki-os.org&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">TI Sensortag CC2650 and Contiki</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_2_1.png%22%7D" /></entry><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (1)</title><link href="http://localhost:4000/csiro01/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/csiro01</id><content type="html" xml:base="http://localhost:4000/csiro01/">&lt;nav class=&quot;toc&quot;&gt;
+
 &lt;/nav&gt;
 
+&lt;h3 id=&quot;what-is-radio-tomographic-imaging&quot;&gt;What is radio tomographic imaging?&lt;/h3&gt;
 
 &lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/csiro_1_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 400px;&quot;/&gt;
+	&lt;img src=&quot;http://localhost:4000/images/csiro_1_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 420px;&quot; /&gt;
 &lt;/p&gt;
 
-Radio Tomographic Imaging (RTI) is an emerging technology for imaging passive objects (objects that do not carry a transmitting device) with wireless networks [1]. The key source of image is Received Signal Strength Index(RRSI) which has a nature that it decreases(usually) when objects disturb the going ahead radio signal.
+&lt;p&gt;Radio Tomographic Imaging (RTI) is an emerging technology for imaging passive objects (objects that do not carry a transmitting device) with wireless networks [1]. The key source of image is Received Signal Strength Index(RRSI) which has a nature that it decreases(usually) when objects disturb the going ahead radio signal.&lt;/p&gt;
 
 &lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/csiro_1_2.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 400px;&quot;/&gt;
+	&lt;img src=&quot;http://localhost:4000/images/csiro_1_2.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 450px;&quot; /&gt;
 &lt;/p&gt;
 
-The picture above shows the RRSI values as time goes by, and there are some changes up and down at certain times because of a moving object. In fact, the graph was obtained from short experiments when the experimenter move around the nodes. In the radio tomography network, all of the nodes makes a lots of RSSI data extremely fast and by using the data, images are created.&lt;br /&gt;&lt;br /&gt;
- 
-Working as a intern in CSIRO, I was on project regarding radio tomography. The purpose of this project is developing radio tomography system by using low power sensor network device. For this, I used TI Sensortasg cc2650 as a low power device. and I used Contiki-OS for device application OS for radio tomography system.&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;The picture above shows the RRSI values as time goes by, and there are some changes up and down at certain times because of a moving object. In fact, the graph was obtained from short experiments when the experimenter move around the nodes. In the radio tomography network, all of the nodes makes a lots of RSSI data extremely fast and by using the data, images are created.&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 
-There are two major steps for Developing Radio Tomography using low power network device. First one is to develop the device application that I use, TI Sensortag. Next one is to reconstruct image form data that collected by using network devices.&lt;br /&gt;&lt;br /&gt;
- 
-I implemented Contiki device application for nodes that consist the Radio Tomography Network. I also implemented Contiki device application of master node that schedules the other nodes and collects data from the network. Next, I deployed the nodes around target area so the radio signal can pass through the area. I collected raw data of RSSI of each node in the radio tomography network and reconstructed image of the area.&lt;br /&gt;&lt;br /&gt;
- 
-Node scheduling concepts of the device application and reconstruction algorithm will be covered in the next chapters. &lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;Working as a intern in CSIRO, I was on project regarding radio tomography. The purpose of this project is developing radio tomography system by using low power sensor network device. For this, I used TI Sensortasg cc2650 as a low power device. and I used Contiki-OS for device application OS for radio tomography system.&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 
-_____________________________________&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt;There are two major steps for Developing Radio Tomography using low power network device. First one is to develop the device application that I use, TI Sensortag. Next one is to reconstruct image form data that collected by using network devices.&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 
+&lt;p&gt;I implemented Contiki device application for nodes that consist the Radio Tomography Network. I also implemented Contiki device application of master node that schedules the other nodes and collects data from the network. Next, I deployed the nodes around target area so the radio signal can pass through the area. I collected raw data of RSSI of each node in the radio tomography network and reconstructed image of the area.&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 
-[1] Wilson, Joey, and Neal Patwari. &quot;Radio tomographic imaging with wireless networks.&quot; IEEE Transactions on Mobile Computing 9.5 (2010): 621-632.</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">What is radio tomographic imaging?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_1_1.png%22%7D" /></entry><entry><title type="html">Publication) Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform</title><link href="http://localhost:4000/KIISE/" rel="alternate" type="text/html" title="Publication) Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform" /><published>2016-12-21T19:01:50+09:00</published><updated>2016-12-21T19:01:50+09:00</updated><id>http://localhost:4000/KIISE</id><content type="html" xml:base="http://localhost:4000/KIISE/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;p&gt;Node scheduling concepts of the device application and reconstruction algorithm will be covered in the next chapters. &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;_&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;[1] Wilson, Joey, and Neal Patwari. “Radio tomographic imaging with wireless networks.” IEEE Transactions on Mobile Computing 9.5 (2010): 621-632.&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">What is radio tomographic imaging?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_1_1.png%22%7D" /></entry><entry><title type="html">Publication) Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform</title><link href="http://localhost:4000/KIISE/" rel="alternate" type="text/html" title="Publication) Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform" /><published>2016-12-21T19:01:50+09:00</published><updated>2016-12-21T19:01:50+09:00</updated><id>http://localhost:4000/KIISE</id><content type="html" xml:base="http://localhost:4000/KIISE/">&lt;nav class=&quot;toc&quot;&gt;
 
 &lt;/nav&gt;
 
