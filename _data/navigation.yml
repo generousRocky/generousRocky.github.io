@@ -1,21 +1,21 @@
 # Site navigation links
 
 - title: About Me
-  url:
-  excerpt: introduce my self
-  image: abount_me.jpg
+  url: /about/
+  excerpt: "A liitle about this blog's owner, Rocky Lim"
+  image: abount_me.png
 
-- title: Research Blog
-  url:
-  excerpt:
+- title: Research
+  url: /research/
+  excerpt: "It's a bit embarrassing, but it's something I studied and researched"
   image: research.jpeg
 
-- title: Study Blog
-  url:
-  excerpt:
+- title: Book
+  url: /book/
+  excerpt: "Things I've studied, read"
   image: study.jpeg
 
-- title: Portfolio
-  url: /portfolio/
-  excerpt: "Things I’ve designed, illustrated, developed, coded, and whatever."
+- title: Whatever
+  url: /whatever/
+  excerpt: "Things I’ve designed, published, developed, coded, and whatever."
   image: 300x200.png
