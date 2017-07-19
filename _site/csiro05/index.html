@@ -2,13 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CSIRO) Radio Tomography System using low-power Sensor Network Device (4) • Rocky's Research Blog</title>
-    <meta name="description" content="How to design Device Application for RTI">
+    <title>CSIRO) Radio Tomography System using low-power Sensor Network Device (5) • Rocky's Research Blog</title>
+    <meta name="description" content="Test Configuration">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (4)">
-	<meta name="twitter:description" content="How to design Device Application for RTI">
+	<meta name="twitter:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (5)">
+	<meta name="twitter:description" content="Test Configuration">
 	
 	<meta name="twitter:creator" content="@">
 	
@@ -18,12 +18,12 @@
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (4)">
-	<meta property="og:description" content="How to design Device Application for RTI">
-	<meta property="og:url" content="http://localhost:4000/csiro04/">
+	<meta property="og:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (5)">
+	<meta property="og:description" content="Test Configuration">
+	<meta property="og:url" content="http://localhost:4000/csiro05/">
 	<meta property="og:site_name" content="Rocky's Research Blog">
 
-    <link rel="canonical" href="http://localhost:4000/csiro04/">
+    <link rel="canonical" href="http://localhost:4000/csiro05/">
 
     <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
@@ -111,33 +111,38 @@
 		
 		
 		<div class="page-title">
-			<h1>CSIRO) Radio Tomography System using low-power Sensor Network Device (4)</h1>
+			<h1>CSIRO) Radio Tomography System using low-power Sensor Network Device (5)</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
-				<h3 id="how-to-design-device-application-for-rti">How to design Device Application for RTI</h3>
+				<h3 id="test-configuration">Test Configuration</h3>
 
-<p>There are two device application. One is for nodes consist of radio tomography network and the other is a master node which schedules other nodes and collects raw data from them. To be specific, master node sends command packet to other nodes so that the other nodes broadcast packet. In this way master node can control or schedule the other nodes by adjusting signal interval time or iteration number.<br /></p>
-
-<p>In radio tomography system, radio interference brings about severe problem in the system because Received Signal Strength Index(RSSI) is the most important information to detect object. If more than two nodes broadcast at the same time, the RSSI of the network would be messed up at that time . To avoid this problem,  I made time slot and every pre-defined time slot, only one node can broadcast so that there is no signal interference.<br /></p>
-
-<p>The following is example of radio tomography network of N =5, iteration =3. (N = number of node)</p>
-
+<h5 id="nodes-deployment">nodes deployment</h5>
 <p style="text-align: center;">
-	<img src="http://localhost:4000/images/csiro_4_1.png" alt="Drawing" style="width: 800px;" />
+	<img src="http://localhost:4000/images/csiro_5_1.png" alt="Drawing" style="width: 500px;" />
 </p>
+<ul>
+  <li>
+    <p>node must be deployed from the top left to the bottom right like the picture.</p>
+  </li>
+  <li>
+    <p>node configuration</p>
 
-<p>As the above graph, master node sends command packet to each node. The command packet is also broadcasted but for the visibility of graph, I drew a single dotted black arrow on the graph. In each scheduling time slot, a node broadcast packet 3 times (red dotted arrow, iteration =3). The packet carries the RSSI information of previous cycle from each other nodes so that the master node receives those packet and send it to test pc by serial communication.</p>
+    <p>NUM_OF_NODE = 20<br />
+  NUM_OF_LINK = 20*19 = 381<br />
+  NUM_OF_ONESIDE = 6<br /></p>
+  </li>
+  <li>
+    <p>Reconstruction Image Configuration</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>N 3 -46 -45 -43 0 -43
-</code></pre>
-</div>
-
-<p>The above string is packet data that node 3 broadcast. “N” mean normal and “3” mean node ID and each numbers in minus sign are the average RSSI from each other node. There is “0” RSSI that indicate “from node 3 to node3”</p>
-
-<p>The followings are github link of source code for device application (contiki application code)<br /><br />
-Normal node: <strong><a href="https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography">https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography</a></strong><br />
-Master node: <strong><a href="https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater">https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater</a></strong></p>
+    <p>RAW = 25<br />
+  NUM_OF_VOXEL = 25*25 = 625<br />
+  NORMALIZED_PIXEL_WITH = 0.984<br />
+  WIDTH_OF_WEIGHTING_ELLIPSE = 0.02<br />
+  PIXEL_CORRELATION_CONSTANT = 3<br />
+  PIXEL_VARIANCE = 0.4</p>
+  </li>
+</ul>
 
 				<hr />
 				<footer class="page-footer">
@@ -151,13 +156,13 @@ Master node: <strong><a href="https://github.com/RockyLim92/radioTomography/tree
 	<p class="author-bio">What do you want, jewels? I am a very extravagant man.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=CSIRO)%20Radio%20Tomography%20System%20using%20low-power%20Sensor%20Network%20Device%20(4)&amp;url=http://localhost:4000/csiro04/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/csiro04/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/csiro04/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=CSIRO)%20Radio%20Tomography%20System%20using%20low-power%20Sensor%20Network%20Device%20(5)&amp;url=http://localhost:4000/csiro05/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/csiro05/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/csiro05/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2017-02-14T19:01:50Z" itemprop="datePublished">February 14, 2017</time></p>
+	<p>Updated <time datetime="2017-02-15T19:01:50Z" itemprop="datePublished">February 15, 2017</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>
