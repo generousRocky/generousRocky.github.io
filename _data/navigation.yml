@@ -3,11 +3,16 @@
 - title: About Me
   url: /about/
   excerpt: "A liitle about this blog's owner, Rocky Lim"
-  image: abount_me.png
+  image: rocky_icon.png
+  
+- title: " "
+  url:
+  excerpt:
+  image:
 
 - title: Research
   url: /research/
-  excerpt: "It's a bit embarrassing, but it's something I studied and researched"
+  excerpt: "It's a bit embarrassing, but literally research"
   image: research.jpeg
 
 - title: Book

@@ -6,7 +6,7 @@ modified: 2016-05-30 15:39:03
 excerpt: "It's a bit embarrassing, but something I studied and researched"
 tags: []
 image:
-  feature: wood-texture-1600x800.jpg
+  feature:
   teaser: 
 ---
 
