@@ -4,7 +4,7 @@
   url: /about/
   excerpt: "A liitle about this blog's owner, Rocky Lim"
   image: rocky_icon.png
-  
+
 - title: " "
   url:
   excerpt:
@@ -22,5 +22,5 @@
 
 - title: Whatever
   url: /whatever/
-  excerpt: "Things I’ve designed, published, developed, coded, and whatever."
+  excerpt: "Things I’ve designed, published, developed, coded, or whatever."
   image: 300x200.png
