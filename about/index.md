@@ -106,6 +106,17 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 	<br />
 </p>
 
+<br /><br />
+## Publication
+### Domestic
+1. Dec 2016  <a href="/publication/OpenSSD.pdf">"Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform"</a>
+2. Jun 2016  "Design & Simulation method for the Pre-scan Active suspension control system on the Virtual AUTOSAR Platform"
+
+### International
+Hope soon...
+
+
+
 
 <br /><br /><br />
 
