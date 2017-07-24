@@ -1,4 +1,162 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-24T16:30:07+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">Github page 제작 후기 with Jekyll</title><link href="http://localhost:4000/whatever/githubpages_review/" rel="alternate" type="text/html" title="Github page 제작 후기 with Jekyll" /><published>2017-07-22T22:44:20+09:00</published><updated>2017-07-22T22:44:20+09:00</updated><id>http://localhost:4000/whatever/githubpages_review</id><content type="html" xml:base="http://localhost:4000/whatever/githubpages_review/">&lt;nav class=&quot;toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-07-24T17:49:43+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">Linux System Programing [1-1]: Error handling</title><link href="http://localhost:4000/book/linux_system_programing_1_2/" rel="alternate" type="text/html" title="Linux System Programing [1-1]: Error handling" /><published>2017-07-23T22:44:20+09:00</published><updated>2017-07-23T22:44:20+09:00</updated><id>http://localhost:4000/book/linux_system_programing_1_2</id><content type="html" xml:base="http://localhost:4000/book/linux_system_programing_1_2/">&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/lsp.gif&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+
+&lt;/nav&gt;
+
+&lt;p&gt;시스템 프로그래밍에서 에러는 함수 리턴값으로 확인이 가능하며 특수한 변수인 errno로 에러가 발생한 구체적인 이유를 알 수 있다. glibc에서는 라이브러리와 시스템 콜 양쪽을 지원하도록 errno 값을 제공한다. 정확한 값은 함수에 따라 다르겠지만 보통 에러가 발생하면 -1을 반환한다. 이 에러값은 호출한 측에 에러가 발생했음을 알려주지만, 자세한 에러 이유는 알려주지 않는다. 이때 에러의 원인을 찾아내기 위해 errno 변수를 사용한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;errno 변수는 &lt;errno.h&gt; 헤더에 다음과 같이 정의되어 있다.&lt;/errno.h&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;extern&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;이 값은 errno에 값을 대입한 함수를 호출한 직후에만 유효하다. 연이어 다른 함수를 실행하면 이 값이 바뀌므로 주의해야 한다.&lt;/p&gt;
+
+&lt;p&gt;errno 변수는 직접 읽고 쓸 수 있으며, 변경 가능한 변수(Variable)이다. errno 값은 그 에러에 대한 설명이 다음과 같이  mapping되어 있다.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;선행처리기 문자열 정의&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;설명&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EPERM&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Operation not permitted */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ENOENT&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* No such file or directory */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ESRCH&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* No such process */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EINTR&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Interrupted system call */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EIO&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* I/O error */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ENXIO&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* No such device or address */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;E2BIG&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Arg list too long */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ENOEXEC&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Exec format error */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EBADF&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Bad file number */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ECHILD&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* No child processes */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EAGAIN&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Try again */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ENOMEM&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Out of memory */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EACCES&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Permission denied */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EFAULT&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Bad address */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;ENOTBLK&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Block device required */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EBUSY&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Device or resource busy */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EEXIST&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* File exists */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;EXDEV&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;/* Cross-device link */&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;…&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;…&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;C 라이브러리에는 errno 값을 그에 맞는 문자열 표현으로 변환하는 함수를 몇 가지 제공하고 있다. 이런 함수는 사용자에게 에러를 알려줄 때 사용한다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;perror() 함수&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;stdio.h&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;perror&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;이 함수는 str이 가르키는 문자열 뒤에 콜론(:)을 붙인 다음에 errno가 기술하는 현재 에러를 문자열로 바꿔 표준 에러(stderr: standard error)로 내보낸다. 활용도를 높이려면 다음과 같이 함수 이름을 문자열에 포함 해 주면 좋다.&lt;/p&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;perror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;close&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;strerror()와 strerror_r()함수&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string.h&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strerror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;errnum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;string.h&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strerroe_r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;errnum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;size_t&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;strerror()함수는 errno 에러에 대한 설명이 담긴 문자열 포인터를 반환한다. 비슷하게 strerror_r()함수는 buf가 가르키는 지점부터 len만큼 버퍼를 체운다.&lt;/p&gt;
+
+&lt;p&gt;흔히 하는 실수로, 라이브러리나 시스템 콜에서 errno 값을 바꿀 수 있다는 사실을 잊은 채 errno 값을 검사하는 경우가 있다.&lt;/p&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fsync&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;fsync failed!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EIO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;I/O error on %d!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;위 코드에는 다음과 같이 수정되어야 한다.&lt;/p&gt;
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fsync&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;err&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;fsync failed: %s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stderror&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errno&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EIO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// I/O와 관련된 에러라면 exit
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;fprintf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stderr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;I/O error on %d!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;EXIT_FAILURE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;싱글스레드 프로그램에서 errno는 전역변수 이지만, 멀티스레드 프로그램에서 errno는 스레드 별로 저장되므로 스레드에서 역시 사용가능하다.&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">리눅스 시스템 프로그래밍 [1-1]: 에러처리 - errno 변수를 활용한 에러 확인 및 처리</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22lsp.gif%22%7D" /></entry><entry><title type="html">Github page 제작 후기 with Jekyll</title><link href="http://localhost:4000/whatever/githubpages_review/" rel="alternate" type="text/html" title="Github page 제작 후기 with Jekyll" /><published>2017-07-22T22:44:20+09:00</published><updated>2017-07-22T22:44:20+09:00</updated><id>http://localhost:4000/whatever/githubpages_review</id><content type="html" xml:base="http://localhost:4000/whatever/githubpages_review/">&lt;nav class=&quot;toc&quot;&gt;
 
 &lt;/nav&gt;
 
@@ -87,66 +245,66 @@
 &lt;table&gt;
   &lt;thead&gt;
     &lt;tr&gt;
-      &lt;th&gt;비트&lt;/th&gt;
-      &lt;th&gt;8진수&lt;/th&gt;
-      &lt;th&gt;텍스트&lt;/th&gt;
-      &lt;th&gt;접근 권한&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;비트&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;8진수&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;텍스트&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;접근 권한&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
-      &lt;td&gt;8&lt;/td&gt;
-      &lt;td&gt;400&lt;/td&gt;
-      &lt;td&gt;r - - - - - - - -&lt;/td&gt;
-      &lt;td&gt;소유자 읽기&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;8&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;400&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;r - - - - - - - -&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;소유자 읽기&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;7&lt;/td&gt;
-      &lt;td&gt;200&lt;/td&gt;
-      &lt;td&gt;- w - - - - - - -&lt;/td&gt;
-      &lt;td&gt;소유자 쓰기&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;7&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;200&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;- w - - - - - - -&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;소유자 쓰기&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;6&lt;/td&gt;
-      &lt;td&gt;100&lt;/td&gt;
-      &lt;td&gt;- - x - - - - - -&lt;/td&gt;
-      &lt;td&gt;소유자 실행&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;6&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;100&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;- - x - - - - - -&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;소유자 실행&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;5&lt;/td&gt;
-      &lt;td&gt;040&lt;/td&gt;
-      &lt;td&gt;- - - r - - - - -&lt;/td&gt;
-      &lt;td&gt;그룹 읽기&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;5&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;040&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;- - - r - - - - -&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;그룹 읽기&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;020&lt;/td&gt;
-      &lt;td&gt;- - - - w - - - -&lt;/td&gt;
-      &lt;td&gt;그룹 쓰기&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;020&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;- - - - w - - - -&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;그룹 쓰기&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;3&lt;/td&gt;
-      &lt;td&gt;010&lt;/td&gt;
-      &lt;td&gt;- - - - - x - - -&lt;/td&gt;
-      &lt;td&gt;그룹 실행&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;010&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;- - - - - x - - -&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;그룹 실행&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;004&lt;/td&gt;
-      &lt;td&gt;- - - - - - r - -&lt;/td&gt;
-      &lt;td&gt;그 외 사용자 읽기&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;2&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;004&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;- - - - - - r - -&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;그 외 사용자 읽기&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;002&lt;/td&gt;
-      &lt;td&gt;- - - - - - - w -&lt;/td&gt;
-      &lt;td&gt;그 외 사용자 쓰기&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;002&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;- - - - - - - w -&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;그 외 사용자 쓰기&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;001&lt;/td&gt;
-      &lt;td&gt;- - - - - - - - x&lt;/td&gt;
-      &lt;td&gt;그 외 사용자 실행&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;001&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;- - - - - - - - x&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;그 외 사용자 실행&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
@@ -332,20 +490,4 @@ Type&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;_&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;p&gt;[1] Wilson, Joey, and Neal Patwari. “Radio tomographic imaging with wireless networks.” IEEE Transactions on Mobile Computing 9.5 (2010): 621-632.&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">What is radio tomographic imaging?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_1_1.png%22%7D" /></entry><entry><title type="html">Publication) Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform</title><link href="http://localhost:4000/research/KIISE/" rel="alternate" type="text/html" title="Publication) Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform" /><published>2016-12-21T19:01:50+09:00</published><updated>2016-12-21T19:01:50+09:00</updated><id>http://localhost:4000/research/KIISE</id><content type="html" xml:base="http://localhost:4000/research/KIISE/">&lt;nav class=&quot;toc&quot;&gt;
-
-&lt;/nav&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/KIISE.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 700px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;h3 id=&quot;abstractionko-kr&quot;&gt;Abstraction(KO-KR)&lt;/h3&gt;
-
-&lt;p&gt;SSD에서 Flash Translation Layer (FTL)은 논리적인 주소를 물리적으로 주소로 바꾸어 주는 역할을 수행한다. FTL은 SSD의 성능에 크게 영향을 미친다. 선택적 캐싱 기반 페이지 매핑 FTL은 자주 접근되는 페이지 매핑 엔트리만 메모리에 유지하며 페이지 매핑 테이블을 구현하는 방식이며 Garbage Collection 오버헤드를 최소화하여 SSD 성능을 높인다. 하지만, 워크로드의 특성상 Locality가 낮은 경우 캐시 미스가 발생하여 성능이 낮아지는 문제점을 가진다. 본 논문에서는 이러한 선택적 캐싱 기반 페이지 매핑 FTL의 캐시 된 매핑 테이블 크기에 따라 성능 분석을 수행한다. 특히 성능 예측 모델 개발을 위해 OpenSSD 플랫폼 상에서 선택적 캐싱 기반 페이지 매핑 FTL을 실제 구현하였으며 파일 시스템 성능 분석 도구를 이용하여 FTL 성능 예측 모델의 정확성을 검증하였다.&lt;/p&gt;
-
-&lt;h3 id=&quot;abstractionen&quot;&gt;Abstraction(EN)&lt;/h3&gt;
-
-&lt;p&gt;Flash Translation Layer(FTL) play a role that translate logical address to physical address in SSD. FTL have an important effect upon the performance of SSD. Demand-based Selective Caching of Page-level Address Mappings FTL(DFTL) is approach that store only continual page mapping entry. In this approach it increases the performance of the SSD by minimizing Garbage Collection overhead. However, Due to the nature of the workload, cache miss occurs when the locality is low, which results in a lower performance. In this pater, In this paper, performance analysis is performed according to the cached mapping table size of the selective caching-based page mapping FTL. In particular, to develop a performance prediction model, we implemented the selective caching - based page mapping FTL on the OpenSSD platform and verified the accuracy of the FTL performance prediction model using the file system performance analysis tool.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;http://www.eiric.or.kr/community/post2.php?m=view&amp;amp;gubun=201612&amp;amp;num=7239&amp;amp;pg=5&amp;amp;seGubun=&amp;amp;seGubun1=&amp;amp;SnxGubun=%C6%F7%BD%BA%C5%CD&amp;amp;searchBy=&amp;amp;searchWord=​&quot; title=&quot;KISSE download&quot;&gt;Download Link&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html"></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22KIISE.png%22%7D" /></entry></feed>
+&lt;p&gt;[1] Wilson, Joey, and Neal Patwari. “Radio tomographic imaging with wireless networks.” IEEE Transactions on Mobile Computing 9.5 (2010): 621-632.&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">What is radio tomographic imaging?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_1_1.png%22%7D" /></entry></feed>

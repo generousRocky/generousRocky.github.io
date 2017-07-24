@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Linux System Programing [1-1]: Error handling • Rocky's Research Blog</title>
+    <meta name="description" content="리눅스 시스템 프로그래밍 [1-1]: 에러처리 - errno 변수를 활용한 에러 확인 및 처리">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="Linux System Programing [1-1]: Error handling">
+	<meta name="twitter:description" content="리눅스 시스템 프로그래밍 [1-1]: 에러처리 - errno 변수를 활용한 에러 확인 및 처리">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Linux System Programing [1-1]: Error handling">
+	<meta property="og:description" content="리눅스 시스템 프로그래밍 [1-1]: 에러처리 - errno 변수를 활용한 에러 확인 및 처리">
+	<meta property="og:url" content="http://localhost:4000/book/linux_system_programing_1_2/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/book/linux_system_programing_1_2/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">It's a bit embarrassing, but literally research</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/book/" itemprop="url">
+        <span itemprop="title">Book</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>Linux System Programing [1-1]: Error handling</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/lsp.gif" alt="Drawing" style="width: 380px;" />
+</p>
+
+<nav class="toc">
+
+</nav>
+
+<p>시스템 프로그래밍에서 에러는 함수 리턴값으로 확인이 가능하며 특수한 변수인 errno로 에러가 발생한 구체적인 이유를 알 수 있다. glibc에서는 라이브러리와 시스템 콜 양쪽을 지원하도록 errno 값을 제공한다. 정확한 값은 함수에 따라 다르겠지만 보통 에러가 발생하면 -1을 반환한다. 이 에러값은 호출한 측에 에러가 발생했음을 알려주지만, 자세한 에러 이유는 알려주지 않는다. 이때 에러의 원인을 찾아내기 위해 errno 변수를 사용한다.</p>
+
+<ul>
+  <li>errno 변수는 <errno.h> 헤더에 다음과 같이 정의되어 있다.</errno.h></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">extern</span> <span class="kt">int</span> <span class="n">errno</span><span class="p">;</span>
+</code></pre>
+</div>
+<p>이 값은 errno에 값을 대입한 함수를 호출한 직후에만 유효하다. 연이어 다른 함수를 실행하면 이 값이 바뀌므로 주의해야 한다.</p>
+
+<p>errno 변수는 직접 읽고 쓸 수 있으며, 변경 가능한 변수(Variable)이다. errno 값은 그 에러에 대한 설명이 다음과 같이  mapping되어 있다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">선행처리기 문자열 정의</th>
+      <th style="text-align: center">설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">EPERM</td>
+      <td style="text-align: center">/* Operation not permitted */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ENOENT</td>
+      <td style="text-align: center">/* No such file or directory */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ESRCH</td>
+      <td style="text-align: center">/* No such process */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EINTR</td>
+      <td style="text-align: center">/* Interrupted system call */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EIO</td>
+      <td style="text-align: center">/* I/O error */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ENXIO</td>
+      <td style="text-align: center">/* No such device or address */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">E2BIG</td>
+      <td style="text-align: center">/* Arg list too long */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ENOEXEC</td>
+      <td style="text-align: center">/* Exec format error */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EBADF</td>
+      <td style="text-align: center">/* Bad file number */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ECHILD</td>
+      <td style="text-align: center">/* No child processes */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EAGAIN</td>
+      <td style="text-align: center">/* Try again */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ENOMEM</td>
+      <td style="text-align: center">/* Out of memory */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EACCES</td>
+      <td style="text-align: center">/* Permission denied */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EFAULT</td>
+      <td style="text-align: center">/* Bad address */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ENOTBLK</td>
+      <td style="text-align: center">/* Block device required */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EBUSY</td>
+      <td style="text-align: center">/* Device or resource busy */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EEXIST</td>
+      <td style="text-align: center">/* File exists */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">EXDEV</td>
+      <td style="text-align: center">/* Cross-device link */</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">…</td>
+      <td style="text-align: center">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>C 라이브러리에는 errno 값을 그에 맞는 문자열 표현으로 변환하는 함수를 몇 가지 제공하고 있다. 이런 함수는 사용자에게 에러를 알려줄 때 사용한다.</p>
+
+<ul>
+  <li>perror() 함수</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cp">#include &lt;stdio.h&gt;
+</span><span class="kt">void</span> <span class="n">perror</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>이 함수는 str이 가르키는 문자열 뒤에 콜론(:)을 붙인 다음에 errno가 기술하는 현재 에러를 문자열로 바꿔 표준 에러(stderr: standard error)로 내보낸다. 활용도를 높이려면 다음과 같이 함수 이름을 문자열에 포함 해 주면 좋다.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">perror</span><span class="p">(</span><span class="s">"close"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>strerror()와 strerror_r()함수</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
+</span><span class="kt">char</span> <span class="o">*</span> <span class="n">strerror</span><span class="p">(</span><span class="kt">int</span> <span class="n">errnum</span><span class="p">);</span>
+</code></pre>
+</div>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cp">#include &lt;string.h&gt;
+</span><span class="kt">int</span> <span class="n">strerroe_r</span><span class="p">(</span><span class="kt">int</span> <span class="n">errnum</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">);</span>
+</code></pre>
+</div>
+<p>strerror()함수는 errno 에러에 대한 설명이 담긴 문자열 포인터를 반환한다. 비슷하게 strerror_r()함수는 buf가 가르키는 지점부터 len만큼 버퍼를 체운다.</p>
+
+<p>흔히 하는 실수로, 라이브러리나 시스템 콜에서 errno 값을 바꿀 수 있다는 사실을 잊은 채 errno 값을 검사하는 경우가 있다.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">fsync</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+  <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"fsync failed!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">errno</span> <span class="o">==</span> <span class="n">EIO</span><span class="p">)</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"I/O error on %d!</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">fd</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>위 코드에는 다음과 같이 수정되어야 한다.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="n">fsync</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+  <span class="k">const</span> <span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">errno</span><span class="p">;</span>
+  <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"fsync failed: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">stderror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">errno</span> <span class="o">==</span> <span class="n">EIO</span><span class="p">){</span>
+    <span class="c1">// I/O와 관련된 에러라면 exit
+</span>    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"I/O error on %d!</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">fd</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>싱글스레드 프로그램에서 errno는 전역변수 이지만, 멀티스레드 프로그램에서 errno는 스레드 별로 저장되므로 스레드에서 역시 사용가능하다.</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/bio-photo.jpg" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Linux%20System%20Programing%20[1-1]:%20Error%20handling&amp;url=http://localhost:4000/book/linux_system_programing_1_2/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/book/linux_system_programing_1_2/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/book/linux_system_programing_1_2/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-07-23T22:44:20Z" itemprop="datePublished">July 23, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2017 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>
