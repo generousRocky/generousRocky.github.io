@@ -1,6 +1,6 @@
 ---
 layout: article
-title: "Linux System Programing [1-1]: Error handling"
+title: "Linux System Programming [1-1]: Error handling"
 date: 2017-07-23 13:44:20 Z
 author: Rocky Lim
 categories: book

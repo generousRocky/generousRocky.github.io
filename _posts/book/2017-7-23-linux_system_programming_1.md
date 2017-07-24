@@ -1,6 +1,6 @@
 ---
 layout: article
-title: "Linux System Programing [1]: Introduction to Core Concepts"
+title: "Linux System Programming [1]: Introduction to Core Concepts"
 date: 2017-07-22 13:44:20 Z
 author: Rocky Lim
 categories: book
