@@ -7,7 +7,7 @@ categories: book
 excerpt: "리눅스 시스템 프로그래밍 [1]: 핵심 개념 소개; 리눅스 시스템프로그래밍을 위한 핵심 개념 및 도메인 지식에 관하여"
 image:
   feature:
-  teaser: lsp.gif
+  teaser: lsp1.png
 comments: true
 locale: "vn"
 share: true
