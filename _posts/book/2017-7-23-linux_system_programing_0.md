@@ -1,10 +1,10 @@
 ---
 layout: article
-title: "Linux System Programing [00]: Prologue"
+title: "Linux System Programing [0]: Prologue"
 date: 2017-07-22 13:44:20 Z
 author: Rocky Lim
 categories: book
-excerpt: "리눅스 시스템 프로그래밍 [00]: 프롤로그"
+excerpt: "리눅스 시스템 프로그래밍 [0]: 프롤로그"
 image:
   feature:
   teaser: lsp.gif
