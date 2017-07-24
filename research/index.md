@@ -3,11 +3,11 @@ title: Reserch Blog
 date: 2014-05-30 15:39:03
 layout: archive
 modified: 2016-05-30 15:39:03
-excerpt: "It's a bit embarrassing, but literally research"
+excerpt: 
 tags: []
 image:
   feature:
-  teaser: 
+  teaser:
 ---
 
 <div class="tiles">
