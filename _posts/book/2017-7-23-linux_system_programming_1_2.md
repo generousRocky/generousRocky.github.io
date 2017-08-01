@@ -4,7 +4,7 @@ title: "Linux System Programming [1-2]: Error handling"
 date: 2017-07-23 13:44:20 Z
 author: Rocky Lim
 categories: book
-excerpt: "리눅스 시스템 프로그래밍 [1-1]: 에러처리 - errno 변수를 활용한 에러 확인 및 처리"
+excerpt: "리눅스 시스템 프로그래밍 [1-2]: 에러처리 - errno 변수를 활용한 에러 확인 및 처리"
 image:
   feature:
   teaser: lsp1_1.png
