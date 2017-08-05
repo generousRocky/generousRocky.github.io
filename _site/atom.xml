@@ -1,4 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-04T21:46:24+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">Linux System Programming [2]: File Input/Output</title><link href="http://localhost:4000/book/linux_system_programming_2/" rel="alternate" type="text/html" title="Linux System Programming [2]: File Input/Output" /><published>2017-07-29T22:44:20+09:00</published><updated>2017-07-29T22:44:20+09:00</updated><id>http://localhost:4000/book/linux_system_programming_2</id><content type="html" xml:base="http://localhost:4000/book/linux_system_programming_2/">&lt;p style=&quot;text-align: center;&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-06T00:13:43+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">How Computers Work [01]</title><link href="http://localhost:4000/book/hcw01/" rel="alternate" type="text/html" title="How Computers Work [01]" /><published>2017-08-04T22:44:20+09:00</published><updated>2017-08-04T22:44:20+09:00</updated><id>http://localhost:4000/book/hcw01</id><content type="html" xml:base="http://localhost:4000/book/hcw01/">&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#전자기파의-개념-및-종류&quot; id=&quot;markdown-toc-전자기파의-개념-및-종류&quot;&gt;전자기파의 개념 및 종류&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#어떻게-전자기파를-통해-정보가-전달될까&quot; id=&quot;markdown-toc-어떻게-전자기파를-통해-정보가-전달될까&quot;&gt;어떻게 전자기파를 통해 정보가 전달될까?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#트렌지스터&quot; id=&quot;markdown-toc-트렌지스터&quot;&gt;트렌지스터&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#32bit-컴퓨터-64bit-컴퓨터&quot; id=&quot;markdown-toc-32bit-컴퓨터-64bit-컴퓨터&quot;&gt;32bit 컴퓨터? 64bit 컴퓨터?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#어떻게-정보가-ram메인메모리에-저장되는가&quot; id=&quot;markdown-toc-어떻게-정보가-ram메인메모리에-저장되는가&quot;&gt;어떻게 정보가 RAM(메인메모리)에 저장되는가?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#어떻게-정보가-flash-memory에-저장되는가&quot; id=&quot;markdown-toc-어떻게-정보가-flash-memory에-저장되는가&quot;&gt;&lt;strong&gt;어떻게 정보가 Flash Memory에 저장되는가?&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h2 id=&quot;전자기파의-개념-및-종류&quot;&gt;전자기파의 개념 및 종류&lt;/h2&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw01_01.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;라디오, 전자파, 적외선, 가시광선, 적외선, x-ray, gamma-ray&lt;/p&gt;
+
+&lt;h2 id=&quot;어떻게-전자기파를-통해-정보가-전달될까&quot;&gt;어떻게 전자기파를 통해 정보가 전달될까?&lt;/h2&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw01_02.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
+&lt;/p&gt;
+&lt;p&gt;정보는 전자기파가 생성되는 빈도와 전자기파가 존재하는 시간을 통해 정보로서 전달된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;트렌지스터&quot;&gt;트렌지스터&lt;/h2&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw01_03.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;트렌지스터: 모든 마이크로 칩이 구축되는 기본 빌딩 블록.
+전류가 트랜지스터를 통과하면 트랜지스터는 1을 나타내거나 전류가 통과하지 않으면 0이 된다.
+이러한 트렌지스터의 조합을 통해 bit 조합을 나타낼 수 있고, 컴퓨터를 포함한 모든 전자기기에서 사용되는 정보의 단위를 구성할 수 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;32bit-컴퓨터-64bit-컴퓨터&quot;&gt;32bit 컴퓨터? 64bit 컴퓨터?&lt;/h2&gt;
+&lt;p&gt;프로세서가 한 번에 처리할 수 있는 bit의 수를 말한다. 시스템 메모리와도 관련이 있음. 얘를 들어 32bit컴퓨터는 최대 가르킬 수 있는 메모리 주소가 32bit로 제한될 것이다. 32bit = 4 * 2^30 = 4GB. 따라서 32bit 컴퓨터 에서는 4GB이상의 메모리 칩을 사용해도 성능 향상이 없음.&lt;/p&gt;
+
+&lt;h2 id=&quot;어떻게-정보가-ram메인메모리에-저장되는가&quot;&gt;어떻게 정보가 RAM(메인메모리)에 저장되는가?&lt;/h2&gt;
+
+&lt;p&gt;메인메모리(RAM)에 electric pulse(bit stream)가 들어온다면 RAM의 각 메모리 위치에 있는 데이터 라인의 트렌지스터를 on/off = (close/open) = (1/0) 한다. 이렇게 메인메모리에 bit의 형태로 정보가 저장된다.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw01_04.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;위 그림의 예시를 보면 횡(horizontal)으로 지나가는 두 번째 address line이 활성화 되어 transistors 가 활성화(close) 된 것을 볼 수 있다. 종(vertical)으로 지나가는 두 번째와 여덟 번 째 data line에는 전류가 흐르는 상태(1)이기 때문에, 그 자리에 위치한 capacitor에 정보(1 or 0)가 저장된다.&lt;/p&gt;
+
+&lt;h2 id=&quot;어떻게-정보가-flash-memory에-저장되는가&quot;&gt;&lt;strong&gt;어떻게 정보가 Flash Memory에 저장되는가?&lt;/strong&gt;&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Flash Memory&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;플래시 메모리는 메모리 칩 안에 정보를 유지시키는 데에 전력이 필요 없는 비휘발성 메모리이다. 게다가 플래시 메모리는 읽기 속도가 빠르며(단, 개인용 컴퓨터에서 메인메모리로 쓰이는 DRAM만큼 빠르지는 않고, 순차읽기속도는 하드디스크가 더 빠를 수 있음) 하드 디스크 보다 충격에 강하다. 이러한 특징으로 배터리로 동작하는 장치에서 저장 장치로 많이 사용한다. 플래시 메모리의 또 다른 장점은 강한 압력이나 끓는 물에도 견딜 만큼, 물리적인 힘으로 거의 파괴되지 않는다는 점이다.&lt;br /&gt;[나무위키, “플레시 메모리”, &lt;a href=&quot;https://en.wikipedia.org/wiki/Flash_memory&quot;&gt;https://en.wikipedia.org/wiki/Flash_memory&lt;/a&gt;]&lt;/p&gt;
+
+&lt;h3 id=&quot;flash-memory-in-detailsoptional&quot;&gt;Flash Memory in Details(optional)&lt;/h3&gt;
+&lt;h6 id=&quot;하드웨어-및-반도체-개념-optional&quot;&gt;하드웨어 및 반도체 개념 (optional)&lt;/h6&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Flash memory is laid out along a grid of printed circuits running at right angles to each other. In one direction, the circuit traces are &lt;strong&gt;word addresses&lt;/strong&gt;; circuits at a right angle to them represent the &lt;strong&gt;bit addresses&lt;/strong&gt;. The two addresses combine to create a unique number address called a cell.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Image The &lt;strong&gt;cell&lt;/strong&gt; contains two transistors that together determine if an intersection represents a 0 or a 1. One transistor—the &lt;strong&gt;control gate&lt;/strong&gt;—is linked to one of the passing circuits called the &lt;strong&gt;word line&lt;/strong&gt;, which determines the word address.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Image A thin layer of metal oxide separates the control gate from a second transistor, called the &lt;strong&gt;floating gate&lt;/strong&gt;. When an electrical charge runs from the &lt;strong&gt;source&lt;/strong&gt; to the &lt;strong&gt;drain&lt;/strong&gt;, the charge extends through the floating gate, on through the &lt;strong&gt;metal oxide&lt;/strong&gt;, and through the control gate to the word line.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Image A &lt;strong&gt;bit sensor&lt;/strong&gt; on the word line compares the strength of the charge in the control gate to the strength of the charge on the floating gate. If the control voltage is at least half of the floating gate charge, the gate is said to be &lt;strong&gt;open&lt;/strong&gt;, and the cell represents a 1. Flash memory is sold with all cells open. Recording to it consists of changing the appropriate cells to zeros.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Image Flash memory uses &lt;strong&gt;Fowler-Nordheim tunneling&lt;/strong&gt; to change the value of the cell to a zero. In tunneling, a current from the bit line travels through the floating gate transistor, exiting through the source to a &lt;strong&gt;ground&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Image Energy from the current causes electrons to boil off the floating gate and through the metal oxide, where the electrons lose too much energy to make it back through the oxide. They are trapped in the control gate, even when the current is turned off.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Image The electrons have become a wall that repels any charge coming from the floating gate. The bit sensor detects the difference in charges on the two transistors, and because the charge on the control gate is below 50 percent of the floating gate charge, it is considered to stand for a zero.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Image When it comes time to reuse the flash memory, a current is sent through &lt;strong&gt;in-circuit wiring&lt;/strong&gt; to apply a strong electrical field to the entire chip, or to predetermined sections of the chip called &lt;strong&gt;blocks&lt;/strong&gt;. The field energizes the electrons so they are once again evenly dispersed.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT) how computers work 강의자료</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22hcw.jpg%22%7D" /></entry><entry><title type="html">Linux System Programming [2]: File Input/Output</title><link href="http://localhost:4000/book/linux_system_programming_2/" rel="alternate" type="text/html" title="Linux System Programming [2]: File Input/Output" /><published>2017-07-29T22:44:20+09:00</published><updated>2017-07-29T22:44:20+09:00</updated><id>http://localhost:4000/book/linux_system_programming_2</id><content type="html" xml:base="http://localhost:4000/book/linux_system_programming_2/">&lt;p style=&quot;text-align: center;&quot;&gt;
 	&lt;img src=&quot;http://localhost:4000/images/lsp.gif&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
 &lt;/p&gt;
 
@@ -560,23 +646,4 @@ Type&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;This is kind of initializing command at the first time&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">How to get started Contiki with a CC2650 board in Linux</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22ubuntu14_04_02.jpg%22,%20%22teaser%22=%3E%22ubuntu14_04.jpg%22%7D" /></entry><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (2)</title><link href="http://localhost:4000/research/csiro02/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (2)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/research/csiro02</id><content type="html" xml:base="http://localhost:4000/research/csiro02/">&lt;nav class=&quot;toc&quot;&gt;
-
-&lt;/nav&gt;
-
-&lt;p&gt;In this project, I used TI CC2650 Sensortag to develop radio tomography in low-power sensor network device. I developed Contiki application and programmed it to the CC2650. By using CC2650 and Contiki, this radio tomography system could achieve low-power consumption.&lt;/p&gt;
-
-&lt;h3 id=&quot;ti-sensortag-cc2650&quot;&gt;TI Sensortag CC2650&lt;/h3&gt;
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/csiro_2_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;The CC2650 device is a wireless MCU targeting Bluetooth Smart, ZigBee and 6LoWPAN, and ZigBee RF4CE remote control applications. The device is a member of the CC26xx family of cost-effective, ultra-low power, 2.4-GHz RF devices. The ability to consume very low active RF and MCU currents and low-power mode currents provides excellent battery life for the device. This ability also lets the device operate on small coin cell batteries and in energy-harvesting applications. [1]&lt;/p&gt;
-
-&lt;h3 id=&quot;contiki&quot;&gt;Contiki&lt;/h3&gt;
-
-&lt;p&gt;Contiki is an open source operating system for the Internet of Things. Contiki connects tiny low-cost, low-power microcontrollers to the Internet. Contiki is a powerful toolbox for building complex wireless systems. [2]&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;&lt;strong&gt;__&lt;/strong&gt;__&lt;br /&gt;&lt;br /&gt;
-[1] Multi-Standard CC2650 SensorTag Design Guide, &lt;strong&gt;&lt;a href=&quot;http://www.ti.com/lit/ug/tidu862/tidu862.pdf&quot;&gt;http://www.ti.com/lit/ug/tidu862/tidu862.pdf&lt;/a&gt;&lt;/strong&gt; &lt;br /&gt;
-[2] Contiki, &lt;strong&gt;&lt;a href=&quot;http://www.contiki-os.org&quot;&gt;http://www.contiki-os.org&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">TI Sensortag CC2650 and Contiki</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_2_1.png%22%7D" /></entry></feed>
+&lt;p&gt;This is kind of initializing command at the first time&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">How to get started Contiki with a CC2650 board in Linux</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22ubuntu14_04_02.jpg%22,%20%22teaser%22=%3E%22ubuntu14_04.jpg%22%7D" /></entry></feed>
