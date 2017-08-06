@@ -144,10 +144,12 @@
 <ul id="markdown-toc">
   <li><a href="#전자기파의-개념-및-종류" id="markdown-toc-전자기파의-개념-및-종류">전자기파의 개념 및 종류</a></li>
   <li><a href="#어떻게-전자기파를-통해-정보가-전달될까" id="markdown-toc-어떻게-전자기파를-통해-정보가-전달될까">어떻게 전자기파를 통해 정보가 전달될까?</a></li>
+  <li><a href="#analog--digital" id="markdown-toc-analog--digital">analog &amp; Digital</a></li>
   <li><a href="#트렌지스터" id="markdown-toc-트렌지스터">트렌지스터</a></li>
   <li><a href="#32bit-컴퓨터-64bit-컴퓨터" id="markdown-toc-32bit-컴퓨터-64bit-컴퓨터">32bit 컴퓨터? 64bit 컴퓨터?</a></li>
   <li><a href="#어떻게-정보가-ram메인메모리에-저장되는가" id="markdown-toc-어떻게-정보가-ram메인메모리에-저장되는가">어떻게 정보가 RAM(메인메모리)에 저장되는가?</a></li>
   <li><a href="#어떻게-정보가-flash-memory에-저장되는가" id="markdown-toc-어떻게-정보가-flash-memory에-저장되는가"><strong>어떻게 정보가 Flash Memory에 저장되는가?</strong></a></li>
+  <li><a href="#메모리-구조" id="markdown-toc-메모리-구조">메모리 구조</a></li>
 </ul>
 
 </nav>
@@ -164,6 +166,37 @@
 	<img src="http://localhost:4000/images/hcw01_02.png" alt="Drawing" style="width: 800px;" />
 </p>
 <p>정보는 전자기파가 생성되는 빈도와 전자기파가 존재하는 시간을 통해 정보로서 전달된다.</p>
+
+<h2 id="analog--digital">analog &amp; Digital</h2>
+
+<p><strong>아날로그 온도계</strong> - 온도계 내의 수은주 또는 알콜이 온도가 올라감에 따라 팽창<br />
+<strong>디지털 온도계</strong> - 서미스터라고 불리는 전기 부품, 온도가 상승하면 서미스터의 전류 저항이 줄어든다. 전기량을 숫자로 적절하게 변환시켜주는 미니 프로세서를 통해 온도를 확인 할 수 있음.</p>
+
+<h3 id="analog-to-digital-convertor-adc">analog-to-digital convertor (ADC).</h3>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw01_05.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<p>샘플링(sampling)이라고 도 함. Threshold를 기반으로 아날로그 신호를 디지털 신호로 변환</p>
+
+<h3 id="single-bit-sampling">single bit sampling</h3>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw01_06.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<h3 id="multi-bit-sampling">multi bit sampling</h3>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw01_08.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<p>현실세계에서 얻을 수 있는 정보를 single bit sampling을 한다면 정보의 손실이 너무 많기 때문에, 영상, 소리, 빛의 양 등 많은 아날로그 정보들은 multi bit sampling 을 통해 Digital화 된다.</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw01_07.png" alt="Drawing" style="width: 800px;" />
+</p>
 
 <h2 id="트렌지스터">트렌지스터</h2>
 <p style="text-align: center;">
@@ -223,6 +256,8 @@
     <p>Image When it comes time to reuse the flash memory, a current is sent through <strong>in-circuit wiring</strong> to apply a strong electrical field to the entire chip, or to predetermined sections of the chip called <strong>blocks</strong>. The field energizes the electrons so they are once again evenly dispersed.</p>
   </li>
 </ol>
+
+<h2 id="메모리-구조">메모리 구조</h2>
 
 				<hr />
 				<footer class="page-footer">
