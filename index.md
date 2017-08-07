@@ -1,7 +1,7 @@
 ---
 layout: home
 permalink: /
-title: "Latest Posts (Research, Books & Studies, Whatever)"
+title: "Latest Posts"
 excerpt:
 image:
   feature: wood-texture-1600x800.jpg
