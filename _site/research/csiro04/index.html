@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CSIRO) Radio Tomography System using low-power Sensor Network Device (4) • Rocky's Research Blog</title>
+    <meta name="description" content="How to design Device Application for RTI">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (4)">
+	<meta name="twitter:description" content="How to design Device Application for RTI">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (4)">
+	<meta property="og:description" content="How to design Device Application for RTI">
+	<meta property="og:url" content="http://localhost:4000/research/csiro04/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/csiro04/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">steps for accomplishments in my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>CSIRO) Radio Tomography System using low-power Sensor Network Device (4)</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<h3 id="how-to-design-device-application-for-rti">How to design Device Application for RTI</h3>
+
+<p>There are two device application. One is for nodes consist of radio tomography network and the other is a master node which schedules other nodes and collects raw data from them. To be specific, master node sends command packet to other nodes so that the other nodes broadcast packet. In this way master node can control or schedule the other nodes by adjusting signal interval time or iteration number.<br /></p>
+
+<p>In radio tomography system, radio interference brings about severe problem in the system because Received Signal Strength Index(RSSI) is the most important information to detect object. If more than two nodes broadcast at the same time, the RSSI of the network would be messed up at that time . To avoid this problem,  I made time slot and every pre-defined time slot, only one node can broadcast so that there is no signal interference.<br /></p>
+
+<p>The following is example of radio tomography network of N =5, iteration =3. (N = number of node)</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/csiro_4_1.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<p>As the above graph, master node sends command packet to each node. The command packet is also broadcasted but for the visibility of graph, I drew a single dotted black arrow on the graph. In each scheduling time slot, a node broadcast packet 3 times (red dotted arrow, iteration =3). The packet carries the RSSI information of previous cycle from each other nodes so that the master node receives those packet and send it to test pc by serial communication.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>N 3 -46 -45 -43 0 -43
+</code></pre>
+</div>
+
+<p>The above string is packet data that node 3 broadcast. “N” mean normal and “3” mean node ID and each numbers in minus sign are the average RSSI from each other node. There is “0” RSSI that indicate “from node 3 to node3”</p>
+
+<p>The followings are github link of source code for device application (contiki application code)<br /><br />
+Normal node: <strong><a href="https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography">https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography</a></strong><br />
+Master node: <strong><a href="https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater">https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater</a></strong></p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=CSIRO)%20Radio%20Tomography%20System%20using%20low-power%20Sensor%20Network%20Device%20(4)&amp;url=http://localhost:4000/research/csiro04/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/csiro04/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/csiro04/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-02-14T19:01:50Z" itemprop="datePublished">February 14, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2017 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>
