@@ -1,4 +1,129 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-09T16:36:54+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">How Computers Work [01]</title><link href="http://localhost:4000/book/hcw01/" rel="alternate" type="text/html" title="How Computers Work [01]" /><published>2017-08-04T22:44:20+09:00</published><updated>2017-08-04T22:44:20+09:00</updated><id>http://localhost:4000/book/hcw01</id><content type="html" xml:base="http://localhost:4000/book/hcw01/">&lt;p style=&quot;text-align: center;&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2017-08-09T16:38:17+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">How Computers Work [02]</title><link href="http://localhost:4000/book/hcw02/" rel="alternate" type="text/html" title="How Computers Work [02]" /><published>2017-08-04T22:44:20+09:00</published><updated>2017-08-04T22:44:20+09:00</updated><id>http://localhost:4000/book/hcw02</id><content type="html" xml:base="http://localhost:4000/book/hcw02/">&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#하노이-타워&quot; id=&quot;markdown-toc-하노이-타워&quot;&gt;하노이 타워&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#컴퓨터프로세서가-잘-할-수-있는-것&quot; id=&quot;markdown-toc-컴퓨터프로세서가-잘-할-수-있는-것&quot;&gt;컴퓨터(프로세서)가 잘 할 수 있는 것.&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#컴퓨터가-잘-할-수-없는-것&quot; id=&quot;markdown-toc-컴퓨터가-잘-할-수-없는-것&quot;&gt;컴퓨터가 잘 할 수 없는 것.&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-a-processor-tracks-numbers&quot; id=&quot;markdown-toc-how-a-processor-tracks-numbers&quot;&gt;HOW A PROCESSOR TRACKS NUMBERS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#cpu-central-processing-unit-중앙처리장치&quot; id=&quot;markdown-toc-cpu-central-processing-unit-중앙처리장치&quot;&gt;CPU; Central Processing Unit: 중앙처리장치&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h2 id=&quot;하노이-타워&quot;&gt;하노이 타워&lt;/h2&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw02_05.gif&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;하노이 타워 게임, 혹은 하노이 타워 퍼즐(문제)라고 불리는 게임 이 게임은 다음과 같은 2가지 규칙을 지키며 tower(pole)에 끼워져 있는 원반(disk)를 다른 pole로 옮기는 게임 혹은 문제를 말한다.&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw02_02.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;예를 들어 총 3개의 원반으로 하노이 타워가 구성되었을 때 한 타워에서 다른 타워로 모든 원반을 옮기는 과정은 다음과 같다.&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw02_03.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;총 4개의 원반으로 하노이 타워가 구성된다면 같이 3개의 원반으로 구성된 타워에서 다음과 같이 확장하여 문제를 해결 할 수 있다.&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw02_04.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;따라서 원반 개수가 하나 씩 늘어날 수록 원반을 옮기는 데 걸리는 시간(옮기는 원반의 개수)은 약 2배 씩 늘어나게 된다.&lt;/p&gt;
+
+&lt;p&gt;하노이 타워의 유래인 인도 전설에 의하면, 인도 베나레스의 사원에 있는 64개의 원판을 가진 하노이 타워를 승려들이 차례로 한쪽 끝에서 다른쪽 끝으로 옮기게 되면 세상의 종말이 오게 된다고 한다. 원반의 개수가 증가하면서 옮겨야 하는 원반의 개수는 약 2배 씩 증가하기 때문에, 64개의 원반을 한쪽 끝에서 다른 한쪽 끝으로 옮기기 위해서는 18,446,744,073,709,551,615번의 이동이 필요하다. 승려들이 1초에 한 번 씩 원반을 옮긴다고 생각했을 때, 약 5,850 억 년이 걸릴 것이므로, 하노이 타워로 인해 지구가 종말 할 일은 걱정하지 않아도 될 것 같다.&lt;/p&gt;
+
+&lt;h2 id=&quot;컴퓨터프로세서가-잘-할-수-있는-것&quot;&gt;컴퓨터(프로세서)가 잘 할 수 있는 것.&lt;/h2&gt;
+&lt;p&gt;“A processor such as the Intel Core i7-965 Extreme Edition, with a clock speed of 3.20 gigahertz—3,200,000,000 ticks of the clock every second—could complete the monks’ original tower exercise in 13 day and four hours.”&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;h5 id=&quot;단순한-연산-같은-작업연산의-반복과-같은-작업--하노이타워의-디스크-옮기기시뮬레이션&quot;&gt;단순한 연산, 같은 작업(연산)의 반복과 같은 작업 = &lt;strong&gt;하노이타워의 디스크 옮기기(시뮬레이션)&lt;/strong&gt;.&lt;/h5&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h5 id=&quot;수학-연산&quot;&gt;수학 연산&lt;/h5&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;“Multiplying 100 by 3,000 is accomplishing by adding 3,000 a hundred times. Division consists of subtracting one number from another continuously until the result is 0 or the final number is not large enough to subtract the divisor from it.”&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;-&amp;gt; 컴퓨터는 곱셈과 나눗셈 계산하기 위해 여러번 더하거나 빼는 것을 반복하는 방식으로 계산한다. 사람은 구구단을 “외워서” 계산하지만 결국 사람 역시 여러번 더하거나 빼는방식을 통해 공식이나 방법을 만들었음 -&amp;gt; 자연스러운 방식!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;h5 id=&quot;wheres-waldowith-a-same-template&quot;&gt;Where’s Waldo(with a same template)&lt;/h5&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+ &lt;img src=&quot;http://localhost:4000/images/hcw02_08.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+ &lt;img src=&quot;http://localhost:4000/images/hcw02_09.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 100px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;컴퓨터가-잘-할-수-없는-것&quot;&gt;컴퓨터가 잘 할 수 없는 것.&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;h5 id=&quot;그림그리기-소설-쓰기와-같은-감성적-활동매우-높은-난이도의-현실-세계를-모델링-해야-함&quot;&gt;그림그리기, 소설 쓰기와 같은 감성적 활동(매우 높은 난이도의 현실 세계를 모델링 해야 함)&lt;/h5&gt;
+  &lt;/li&gt;
+  &lt;li&gt;컴퓨터는 통찰력과 직감이 없음.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;구글, 인공지능(AI)이 쓴 연애소설: &lt;a href=&quot;http://cm.asiae.co.kr/view.htm?no=2016051608243121704#ba&quot;&gt;http://cm.asiae.co.kr/view.htm?no=2016051608243121704#ba&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;h5 id=&quot;wheres-waldowith-a-different-template&quot;&gt;Where’s Waldo(with a different template)&lt;/h5&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+ &lt;img src=&quot;http://localhost:4000/images/hcw02_07.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+ &lt;img src=&quot;http://localhost:4000/images/hcw02_09.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 100px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;how-a-processor-tracks-numbers&quot;&gt;HOW A PROCESSOR TRACKS NUMBERS&lt;/h2&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw02_06.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;컴퓨터가 bit들로 이루어진 2진수를 계산하는 방법은 우리가 사람이 메모를 하면서 숫자 계산을 하는 것과 유사하다.&lt;/p&gt;
+
+&lt;p&gt;똑똑한 사람은 복잡한 수학 계산을 머릿속으로 계산 할 수 있지만, 매우 단순한 숫자 계산에서도 연필과 메모장이 있어야 숫자가 어디서 어디로 더해지거나 곱해지는 등의 결과를 만들어내는 중간 과정을 확인 해 볼 수 있다. 컴퓨터 프로세서가 계산을 위해 사용하는 메모장은 레지스터라고 하는 저장장치 이고, 연필은 전기(전가기파, 펄스)이다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;마이크로 프로세서의 레지스터는 마이크로 프로세서 칩 내부의 더 빠른 메모리(메인메모리 보다 빠른 메모리, = 캐시 메모리 cache memory)에 위치한다.
+이 레지스터에는 수학 명령어를 수행하는 프로세서의 산술 논리 장치 (ALU)와 프로세서를 통해 명령과 데이터를 집계하는 제어 장치가 레지스터에 빠르게 접근 할 수 있다. 레지스터의 크기는 프로세서가 한 번에 처리 할 수있는 데이터의 양을 결정한다. 대부분의 PC에는 32 비트 또는 64 비트의 데이터 레지스터가 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The processor’s control unit directs the fetching and execution of program instructions. (See “How a Microprocessor Moves Data”, on pages 36-37.)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;It uses an electrical signal to &lt;strong&gt;fetch&lt;/strong&gt; each &lt;strong&gt;instruction&lt;/strong&gt;, &lt;strong&gt;decodes&lt;/strong&gt; it, and sends another control signal to the arithmetic logic unit telling the ALU what operation to carry out.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw02_10.jpeg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;instruction - 모든 프그램은 수많은 instruction의 순차적 조합으로 이루어져 있음.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw02_11.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw02_12.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+  &lt;img src=&quot;http://localhost:4000/images/hcw02_13.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;cpu-central-processing-unit-중앙처리장치&quot;&gt;CPU; Central Processing Unit: 중앙처리장치&lt;/h2&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">How a Little Microprocessor Does Big Things, How Motherboards Conduct a Symphony of Dataㅁ</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22hcw02_01.png%22%7D" /></entry><entry><title type="html">How Computers Work [01]</title><link href="http://localhost:4000/book/hcw01/" rel="alternate" type="text/html" title="How Computers Work [01]" /><published>2017-08-04T22:44:20+09:00</published><updated>2017-08-04T22:44:20+09:00</updated><id>http://localhost:4000/book/hcw01</id><content type="html" xml:base="http://localhost:4000/book/hcw01/">&lt;p style=&quot;text-align: center;&quot;&gt;
 	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
 &lt;/p&gt;
 
@@ -119,7 +244,7 @@
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&quot;메모리-구조&quot;&gt;메모리 구조&lt;/h2&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT) how computers work 강의자료</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22hcw.jpg%22%7D" /></entry><entry><title type="html">Linux System Programming [2]: File Input/Output</title><link href="http://localhost:4000/book/linux_system_programming_2/" rel="alternate" type="text/html" title="Linux System Programming [2]: File Input/Output" /><published>2017-07-29T22:44:20+09:00</published><updated>2017-07-29T22:44:20+09:00</updated><id>http://localhost:4000/book/linux_system_programming_2</id><content type="html" xml:base="http://localhost:4000/book/linux_system_programming_2/">&lt;p style=&quot;text-align: center;&quot;&gt;
+&lt;h2 id=&quot;메모리-구조&quot;&gt;메모리 구조&lt;/h2&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT) how computers work 강의자료</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22hcw01_00.png%22%7D" /></entry><entry><title type="html">Linux System Programming [2]: File Input/Output</title><link href="http://localhost:4000/book/linux_system_programming_2/" rel="alternate" type="text/html" title="Linux System Programming [2]: File Input/Output" /><published>2017-07-29T22:44:20+09:00</published><updated>2017-07-29T22:44:20+09:00</updated><id>http://localhost:4000/book/linux_system_programming_2</id><content type="html" xml:base="http://localhost:4000/book/linux_system_programming_2/">&lt;p style=&quot;text-align: center;&quot;&gt;
 	&lt;img src=&quot;http://localhost:4000/images/lsp.gif&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
 &lt;/p&gt;
 
@@ -647,38 +772,4 @@
 
 &lt;p&gt;The followings are github link of source code for device application (contiki application code)&lt;br /&gt;&lt;br /&gt;
 Normal node: &lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography&quot;&gt;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/radio_tomography&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;
-Master node: &lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater&quot;&gt;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">How to design Device Application for RTI</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_4_1.png%22%7D" /></entry><entry><title type="html">CSIRO) Radio Tomography System using low-power Sensor Network Device (3)</title><link href="http://localhost:4000/research/csiro03/" rel="alternate" type="text/html" title="CSIRO) Radio Tomography System using low-power Sensor Network Device (3)" /><published>2017-02-10T19:01:50+09:00</published><updated>2017-02-10T19:01:50+09:00</updated><id>http://localhost:4000/research/csiro03</id><content type="html" xml:base="http://localhost:4000/research/csiro03/">&lt;h3 id=&quot;how-to-get-started-contiki-with-a-cc2650-board-in-linux&quot;&gt;How to get started Contiki with a CC2650 board in Linux&lt;/h3&gt;
-
-&lt;p&gt;this description assumes you’ll follow all steps by &lt;strong&gt;“root”&lt;/strong&gt; and you are using &lt;strong&gt;ubunutu 14.04&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;At first, download or clone the example source codes and tools from the github project(https://github.com/csiro-wsn/contiki-examples) or my github repository (&lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples&quot;&gt;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples&lt;/a&gt;&lt;/strong&gt;). I recommend to use mine because there are a few syntax errors in “tools/tools_intall.sh” in csiro github.&lt;/p&gt;
-
-&lt;p&gt;First of all, install git and i386 libraries. The followings are the install script.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install libc6:i386 libx11-6:i386 libasound2:i386 libatk1.0-0:i386 libcairo2:i386 libcups2:i386 libdbus-glib-1-2:i386 libgconf-2-4:i386 libgdk-pixbuf2.0-0:i386 libgtk-3-0:i386 libice6:i386 libncurses5:i386 libsm6:i386 liborbit2:i386 libudev1:i386 libusb-0.1-4:i386 libstdc++6:i386 libxt6:i386 libxtst6:i386 libgnomeui-0:i386 libusb-1.0-0-dev:i386 libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 unzip
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Second, install tool chain by running “tools/tools_intall.sh” shell script file. After then, you can compile some example codes or your own contiki code for CC2650. The following is compile command.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;make TARGET=srf06-cc26xx BOARD=sensortag/cc2650
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;To grogram your .elf file to CC2650 board, use Uniflash(&lt;strong&gt;&lt;a href=&quot;http://www.ti.com/tool/uniflash&quot;&gt;http://www.ti.com/tool/uniflash&lt;/a&gt;&lt;/strong&gt;). If you get the error message about “libgcrypt.so.11” during the installation, install libgcrypt11_1.5.3.-5 library&lt;/p&gt;
-
-&lt;p&gt;After install Uniflash, update Uniflash by “Help”
-Go to “/opt/ti/uniflash_3.4/ccs_base/common/uscif/xds110/” and connect your device into your Linux.
-Type&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./xdsdfu –m
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;and wait a little and type again&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./xdsdfu –f firmware.bin –r
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;This is kind of initializing command at the first time&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">How to get started Contiki with a CC2650 board in Linux</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3E%22ubuntu14_04_02.jpg%22,%20%22teaser%22=%3E%22ubuntu14_04.jpg%22%7D" /></entry></feed>
+Master node: &lt;strong&gt;&lt;a href=&quot;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater&quot;&gt;https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples/rti_mater&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">How to design Device Application for RTI</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/%7B%22feature%22=%3Enil,%20%22teaser%22=%3E%22csiro_4_1.png%22%7D" /></entry></feed>
