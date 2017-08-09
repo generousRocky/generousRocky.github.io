@@ -5,7 +5,7 @@ description: "This is a Research Blog of Rocky Lim"
 logo: git_icon.png
 teaser: rocky_icon.png # 400x250 px default teaser image used in image archive grid
 locale: en
-url: https://rockylim92.github.io/
+url: https://rockylim92.github.io
 url: https://localhost:4000
 url:
 feed:
@@ -20,7 +20,7 @@ permalink: /:categories/:title/
 kramdown:
   toc_levels: 1..2
 highlighter: rouge
-gems:
+plugins:
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
