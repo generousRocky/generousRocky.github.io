@@ -61,4 +61,3 @@ DEPENDENCIES
   jekyll-feed
   jekyll-gist
   jekyll-sitemap
-  rb-fsevent (<= 0.9.4)
