@@ -11,7 +11,7 @@ image:
 <div style="text-align:left">
   <span style = " font-size:2em;  color: gray;">
     &nbsp;<br />
-    Posts for Research<br />
+    Research<br />
     </span>
     &nbsp;<br />
 </div>
@@ -26,7 +26,7 @@ image:
   <span style = " font-size:2em;  color: gray;">
     &nbsp;<br />
     &nbsp;<br />
-    Posts for Books & Studies<br />
+    Books & Studies<br />
     </span>
     &nbsp;<br />
 </div>
@@ -41,7 +41,7 @@ image:
 <div style="text-align:left">
   <span style = " font-size:2em;  color: gray;">
     &nbsp;<br />
-    Posts for Whatever<br />
+    Whatever<br />
     </span>
     &nbsp;<br />
 </div>

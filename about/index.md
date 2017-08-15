@@ -1,13 +1,13 @@
 ---
-title: 
+title:
 date: 2017-07-22 13:44:20 Z
 layout: article
 modified: 2017-07-22 13:44:20 Z
 excerpt: "A liitle about this blog's owner, Rocky Lim"
 image:
-  feature: 
-  teaser: 
-  thumb: 
+  feature:
+  teaser:
+  thumb:
 share: true
 ads: false
 ---
@@ -36,26 +36,26 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 	&nbsp; &nbsp; &nbsp; &nbsp; Email : rocky92.lim@gmail.com<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; Mobile (KR) : +82 10 4814 3800<br /><br /><br />
 
-	&nbsp; &nbsp; &nbsp; &nbsp; 
+	&nbsp; &nbsp; &nbsp; &nbsp;
 	<a href="https://www.facebook.com/heerak.lim">
 		<span class="icon icon--github">{% include icons/github.svg %}</span>
 	</a>
-	&nbsp; &nbsp; 
+	&nbsp; &nbsp;
 
 	<a href="https://github.com/RockyLim92">
 		<span class="icon icon--facebook">{% include icons/facebook.svg %}</span>
 	</a>
-	&nbsp; &nbsp; 
+	&nbsp; &nbsp;
 
 	<a href="https://www.linkedin.com/in/heerak-lim-6a6989137/2">
-		<span class="icon icon--linkedin">{% include icons/linkedin.svg %}</span> 
+		<span class="icon icon--linkedin">{% include icons/linkedin.svg %}</span>
 	</a>
-	&nbsp; &nbsp; 
+	&nbsp; &nbsp;
 
 	<a href="https://www.instagram.com/hi_rocky92/">
 		<span class="icon icon--instagram">{% include icons/instagram.svg %}</span>
 	</a>
-	&nbsp; &nbsp; 
+	&nbsp; &nbsp;
 </p>
 
 <br /><br />
@@ -67,8 +67,9 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 	<br />
 
 	M.S in Seoul National university,<br />
-	Computer Engineering, Distributed System Lab<br />
-	2017 ~ 
+	Computer Engineering, Distributed Computing System Lab<br />
+  <a href="http://dcslab.snu.ac.kr">DCSLAB Link</a><br />
+	2017 ~
 </p><br />
 
 <p>
@@ -102,7 +103,7 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 	&nbsp;
 	B.S in Ajou university, Softerware Engineering.
 	<br />
-	&nbsp;2012 ~ 2017 
+	&nbsp;2012 ~ 2017
 	<br />
 </p>
 
@@ -119,5 +120,3 @@ Hope soon...
 
 
 <br /><br /><br />
-
-
