@@ -26,6 +26,7 @@ image:
   <span style = " font-size:2em;  color: gray;">
     &nbsp;<br />
     &nbsp;<br />
+    &nbsp;<br />
     Books & Studies<br />
     </span>
     &nbsp;<br />
