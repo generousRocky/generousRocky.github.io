@@ -194,7 +194,7 @@ The plane operation mode defines how many planes should be programmed at once. T
 LightNVM is the open-channel SSD subsystem in Linux
 
 <p style="text-align: center;">
-	<img src="{{ site.url }}/images/openChannelSSD_04.png" alt="Drawing" style="width: 600;"/>
+	<img src="{{ site.url }}/images/openChannelSSD_04.png" alt="Drawing" style="width: 700;"/>
 </p>
 
 **NVMe Device Driver:**
@@ -249,7 +249,7 @@ To prevent user I/Os from interfering with garbage collection, pblk implements a
 ## 5. Experiment Evaluation
 
 <p style="text-align: center;">
-	<img src="{{ site.url }}/images/openChannelSSD_05.png" alt="Drawing" style="width: 600;"/>
+	<img src="{{ site.url }}/images/openChannelSSD_05.png" alt="Drawing" style="width: 700;"/>
 </p>
 
 ### 5.1 Sanity Check
