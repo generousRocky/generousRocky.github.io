@@ -4,6 +4,10 @@ title:  "번역) Open-Channel SSD Subsystem Docs"
 date:   2017-08-18 10:00:00 Z
 author: Rocky Lim
 categories: research
+image:
+  feature:
+  teaser: openChannelSSD_tran.png
+  path: images/oopenChannelSSD_tran.png
 excerpt: "Getting Started With Open Channel SSD"
 comments: true
 locale: "vn"
@@ -11,8 +15,9 @@ share: true
 ads: true
 ---
 
-
 {% include toc.html %}
+
+###### 원문 페이지 링크: <https://openchannelssd.readthedocs.io/en/latest/>
 
 # How to use
 
