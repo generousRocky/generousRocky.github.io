@@ -23,7 +23,11 @@ ads: true
 
 {% include toc.html %}
 
-#pblk: Physical Block Device Target
+# pblk: Physical Block Device Target
+
+<p style="text-align: center;">
+	<img src="{{ site.url }}/images/openChannelSSD_code.png" alt="Drawing" style="width: 600;"/>
+</p>
 
 pblk implements a fully associative, host-based FTL that exposes a traditional
 block I/O interface. Its primary responsibilities are:
@@ -57,6 +61,29 @@ LightNVM와 관련된 중요한 기능의 대부분은 커널 소스코드의 /d
 * _pblk-sysfs.c_ - pblk's sysfs
 * _pblk-write.c_ - pblk's write path from write buffer to media
 
+## Overview of read flow (This is a work in progress.)
+
+* _pblk_make_rq(pblk-init.c)_
+
+* _pblk_rw_io(pblk-init.c)_
+
+* _pblk_submit_read(pblk-read.c)_
+
+_read_bitmap_ 변수에 최대 64개 까지의 read request에 대한 ppa가 저장된다. (_pblk_read_rq_ 함수 또는 _pblk_read_ppalist_rq_ 함수를 통해서).
+
+이후 _pblk_submit_read_io_ 함수를 호출한다. 만약 write buffer가 다 차있지 않은 상태, 즉 모든 비트맵이 다 차있는 경우가 아닐 때 에는, _pblk_fill_partial_read_bio_함수를 호출한다.
+
+* (_pblk_fill_partial_read_bio_)
+
+* _pblk_submit_read_io(pblk-read.c)_
+
+_rqd->flags = pblk_set_read_mode(pblk);_ 코드를 통해 read mode로 설정 해 주고, _pblk_submit_io_함수를 호출한다.
+
+* _pblk_submit_io(pblk-core.c)_
+
+_nvm_submit_io_함수 호출한다. DEBUG MODE configuration시 addtional code 있음(spin lock포함). nvm_submit_io_함수 호출.
+
+* _nvm_submit_io_
 
 ## Overview of write flow (This is a work in progress.)
 
@@ -250,6 +277,7 @@ struct pblk {
 	mempool_t *page_pool;
 	mempool_t *line_ws_pool;
 	mempool_t *rec_pool;
+
 	mempool_t *r_rq_pool;
 	mempool_t *w_rq_pool;
 	mempool_t *line_meta_pool;
@@ -260,4 +288,4 @@ struct pblk {
 	struct pblk_gc gc;
 };
 ~~~
-가장 중요한 멤버 변수로서 _unsigned char *trans_map_가 있다. logical address를 physical address로 mapping 해 주는 mapping table에 대한 포인터 변수로서, _pblk_trans_map_get_, _pblk_trans_map_set_ 과 같은 getter, setter 함수가 있다.
+pblk 구조체의 가장 중요한 멤버 변수로서 _unsigned char *trans_map_가 있다. logical address를 physical address로 mapping 해 주는 mapping table에 대한 포인터 변수로서, _pblk_trans_map_get_, _pblk_trans_map_set_ 과 같은 getter, setter 함수가 있다.
