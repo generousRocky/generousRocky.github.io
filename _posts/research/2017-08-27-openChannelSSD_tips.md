@@ -6,14 +6,18 @@ author: Rocky Lim
 categories: research
 image:
   feature:
-  teaser: openChannelSSD_tran.png
-  path: images/oopenChannelSSD_tran.png
+  teaser: openChannelSSD_tips_01.png
+  path: images/oopenChannelSSD_tips_01.png
 excerpt: "Tips for getting started with CNEX SSD"
 comments: true
 locale: "vn"
 share: true
 ads: true
 ---
+
+<p style="text-align: center;">
+	<img src="{{ site.url }}/images/openChannelSSD_tips_01.png" alt="Drawing" style="width: 600;"/>
+</p>
 
 {% include toc.html %}
 
