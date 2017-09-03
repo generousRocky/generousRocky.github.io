@@ -32,7 +32,7 @@ To use Open-Channel SSDs, support in the operating system kernel is required. Su
 
 * Tips:<br />
 ~~~sh
-git clone -d pblk.cnex  https://github.com/OpenChannelSSD/linux.
+git clone -b pblk.cnex  https://github.com/OpenChannelSSD/linux.
 ~~~
 Like above script, you have to use pblk.cnex branch in the Linux repository witch has couple of extra patches.
 you can see an issue about this here: <https://github.com/OpenChannelSSD/liblightnvm/issues/7>
@@ -118,7 +118,7 @@ If you get here without any error, you can mount the device and use it like:
 ~~~sh
 sudo mkfs -t ext4 /dev/mydevice
 sudo mkdir /media/nvme
-sudo mount /dev/nvme0n1p1 /media/nvme
+sudo mount /dev/mydevice /media/nvme
 ~~~
 
 you can see "nvme" directory created and mounted to /dev/mydevice
