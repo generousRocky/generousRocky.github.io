@@ -122,3 +122,9 @@ sudo mount /dev/mydevice /media/nvme
 ~~~
 
 you can see "nvme" directory created and mounted to /dev/mydevice
+
+# 5. Extra
+
+At first time, I used Ubuntu 16.04 Desktop. There are some problem like a kernel panic or taking forever for *mkfs*. So, I changed and use 16.04 server.
+
+ 

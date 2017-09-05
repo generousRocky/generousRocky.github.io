@@ -34,15 +34,17 @@ The host runs Ubuntu 14.04 with Linux Kernel 4.12-12+ and pblk patches applied.
 * Open-Channel SSD
 
 <p style="text-align: center;">
-	<img src="{{ site.url }}/images/openChannelSSD_bench_01.png" alt="Drawing" style="width: 600;"/>
+	<img src="{{ site.url }}/images/openChannelSSD_bench_01.png" alt="Drawing" style="width: 400;"/>
 </p>
 
-* Bandwidth
-| Header One     | Header Two     |
-| :------------- | :------------- |
-| Item One       | Item Two       |
+* Bandwidth (Work in progress)
 
-Above tables contain a general characterization for the eval- uated Open-Channel SSD. Per-PU sequential read and write bandwidth were gathered experimentally through a modified version of fio that uses the PPA I/O interface and issues vector I/Os directly to the device. The pblk factory state and steady state (where garbage collection is active) are measured experimentally through standard fio on top of pblk. [1]
+| :------------- | :------------- |
+|   .   |    .  |
+|   .     |    .    |
+
+Above tables contain a general characterization for the evaluated Open-Channel SSD. Per-PU sequential read and write bandwidth were gathered experimentally through a modified version of fio that uses the PPA I/O interface and issues vector I/Os directly to the device. The pblk factory state and steady state (where garbage collection is active) are measured experimentally through standard fio on top of pblk. [1]
+
 
 
 # References
