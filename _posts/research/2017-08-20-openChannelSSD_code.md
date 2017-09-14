@@ -29,23 +29,22 @@ ads: true
 	<img src="{{ site.url }}/images/openChannelSSD_code.png" alt="Drawing" style="width: 600;"/>
 </p>
 
-pblk implements a fully associative, host-based FTL that exposes a traditional
-block I/O interface. Its primary responsibilities are:
+pblk implements a fully associative, host-based FTL that exposes a traditional block I/O interface. Its primary responsibilities are:
 
-  - Map logical addresses onto physical addresses (4KB granularity) in a
-    logical-to-physical (L2P) table.
-  - Maintain the integrity and consistency of the L2P table as well as its
-    recovery from normal tear down and power outage.
-  - Deal with controller- and media-specific constrains.
-  - Handle I/O errors.
-  - Implement garbage collection.
-  - Maintain consistency across the I/O stack during synchronization points.
+- Map logical addresses onto physical addresses (4KB granularity) in a logical-to-physical (L2P) table.
+- Maintain the integrity and consistency of the L2P table as well as its recovery from normal tear down and power outage.
+- Deal with controller- and media-specific constrains.
+- Handle I/O errors.
+- Implement garbage collection.
+- Maintain consistency across the I/O stack during synchronization points.
 
 For more information please refer to: <http://lightnvm.io>
 
 ## Source Code Overview
 
 LightNVM와 관련된 중요한 기능의 대부분은 커널 소스코드의 /driver/lightnvm/에 구현되어 있으며 각 file별 주요 구현 내용은 다음과 같다.
+
+nvme block device의 creation과 같은 core.c 파일에 구현되어 있다. 그 중 write buffering, address mapping, garbage collection과 같은 기존의 FTL에서 수행하고 있던 기능들은 pblk-* file에 구현되어 있다.
 
 * _pblk.h_ - Implementation of a Physical Block-device target for Open-channel SSDs.
 * rrpc.h, rrpc.c - Implementation of a Round-robin page-based Hybrid FTL for Open-channel SSDs.
@@ -63,27 +62,51 @@ LightNVM와 관련된 중요한 기능의 대부분은 커널 소스코드의 /d
 
 ## Overview of read flow (This is a work in progress.)
 
-* _pblk_make_rq(pblk-init.c)_
+###### _blk_queue_make_request(core.c)_
 
-* _pblk_rw_io(pblk-init.c)_
+###### _pblk_make_rq(pblk-init.c)_
 
-* _pblk_submit_read(pblk-read.c)_
+###### _pblk_rw_io(pblk-init.c)_
 
-_read_bitmap_ 변수에 최대 64개 까지의 read request에 대한 ppa가 저장된다. (_pblk_read_rq_ 함수 또는 _pblk_read_ppalist_rq_ 함수를 통해서).
+###### _pblk_submit_read(pblk-read.c)_
 
-이후 _pblk_submit_read_io_ 함수를 호출한다. 만약 write buffer가 다 차있지 않은 상태, 즉 모든 비트맵이 다 차있는 경우가 아닐 때 에는, _pblk_fill_partial_read_bio_함수를 호출한다.
+파라미터로 pblk 구조체 포인터와 bio 구조체 포인터가 전달된다. bio 구조체로부터 logical block address 얻는다.(_pblk_get_lba(bio)_)
 
-* (_pblk_fill_partial_read_bio_)
+_read_bitmap_ 변수에 최대 64개 까지의 read request에 대한 ppa가 저장된다.(_pblk_read_rq_ 함수 또는 _pblk_read_ppalist_rq_ 함수를 통해서).
 
-* _pblk_submit_read_io(pblk-read.c)_
+nvm_rq 구조체 변수인 rqd에 구조체 멤버변수들이 할당됨.
 
-_rqd->flags = pblk_set_read_mode(pblk);_ 코드를 통해 read mode로 설정 해 주고, _pblk_submit_io_함수를 호출한다.
+io를 위한 메모리 영역을 할당 해 준다.(dma)
 
-* _pblk_submit_io(pblk-core.c)_
+r_seq 값에 따라, _pblk_read_rq_(<= 1), _pblk_read_ppalist_rq_(>1) 함수가 호출된다.
 
-_nvm_submit_io_함수 호출한다. DEBUG MODE configuration시 addtional code 있음(spin lock포함). nvm_submit_io_함수 호출.
+_pblk_read_rq_, _pblk_read_ppalist_rq_ 에서는 l2p 를 lookup 할때, pblk_lookup_l2p_seq()함수를 호출한다.
 
-* _nvm_submit_io_
+섹터 크기가 1보다 클 경우(_pblk_read_ppalist_rq_),
+
+섹터 크기가 1보자 작을 경우(_pblk_read_rq_), ppa가 cache에 있는지 확인 후 있으면, 캐시에서, 없으면, pblk_lookup_l2p_seq()함수를 호출한다.
+
+이후 io처리 시, bitmap 이 full 일 경우 io를 종료한다. 모든 sector가 device로 부터 읽기를 수행해야 하면, _pblk_submit_read_io_ 함수를 호출한다.
+
+read bio request가 부분적으로 write buffer에 의해 체워져 있을 수 있다. 즉, 디바이스로 부터 읽어들어져야 할 holes이 있으면, _pblk_fill_partial_read_bio_ 함수를 호출한다.
+
+
+###### _pblk_submit_read_io(pblk-read.c)_
+
+수행하는 기능 없음, just pass the parameter to _pblk_submit_io(**pblk**, rqd)_
+
+###### _pblk_submit_io(pblk-core.c)_
+
+_nvm_submit_io(**dev**, rqd)_ 함수를 호출한다.
+
+###### _nvm_submit_io(drivers/lightnvm/core.c)_
+
+_submit_io(**pblk**, rqd)_ 함수 호출.
+
+
+
+
+
 
 ## Overview of write flow (This is a work in progress.)
 
@@ -106,77 +129,60 @@ _pblk_map_erase_rq_ 함수는 _pblk_map_rq_ 함수를 호출하고, _pblk_map_rq
 | _pblk_map_rq_       | _pblk_map_page_data_       |
 | _pblk_map_erase_rq_     | _pblk_map_page_data_      |
 
+
+## FTL Mapping
+
+pblk_lookup_l2p_seq 함수에서 parameter중 하나로 *sector_t blba* 가 주어지고, *pblk_trans_map_get()* 함수를 통해 각각의 해당하는 ppa(physical page address)로 변환된다.
+
+* _pblk_lookup_l2p_seq(pblk-core.c)_
+```c
+void pblk_lookup_l2p_seq(struct pblk *pblk, struct ppa_addr *ppas, sector_t blba, int nr_secs)
+{
+	int i;
+
+	spin_lock(&pblk->trans_lock);
+	for (i = 0; i < nr_secs; i++) {
+		struct ppa_addr ppa;
+
+		ppa = ppas[i] = pblk_trans_map_get(pblk, blba + i);
+
+		/* If the L2P entry maps to a line, the reference is valid */
+		if (!pblk_ppa_empty(ppa) && !pblk_addr_in_cache(ppa)) {
+			int line_id = pblk_dev_ppa_to_line(ppa);
+			struct pblk_line *line = &pblk->lines[line_id];
+
+			kref_get(&line->ref);
+		}
+	}
+	spin_unlock(&pblk->trans_lock);
+}
+```
+* _pblk_trans_map_get(pblk.h)_
+```c
+static inline struct ppa_addr pblk_trans_map_get(struct pblk *pblk, sector_t lba)
+{
+	struct ppa_addr ppa;
+
+	if (pblk->ppaf_bitsize < 32) {
+		u32 *map = (u32 *)pblk->trans_map;
+
+		ppa = pblk_ppa32_to_ppa64(pblk, map[lba]);
+	} else {
+		struct ppa_addr *map = (struct ppa_addr *)pblk->trans_map;
+
+		ppa = map[lba]; // logical block address to physical page address
+	}
+
+	return ppa;
+}
+```
+
 ## Important data structure
 
-* _struct rrpc(rrpc.h)_
-
-~~~ c
-struct rrpc {
-	struct nvm_tgt_dev *dev;
-	struct gendisk *disk;
-
-	sector_t soffset; /* logical sector offset */
-
-	int nr_luns;
-	struct rrpc_lun *luns;
-
-	/* calculated values */
-	unsigned long long nr_sects;
-
-	/* Write strategy variables. Move these into each for structure for each
-	 * strategy
-	 */
-	atomic_t next_lun; /* Whenever a page is written, this is updated
-			    * to point to the next write lun
-			    */
-
-	spinlock_t bio_lock;
-	struct bio_list requeue_bios;
-	struct work_struct ws_requeue;
-
-	/* Simple translation map of logical addresses to physical addresses.
-	 * The logical addresses is known by the host system, while the physical
-	 * addresses are used when writing to the disk block device.
-	 */
-	struct rrpc_addr *trans_map;
-
-	/* also store a reverse map for garbage collection */
-	struct rrpc_rev_addr *rev_trans_map;
-	spinlock_t rev_lock;
-
-	struct rrpc_inflight inflights;
-
-	mempool_t *addr_pool;
-	mempool_t *page_pool;
-	mempool_t *gcb_pool;
-	mempool_t *rq_pool;
-
-	struct timer_list gc_timer;
-	struct workqueue_struct *krqd_wq;
-	struct workqueue_struct *kgc_wq;
-};
-~~~
-
-rrpc 구조체 자료구조 중 _struct rrpc_addr *trans_map;_, _struct rrpc_rev_addr *rev_trans_map;_ 멤버 변수를 사용하여 address mapping 을 manage 한다. 각 멤버 구조체는 같은 파일(rrpc.h)에 다음과 같이 정의되어 있다.
-
-* _struct rrpc_addr & struct rrpc_rev_addr(rrpc.h)_
-
-~~~ c
-  /* Logical to physical mapping */
-  struct rrpc_addr {
-  	u64 addr;
-  	struct rrpc_block *rblk;
-  };
-
-  /* Physical to logical mapping */
-  struct rrpc_rev_addr {
-  	u64 addr;
-};
-~~~
 
 * _struct ppa_addr(lightnvm.h)_
 
-~~~ c
+```
 struct ppa_addr {
 	/* Generic structure for all addresses */
 	union {
@@ -198,13 +204,14 @@ struct ppa_addr {
 		u64 ppa;
 	};
 };
-~~~
+```
+
 physical page address space를 나타내는 포괄적인 자료구조로서 union(공용체)를 사용하므로 "structure g" 크기의 메모리 구조를 공용으로 사용함.
 
 
-* _struct pblk(pblk)_
+* _struct pblk(pblk.h)_
 
-~~~ c
+```
 struct pblk {
 	struct nvm_tgt_dev *dev;
 	struct gendisk *disk;
@@ -287,5 +294,112 @@ struct pblk {
 
 	struct pblk_gc gc;
 };
-~~~
+```
 pblk 구조체의 가장 중요한 멤버 변수로서 _unsigned char *trans_map_가 있다. logical address를 physical address로 mapping 해 주는 mapping table에 대한 포인터 변수로서, _pblk_trans_map_get_, _pblk_trans_map_set_ 과 같은 getter, setter 함수가 있다.
+
+
+* _struct pblk(include/linux/lightnvm.h)_
+```
+struct nvm_rq {
+        struct nvm_tgt_dev *dev;
+
+        struct bio *bio;
+
+        union {
+                struct ppa_addr ppa_addr;
+                dma_addr_t dma_ppa_list;
+        };
+
+        struct ppa_addr *ppa_list;
+
+        void *meta_list;
+        dma_addr_t dma_meta_list;
+
+        struct completion *wait;
+        nvm_end_io_fn *end_io;
+
+        uint8_t opcode;
+        uint16_t nr_ppas;
+        uint16_t flags;
+
+        u64 ppa_status; /* ppa media status */
+        int error;
+
+        void *private;
+};
+```
+nvme 디바이스 io요청에 대한 구조체, target device 에 대한 정보와 bio(block io 구조체) 정보를 갖고 있음.
+
+```
+struct bio {
+	struct bio		*bi_next;	/* request queue link */
+	struct gendisk		*bi_disk;
+	u8			bi_partno;
+	blk_status_t		bi_status;
+	unsigned int		bi_opf;		/* bottom bits req flags,
+						 * top bits REQ_OP. Use
+						 * accessors.
+						 */
+	unsigned short		bi_flags;	/* status, etc and bvec pool number */
+	unsigned short		bi_ioprio;
+	unsigned short		bi_write_hint;
+
+	struct bvec_iter	bi_iter;
+
+	/* Number of segments in this BIO after
+	 * physical address coalescing is performed.
+	 */
+	unsigned int		bi_phys_segments;
+
+	/*
+	 * To keep track of the max segment size, we account for the
+	 * sizes of the first and last mergeable segments in this bio.
+	 */
+	unsigned int		bi_seg_front_size;
+	unsigned int		bi_seg_back_size;
+
+	atomic_t		__bi_remaining;
+
+	bio_end_io_t		*bi_end_io;
+
+	void			*bi_private;
+#ifdef CONFIG_BLK_CGROUP
+	/*
+	 * Optional ioc and css associated with this bio.  Put on bio
+	 * release.  Read comment on top of bio_associate_current().
+	 */
+	struct io_context	*bi_ioc;
+	struct cgroup_subsys_state *bi_css;
+#ifdef CONFIG_BLK_DEV_THROTTLING_LOW
+	void			*bi_cg_private;
+	struct blk_issue_stat	bi_issue_stat;
+#endif
+#endif
+	union {
+#if defined(CONFIG_BLK_DEV_INTEGRITY)
+		struct bio_integrity_payload *bi_integrity; /* data integrity */
+#endif
+	};
+
+	unsigned short		bi_vcnt;	/* how many bio_vec's */
+
+	/*
+	 * Everything starting with bi_max_vecs will be preserved by bio_reset()
+	 */
+
+	unsigned short		bi_max_vecs;	/* max bvl_vecs we can hold */
+
+	atomic_t		__bi_cnt;	/* pin count */
+
+	struct bio_vec		*bi_io_vec;	/* the actual vec list */
+
+	struct bio_set		*bi_pool;
+
+	/*
+	 * We can inline a number of vecs at the end of the bio, to avoid
+	 * double allocations for a small number of bio_vecs. This member
+	 * MUST obviously be kept at the very end of the bio.
+	 */
+	struct bio_vec		bi_inline_vecs[0];
+};
+```

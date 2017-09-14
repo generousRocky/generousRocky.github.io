@@ -106,6 +106,10 @@ use the option -f to avoid recovering the L2P table from the device for quick in
 
     sudo nvme lnvm create -d nvme0n1 --lun-begin=0 --lun-end=3 -n mydevice -t pblk -f
 
+or
+
+    sudo nvme lnvm create -d /dev/nvme0n1 -n mydevice -t pblk -b 0 -e 127
+
 for other options for --help on each command. For example
     sudo nvme lnvm create --help
 
@@ -126,5 +130,3 @@ you can see "nvme" directory created and mounted to /dev/mydevice
 # 5. Extra
 
 At first time, I used Ubuntu 16.04 Desktop. There are some problem like a kernel panic or taking forever for *mkfs*. So, I changed and use 16.04 server.
-
- 
