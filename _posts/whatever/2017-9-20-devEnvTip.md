@@ -6,9 +6,9 @@ author: Rocky Lim
 categories: whatever
 excerpt: "Collection of all tips I've read and found"
 image:
-feature:
-teaser: devEnvTip_01.png
-path: images/devEnvTip_01.png
+  feature:
+  teaser: devEnvTip_01.png
+  path: images/devEnvTip_01.png
 comments: true
 locale: "vn"
 share: true
@@ -17,7 +17,7 @@ ads: true
 
 
 <p style="text-align: center;">
-<img src="{{ site.url }}/images/devEnvTip_01.png " alt="Drawing" style="width: 600;"/>
+  <img src="{{ site.url }}/images/devEnvTip_01.png " alt="Drawing" style="width: 600;"/>
 </p>
 
 {% include toc.html %}
@@ -28,13 +28,13 @@ ads: true
 # vim
 ## 기본 단축키
 <p style="text-align: center;">
-<img src="{{ site.url }}/images/devEnvTip_02.png " alt="Drawing" style="width: 600;"/>
+  <img src="{{ site.url }}/images/devEnvTip_02.png " alt="Drawing" style="width: 600;"/>
 </p>
 <https://kldp.org/node/102947>
 
 ## 창 생성
 * CTRL-W s
-:[N]sp[plit] 
+:[N]sp[plit]
 현재 파일을 두 개의 수평 창으로 나눔
 * CTRL-W v
 :[N]vs[plit]
@@ -103,5 +103,3 @@ ads: true
 
 
 # ctags
-
-
