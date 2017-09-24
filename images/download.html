@@ -1,1308 +1,0 @@
-<!DOCTYPE html>
-
-<html lang="en-US">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>DCSLAB | Distributed Computing Systems Laboratory</title>
-
-<link rel="profile" href="http://gmpg.org/xfn/11">
-
-<link rel="pingback" href="http://dcslab.snu.ac.kr/xmlrpc.php">
-
-<!--[if lt IE 9]>
-<script src="http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/html5.js"></script>
-<link rel="stylesheet" href="http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/css/ie.css" type="text/css">
-<![endif]-->
-
-<link rel='dns-prefetch' href='//www.google.com' />
-<link rel='dns-prefetch' href='//netdna.bootstrapcdn.com' />
-<link rel='dns-prefetch' href='//fonts.googleapis.com' />
-<link rel='dns-prefetch' href='//s.w.org' />
-<link rel="alternate" type="application/rss+xml" title="DCSLAB &raquo; Feed" href="http://dcslab.snu.ac.kr/feed/" />
-<link rel="alternate" type="application/rss+xml" title="DCSLAB &raquo; Comments Feed" href="http://dcslab.snu.ac.kr/comments/feed/" />
-		<script type="text/javascript">
-			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/dcslab.snu.ac.kr\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.2"}};
-			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
-		</script>
-		<style type="text/css">
-img.wp-smiley,
-img.emoji {
-	display: inline !important;
-	border: none !important;
-	box-shadow: none !important;
-	height: 1em !important;
-	width: 1em !important;
-	margin: 0 .07em !important;
-	vertical-align: -0.1em !important;
-	background: none !important;
-	padding: 0 !important;
-}
-</style>
-<link rel='stylesheet' id='papercite_css-css'  href='http://dcslab.snu.ac.kr/wp-content/plugins/papercite/papercite.css?ver=4.7.2' type='text/css' media='all' />
-<link rel='stylesheet' id='font-awesome-css'  href='//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css' type='text/css' media='screen' />
-<link rel='stylesheet' id='zerif_font-css'  href='//fonts.googleapis.com/css?family=Lato%3A300%2C400%2C700%2C400italic%7CMontserrat%3A700%7CHomemade+Apple&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
-<link rel='stylesheet' id='zerif_bootstrap_style-css'  href='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/css/bootstrap.css?ver=4.7.2' type='text/css' media='all' />
-<link rel='stylesheet' id='zerif_owl_theme_style-css'  href='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/css/owl.theme.css?ver=v1' type='text/css' media='all' />
-<link rel='stylesheet' id='zerif_owl_carousel_style-css'  href='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/css/owl.carousel.css?ver=v1' type='text/css' media='all' />
-<link rel='stylesheet' id='zerif_vegas_style-css'  href='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/css/jquery.vegas.min.css?ver=v1' type='text/css' media='all' />
-<link rel='stylesheet' id='zerif_fontawesome-css'  href='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/css/font-awesome.min.css?ver=v1' type='text/css' media='all' />
-<link rel='stylesheet' id='zerif_pixeden_style-css'  href='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/css/pixeden-icons.css?ver=v1' type='text/css' media='all' />
-<link rel='stylesheet' id='zerif_style-css'  href='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/style.css?ver=v1' type='text/css' media='all' />
-<link rel='stylesheet' id='zerif_responsive_style-css'  href='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/css/responsive.css?ver=v1' type='text/css' media='all' />
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/plugins/papercite/js/papercite.js?ver=4.7.2'></script>
-<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?ver=4.7.2'></script>
-<link rel='https://api.w.org/' href='http://dcslab.snu.ac.kr/wp-json/' />
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://dcslab.snu.ac.kr/xmlrpc.php?rsd" />
-<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://dcslab.snu.ac.kr/wp-includes/wlwmanifest.xml" /> 
-<meta name="generator" content="WordPress 4.7.2" />
-
-<style>
-.scroll-back-to-top-wrapper {
-    position: fixed;
-	opacity: 0;
-	visibility: hidden;
-	overflow: hidden;
-	text-align: center;
-	z-index: 99999999;
-    background-color: #777777;
-	color: #eeeeee;
-	width: 50px;
-	height: 48px;
-	line-height: 48px;
-	right: 30px;
-	bottom: 30px;
-	padding-top: 2px;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-	-webkit-transition: all 0.5s ease-in-out;
-	-moz-transition: all 0.5s ease-in-out;
-	-ms-transition: all 0.5s ease-in-out;
-	-o-transition: all 0.5s ease-in-out;
-	transition: all 0.5s ease-in-out;
-}
-.scroll-back-to-top-wrapper:hover {
-	background-color: #888888;
-  color: #eeeeee;
-}
-.scroll-back-to-top-wrapper.show {
-    visibility:visible;
-    cursor:pointer;
-	opacity: 1.0;
-}
-.scroll-back-to-top-wrapper i.fa {
-	line-height: inherit;
-}
-.scroll-back-to-top-wrapper .fa-lg {
-	vertical-align: 0;
-}
-</style>		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
-		<style type="text/css" id="custom-background-css">
-body.custom-background { background-image: url("http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/images/001.png"); background-position: left top; background-size: auto; background-repeat: repeat; background-attachment: scroll; }
-</style>
-
-</head>
-
-
-
-
-	<body class="home blog custom-background" >
-
-
-
-
-
-<!-- =========================
-
-   PRE LOADER
-
-============================== -->
-<div class="preloader"><div class="status">&nbsp;</div></div>
-
-<header id="home" class="header">
-
-	<div id="main-nav" class="navbar navbar-inverse bs-docs-nav" role="banner">
-
-		<div class="container">
-
-			<div class="navbar-header responsive-logo">
-
-				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-
-				<span class="sr-only">Toggle navigation</span>
-
-				<span class="icon-bar"></span>
-
-				<span class="icon-bar"></span>
-
-				<span class="icon-bar"></span>
-
-				</button>
-
-
-
-				<a href="http://dcslab.snu.ac.kr/" class="navbar-brand"><img src="http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/images/logo.png" alt="DCSLAB"></a>
-
-
-			</div>
-
-			<nav class="navbar-collapse bs-navbar-collapse collapse" role="navigation"   id="site-navigation">
-
-				<ul id="menu-default-menu" class="nav navbar-nav navbar-right responsive-nav main-nav-list"><li id="menu-item-12" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-12"><a href="http://dcslab.snu.ac.kr/">Home</a></li>
-<li id="menu-item-17" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17"><a href="http://dcslab.snu.ac.kr/team/">Team</a></li>
-<li id="menu-item-14" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-14"><a href="http://dcslab.snu.ac.kr/projects/">Projects</a></li>
-<li id="menu-item-15" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15"><a href="http://dcslab.snu.ac.kr/publications/">Publications</a></li>
-<li id="menu-item-13" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13"><a href="http://dcslab.snu.ac.kr/classes/">Classes</a></li>
-</ul>
-			</nav>
-
-		</div>
-
-	</div>
-
-	<!-- / END TOP BAR -->
-
-
-<div class="header-content-wrap"><div class="container"><h1 class="intro-text">Distributed Computing Systems Laboratory</h1><div class="buttons"><a href="#focus" class="btn btn-primary custom-button red-btn" id="our_focus_btn">Our focus</a><a href="#aboutus" class="btn btn-primary custom-button yellow-btn" id="about_us_btn">About Us</a><a href="#latestnews" class="btn btn-primary custom-button green-btn" id="news_btn">Latest News</a><a href="#contact" class="btn btn-primary custom-button blue-btn" id="contact_btn">Contact Us</a></div></div></div><!-- .header-content-wrap --><div class="clear"></div>
-
-</header> <!-- / END HOME SECTION  -->
-
-
-<div id="content" class="site-content">
-
-
-
-<section class="focus" id="focus"><div class="container">	<!-- SECTION HEADER -->	<div class="section-header">		<!-- SECTION TITLE -->		<h2 class="dark-text">Our focus</h2>		<h6>  with next generation computing systems...</h6>	</div>	<div class="row">			
-
-
-        <div class="col-lg-3 col-sm-3 focus-box" data-scrollreveal="enter left after 0.15s over 1s">
-
-			            <div class="service-icon">
-
-				
-					<a href="#"><i class="pixeden" style="background:url(http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/cloud.jpg) no-repeat center;width:100%; height:100%;"></i> <!-- FOCUS ICON--></a>
-
-				
-
-            </div>
-			
-            <h5 class="red-border-bottom">Cloud </h5>
-            <!-- FOCUS HEADING -->
-
-
-			<p>As a large scale web services or big data analysis have become crucial components in a commercial sphere, many researches are being done in network or storage optimizations of these datacenters.</p>
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 focus-box" data-scrollreveal="enter left after 0.15s over 1s">
-
-			            <div class="service-icon">
-
-				
-					<a href="#"><i class="pixeden" style="background:url(http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/flash.jpg) no-repeat center;width:100%; height:100%;"></i> <!-- FOCUS ICON--></a>
-
-				
-
-            </div>
-			
-            <h5 class="green-border-bottom">Storage</h5>
-            <!-- FOCUS HEADING -->
-
-
-			<p>Advances in storage devices such as NVMe SSD have led to vast researches on storage stack optimization of operating systems to exploit full performance of these state-of-the-art devices.</p>
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 focus-box" data-scrollreveal="enter left after 0.15s over 1s">
-
-			            <div class="service-icon">
-
-				
-					<a href="#"><i class="pixeden" style="background:url(http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/memory.png) no-repeat center;width:100%; height:100%;"></i> <!-- FOCUS ICON--></a>
-
-				
-
-            </div>
-			
-            <h5 class="blue-border-bottom">Memory</h5>
-            <!-- FOCUS HEADING -->
-
-
-			<p>Multi-core environment introduced a whole new paradigm of programming with a lot of challenges. Now programmers have to think about the computer structure in order to experience multi-core stability.</p>
-        </div>
-
-
-
-        	</div></div> <!-- / END CONTAINER --></section>  <!-- / END FOCUS SECTION --><section class="about-us" id="aboutus">	<div class="container">		<!-- SECTION HEADER -->		<div class="section-header">			<!-- SECTION TITLE -->			<h2 class="white-text">About Us</h2>			<!-- SHORT DESCRIPTION ABOUT THE SECTION -->			<h6 class="white-text">Learn about our lab's culture.</h6>		</div><!-- / END SECTION HEADER -->		<!-- 3 COLUMNS OF ABOUT US-->		<div class="row">			<!-- COLUMN 1 - BIG MESSAGE ABOUT THE COMPANY-->			<div class="col-lg-4 col-md-4 column"><div class="big-intro" data-scrollreveal="enter left after 0s over 1s">Family and professional clique</div></div><div class="col-lg-4 col-md-4 column" data-scrollreveal="enter bottom after 0s over 1s"><p>Lab is a family. We provide a really comfortable atmosphere in which you can share not only your academic insight and concerns but also your future careers. <br/><br/>We consist of researchers interested in various fields from cloud, storage, memory, big data and various open source projects. We are also starting lots of projects in 2015 and there would be great opportunities for members to be specialists in their research fields.</p></div>		<!-- COLUMN 1 - SKILSS-->		<div class="col-lg-4 col-md-4 column">			<ul class="skills" data-scrollreveal="enter right after 0s over 1s">				<!-- SKILL ONE -->				<li class="skill">					<div class="skill-count"><input type="text" value="100" data-thickness=".2" class="skill1"></div><h6>Professional</h6>				</li>				<!-- SKILL TWO -->				<li class="skill">					<div class="skill-count"><input type="text" value="100" data-thickness=".2" class="skill2"></div><h6>Friendly</h6>				</li>				<!-- SKILL THREE -->				<li class="skill">					<div class="skill-count"><input type="text" value="100" data-thickness=".2" class="skill3"></div><h6>Innovative</h6>				</li>				<!-- SKILL FOUR -->				<li class="skill">					<div class="skill-count"><input type="text" value="100" data-thickness=".2" class="skill4"></div><h6>Diligent</h6>				</li>			</ul>		</div> <!-- / END SKILLS COLUMN-->	</div> <!-- / END 3 COLUMNS OF ABOUT US-->	<!-- CLIENTS -->	</div> <!-- / END CONTAINER --></section> <!-- END ABOUT US SECTION --><section class="our-team" id="team"><div class="container"><div class="section-header"><h1 class="dark-text">Our Team</h2></div><h6>Our superb leaders</h6><div class="row" data-scrollreveal="enter left after 0s over 0.1s">
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/yeom.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Heon Young Yeom</h5>
-
-					
-					
-						<div class="position">Professor</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">yeom at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                                                    <li><a href="/~yeom"><i
-                                        class="fa fa-home"></i></a></li>
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/eom.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Hyeonsang Eom</h5>
-
-					
-					
-						<div class="position">Professor</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">hseom at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                                                    <li><a href="/~hseom"><i
-                                        class="fa fa-home"></i></a></li>
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        </div><div class="row" data-scrollreveal="enter left after 0s over 0.1s">
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/naeyoung_song.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Nae Young Song</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">nysong at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                                                    <li><a href="/~nysong"><i
-                                        class="fa fa-home"></i></a></li>
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/yongseok_son.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Yong Seok Son</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">ysson at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                                                    <li><a href="/~ysson"><i
-                                        class="fa fa-home"></i></a></li>
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/charlie_chen.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Qichen Chen</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">charliecqc at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/woong_sul.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Woong Sul</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">wsul at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/seongjae_park.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Seong Jae Park</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">sjpark at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                                                    <li><a href="/~sjpark"><i
-                                        class="fa fa-home"></i></a></li>
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/yoonsung_nam.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Yoon Sung Nam</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">ysnam at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/hanul_sung.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Han Ul Sung</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">husung at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/10/jiwoong_park.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Ji Woong Park</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">jwpark at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2016/03/jake_choi.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Jake Choi</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">jichoi at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        
-
-
-        <div class="col-lg-3 col-sm-3 team-box">
-
-
-            <div class="team-member">
-
-				
-					<figure class="profile-pic">
-
-
-						<img src="http://dcslab.snu.ac.kr/wp-content/uploads/2017/08/seokwon_choi.jpg" alt="">
-
-
-					</figure>
-
-				
-
-                <div class="member-details">
-
-					
-						<h5 class="dark-text red-border-bottom">Seok Won Choi</h5>
-
-					
-					
-						<div class="position">Ph.D. Student</div>
-
-					
-          
-						<div class="position" style="margin-top:0px;">swchoi at dcslab.snu.ac.kr</div>
-
-					
-                </div>
-
-
-                <div class="social-icons">
-
-
-                    <ul>
-
-
-                        
-                        
-                        
-                        
-						
-                        
-                    </ul>
-
-
-                </div>
-
-
-				
-
-            </div>
-
-
-        </div>
-
-
-
-        </div></div></section><section class="testimonial" id="testimonials"><div class="container"><div class="section-header"><h2 class="white-text">Testimonials</h2></div><div class="row" data-scrollreveal="enter right after 0s over 1s"><div class="col-md-12"><div id="client-feedbacks" class="owl-carousel owl-theme"><div class="widget zerif_testim">
-
-
-        <div class="feedback-box">
-
-            <!-- MESSAGE OF THE CLIENT -->
-
-							<div class="message">
-
-					DCSLAB closely follows current academic trends in its research fields.
-				</div>
-			
-            <!-- CLIENT INFORMATION -->
-
-            <div class="client">
-
-                <div class="quote red-text">
-
-                    <i class="icon-fontawesome-webfont-294"></i>
-
-                </div>
-
-                <div class="client-info">
-
-					<a class="client-name" target="_blank" >Hyungsoo Jung</a>
-
-
-					
-                </div>
-
-                <div class="client-image hidden-xs"><img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/11/hyungsoo_jung.jpg" alt=""></div>
-            </div>
-            <!-- / END CLIENT INFORMATION-->
-
-        </div> <!-- / END SINGLE FEEDBACK BOX-->
-
-
-
-
-
-        </div><div class="widget zerif_testim">
-
-
-        <div class="feedback-box">
-
-            <!-- MESSAGE OF THE CLIENT -->
-
-							<div class="message">
-
-					You can balance between working on projects and writing papers while receiving lots of help from the professors and your colleagues.
-				</div>
-			
-            <!-- CLIENT INFORMATION -->
-
-            <div class="client">
-
-                <div class="quote red-text">
-
-                    <i class="icon-fontawesome-webfont-294"></i>
-
-                </div>
-
-                <div class="client-info">
-
-					<a class="client-name" target="_blank" >Hyuck Han</a>
-
-
-					
-                </div>
-
-                <div class="client-image hidden-xs"><img src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/11/hyuck_han.jpg" alt=""></div>
-            </div>
-            <!-- / END CLIENT INFORMATION-->
-
-        </div> <!-- / END SINGLE FEEDBACK BOX-->
-
-
-
-
-
-        </div><div class="widget zerif_testim">
-
-
-        <div class="feedback-box">
-
-            <!-- MESSAGE OF THE CLIENT -->
-
-							<div class="message">
-
-					DCSLAB welcomes any student intetested in operating systems.
-				</div>
-			
-            <!-- CLIENT INFORMATION -->
-
-            <div class="client">
-
-                <div class="quote red-text">
-
-                    <i class="icon-fontawesome-webfont-294"></i>
-
-                </div>
-
-                <div class="client-info">
-
-					<a class="client-name" target="_blank" >Myungwon Oh</a>
-
-
-					
-                </div>
-
-                <div class="client-image hidden-xs"><img src="http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/images/product-bg.png" alt=""></div>
-            </div>
-            <!-- / END CLIENT INFORMATION-->
-
-        </div> <!-- / END SINGLE FEEDBACK BOX-->
-
-
-
-
-
-        </div></div></div></div></div></section>				
-		<section class="latest-news" id="latestnews">
-			<div class="container">
-
-				<!-- SECTION HEADER -->
-				<div class="section-header">
-				<h2 class="dark-text">Latest news</h2>				</div>
-
-
-				<div class="clear"></div>
-				<div id="carousel-homepage-latestnews" class="carousel slide" data-ride="carousel">
-					<!-- Indicators -->
-				
-					<!-- Wrapper for slides -->
-					<div class="carousel-inner" role="listbox">
-
-
-					<div class="item active">								<div class="col-sm-3 latestnews-box">
-
-									<div class="latestnews-img">
-										<a href="http://dcslab.snu.ac.kr/2016/07/grand-prize-award-in-fintech-blockchain-hackertone/" title="Grand Prize Award in FinTech Blockchain Hackertone">
-
-																							<img width="250" height="166" src="http://dcslab.snu.ac.kr/wp-content/uploads/2016/07/blockchain_award.jpeg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" />											
-										</a>
-									</div>
-
-									<div class="latesnews-content">
-
-										<h5 class="latestnews-title"><a href="http://dcslab.snu.ac.kr/2016/07/grand-prize-award-in-fintech-blockchain-hackertone/" title="Grand Prize Award in FinTech Blockchain Hackertone">Grand Prize Award in FinTech Blockchain Hackertone</a></h5>
-
-										<p>Youngdeok Seo who is M.S. Students in our lab won the grand prize award in fintech blockchain hackertone as a team with other university students. This hackertone was hosted by KISA and encourage to develop creative fintech technologies and services. It was held 9-10th July, 2016 and total 12 teams are participated in final round.<a href="http://dcslab.snu.ac.kr/2016/07/grand-prize-award-in-fintech-blockchain-hackertone/">[&#8230;]</a></p>
-
-									</div>
-
-								</div><!-- .latestnews-box"> -->
-
-															<div class="col-sm-3 latestnews-box">
-
-									<div class="latestnews-img">
-										<a href="http://dcslab.snu.ac.kr/2015/11/climbing-kwanak-mountain-in-july-2015/" title="Climbing Kwanak Mountain in July 2015">
-
-																							<img width="250" height="188" src="http://dcslab.snu.ac.kr/wp-content/uploads/2015/11/climbing_201507.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" />											
-										</a>
-									</div>
-
-									<div class="latesnews-content">
-
-										<h5 class="latestnews-title"><a href="http://dcslab.snu.ac.kr/2015/11/climbing-kwanak-mountain-in-july-2015/" title="Climbing Kwanak Mountain in July 2015">Climbing Kwanak Mountain in July 2015</a></h5>
-
-										<p>To refresh our mind and body exhausted from endless research, our lab members go hiking to Kwanak mountain once or twice every semester under Professor Yeom&#8217;s guidance. It is also a really emjoyable experience because we always go 회식 after hiking 🙂</p>
-
-									</div>
-
-								</div><!-- .latestnews-box"> -->
-
-							<div class="clear"></div></div>
-
-				    </div>
-
-					<!-- Controls -->
-					<a class="left carousel-control" href="#carousel-homepage-latestnews" role="button" data-slide="prev">
-						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-						<span class="sr-only">Previous</span>
-					</a>
-					<a class="right carousel-control" href="#carousel-homepage-latestnews" role="button" data-slide="next">
-						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-						<span class="sr-only">Next</span>
-					</a>
-				</div>
-
-			</div>
-		</section>
-				<section class="contact-us" id="contact">
-			<div class="container">
-				<!-- SECTION HEADER -->
-				<div class="section-header">
-					
-					<h2 class="white-text">Get in touch</h2>				</div>
-				<!-- / END SECTION HEADER -->
-
-				<!-- CONTACT FORM-->
-				<div class="row">
-
-					
-					<form role="form" method="POST" action="" onSubmit="this.scrollPosition.value=document.body.scrollTop" class="contact-form">
-
-						<input type="hidden" name="scrollPosition">
-
-						<input type="hidden" name="submitted" id="submitted" value="true" />
-
-						<div class="col-lg-4 col-sm-4" data-scrollreveal="enter left after 0s over 1s">
-
-							<input type="text" name="myname" placeholder="Your Name" class="form-control input-box" value="">
-
-						</div>
-
-						<div class="col-lg-4 col-sm-4" data-scrollreveal="enter left after 0s over 1s">
-
-							<input type="email" name="myemail" placeholder="Your Email" class="form-control input-box" value="">
-
-						</div>
-
-						<div class="col-lg-4 col-sm-4" data-scrollreveal="enter left after 0s over 1s">
-
-							<input type="text" name="mysubject" placeholder="Subject" class="form-control input-box" value="">
-
-						</div>
-
-						<div class="col-md-12" data-scrollreveal="enter right after 0s over 1s">
-
-							<textarea name="mymessage" class="form-control textarea-box" placeholder="Your Message"></textarea>
-
-						</div>
-	
-						<button class="btn btn-primary custom-button red-btn" type="submit" data-scrollreveal="enter left after 0s over 1s">Send Message</button>						
-						<div class="g-recaptcha" data-sitekey="6LdVFSITAAAAADO6jbiiMm4I1RfD7cT_DrRyTp5J"></div>
-					</form>
-
-				</div>
-
-				<!-- / END CONTACT FORM-->
-
-			</div> <!-- / END CONTAINER -->
-
-		</section> <!-- / END CONTACT US SECTION-->
-		<script src="/wp-content/themes/zerif-lite/js/hara.js"></script>
-		
-
-
-<footer id="footer">
-
-<div class="container">
-
-
-
-	<div class="col-md-3 company-details"><div class="icon-top red-text"><img src="http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/images/map25-redish.png"></div>School of Computer Science and Engineering, Seoul National University, Shillim-dong, Kwanak-gu, Seoul, Republic of Korea 151-742</div><div class="col-md-3 company-details"><div class="icon-top green-text"><img src="http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/images/envelope4-green.png"></div>chief@dcslab.snu.ac.kr</div><div class="col-md-3 company-details"><div class="icon-top blue-text"><img src="http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/images/telephone65-blue.png"></div>+82-2-876-2159</div><div class="col-md-3 copyright"><ul class="social"><li><a target="_blank" href="#"><i class="fa fa-facebook"></i></a></li><li><a target="_blank" href="#"><i class="fa fa-twitter"></i></a></li><li><a target="_blank" href="#"><i class="fa fa-linkedin"></i></a></li><li><a target="_blank" href="#"><i class="fa fa-behance"></i></a></li><li><a target="_blank" href="#"><i class="fa fa-dribbble"></i></a></li></ul><div class="zerif-copyright-box"><a class="zerif-copyright" href="https://themeisle.com/themes/zerif-lite/" target="_blank" rel="nofollow">DCSLAB </a>powered by<a class="zerif-copyright" href="http://wordpress.org/" target="_blank" rel="nofollow"> WordPress</a></div></div>
-</div> <!-- / END CONTAINER -->
-
-</footer> <!-- / END FOOOTER  -->
-
-
-
-<div class="scroll-back-to-top-wrapper">
-	<span class="scroll-back-to-top-inner">
-					<i class="fa fa-2x fa-arrow-circle-up"></i>
-			</span>
-</div><script type='text/javascript'>
-/* <![CDATA[ */
-var scrollBackToTop = {"scrollDuration":"500","fadeDuration":"0.5"};
-/* ]]> */
-</script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/plugins/scroll-back-to-top/assets/js/scroll-back-to-top.js'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/bootstrap.min.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/jquery.scrollTo.min.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/jquery.nav.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/jquery.knob.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/owl.carousel.min.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/smoothscroll.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/jquery.vegas.min.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/scrollReveal.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/zerif.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/navigation.js?ver=20120206'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/skip-link-focus-fix.js?ver=20130115'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-content/themes/zerif-lite/js/skip-link-focus-fix.js?ver=20130115'></script>
-<script type='text/javascript' src='http://dcslab.snu.ac.kr/wp-includes/js/wp-embed.min.js?ver=4.7.2'></script>
-
-
-
-</body>
-
-</html>
