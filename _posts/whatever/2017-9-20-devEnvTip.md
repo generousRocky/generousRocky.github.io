@@ -95,11 +95,57 @@ ads: true
 * tabnew [file path] 탭생성
 * gt, gT 탭 간 이동
 
-## 기타
-
-* [찾고 싶은 글자 찾기] 찾으려는 문자열에 커서를 두고** * ** 나  #을 누른다. 검색 결과를 왔다갔다 하려면, n또는 N으로 이동 할 수 있다.
+# Tips
 
 
+## 헤더 파일 바로 읽어 오기
+#include <linux/kernel.h> <- 헤더파일 이름에 커서를 위치 한후  "Ctrl + wf"를 누르면 창이 수평 분할되어 헤더파일이 열립니다
 
+
+## [찾고 싶은 글자 찾기]
+찾으려는 문자열에 커서를 두고 #을 누른다. 검색 결과를 왔다갔다 하려면, n또는 N으로 이동 할 수 있다.
 
 # ctags
+
+## 설치
+```bash
+sudo apt-get install ctags
+```
+
+## 시작
+분석하려는 소스코드 최상위 디렉토리에서
+```bash
+ctags -R .
+```
+
+## 단축키
+
+* **ctrl + ]** : 해당 함수나 변수의 정의 된 부분으로 이동
+* **ctrl + t** : 이동하기 전으로 이동
+* **:tags** : 명령어 모드에서 "tags"를 입력하면 현재 tags의 stack구조를 볼 수 있다.
+* ctag는 앞의 두 단축키를 통해 c코드들의 호출 구조 또는 정의 구조를 따라 코드를 surfing할 수 있으며, 각각의 이동은 stack에 push, pop하는 구조로 구현되어 있다.
+* **:tj** :  심볼 이름(함수, 변수명 등) 입력하면 찾고자하는 정보들이 나타난다.
+* **:sts** : tj와 흡사하나, 새창에 관련 정보들이 나타난다.
+
+
+# cscope
+
+vi 또는 vim의 명령어 모드(: )에서 다음과 같은 명령어를(query) 입력하여 원하는 결과의 리스트를 얻을 수 있다.
+
+```bash
+:cs find {질의종류} {symbol_name}
+ex) cs find s main
+```
+
+0 or s : symbol_name 중 검색 (Cntl-‘' + s)<br />
+1 or g : symbol_name의 정의를 검색 (Cntl-‘' + g)<br />
+2 or d : symbol_name에 해당하는 함수에서 호출된 함수를 검색 (Cntl-‘' + d)<br />
+3 or c : symbol_name에 해당하는 함수를 호출하는 함수를 검색 (Cntl-‘' + c)<br />
+4 or t : symbol_name에 해당하는 text문자열을 검색 (Cntl-‘' + t)<br />
+6 or e : 확장 정규식을 사용하여 symbol_name을 검색 (Cntl-‘' + e)<br />
+7 or f : 파일 이름중에서 symbol_name을 검색 (Cntl-‘' + f)<br />
+8 or i : symbol_name을 include하는 파일을 검색 (Cntl-‘' + i)<br />
+
+참고 - <http://hochulshin.com/tool-vi-ctags-cscope-on-osx/> 
+
+
