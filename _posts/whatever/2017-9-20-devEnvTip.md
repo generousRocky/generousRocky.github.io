@@ -92,14 +92,14 @@ ads: true
 * ctrl-r 재실행(실행취소의 취소)
 
 ## 탭생성, 이동
-* tabnew [file path] 탭생성
+* `:tabnew [file path]` 탭생성
 * gt, gT 탭 간 이동
 
 # Tips
 
 
 ## 헤더 파일 바로 읽어 오기
-#include <linux/kernel.h> <- 헤더파일 이름에 커서를 위치 한후  "Ctrl + wf"를 누르면 창이 수평 분할되어 헤더파일이 열립니다
+#include <linux/kernel.h> <- 헤더파일 이름에 커서를 위치 한후  `Ctrl + wf`를 누르면 창이 수평 분할되어 헤더파일이 열립니다
 
 
 ## [찾고 싶은 글자 찾기]
@@ -120,32 +120,86 @@ ctags -R .
 
 ## 단축키
 
-* **ctrl + ]** : 해당 함수나 변수의 정의 된 부분으로 이동
-* **ctrl + t** : 이동하기 전으로 이동
-* **:tags** : 명령어 모드에서 "tags"를 입력하면 현재 tags의 stack구조를 볼 수 있다.
+* `ctrl + ]` : 해당 함수나 변수의 정의 된 부분으로 이동
+* `ctrl + t` : 이동하기 전으로 이동
+* `:tags` : 명령어 모드에서 "tags"를 입력하면 현재 tags의 stack구조를 볼 수 있다.
 * ctag는 앞의 두 단축키를 통해 c코드들의 호출 구조 또는 정의 구조를 따라 코드를 surfing할 수 있으며, 각각의 이동은 stack에 push, pop하는 구조로 구현되어 있다.
-* **:tj** :  심볼 이름(함수, 변수명 등) 입력하면 찾고자하는 정보들이 나타난다.
-* **:sts** : tj와 흡사하나, 새창에 관련 정보들이 나타난다.
+* `:tj` :  심볼 이름(함수, 변수명 등) 입력하면 찾고자하는 정보들이 나타난다.
+* `:sts` : tj와 흡사하나, 새창에 관련 정보들이 나타난다.
 
 
 # cscope
 
-vi 또는 vim의 명령어 모드(: )에서 다음과 같은 명령어를(query) 입력하여 원하는 결과의 리스트를 얻을 수 있다.
+
+## 설치 및 편한 사용
+`sudo apt-get install cscope` command를 통해 설치가 가능하다.
+
+`mycscope.sh`와 같은 쉘 스크립트를 만들고 /usr/bin과 같은 디렉토리(맥의 경우 local/bin 이었던 것 같음.)에 복사 해 두면 편하게 사용 가능하다.
+
+`mycscope.sh`의 내용은 다음과 같음.
+
+```bash
+#!/bin/sh
+rm -rf cscope.files cscope.files
+find . \( -name ‘*.c’ -o -name ‘*.cpp’ -o -name ‘*.cc’ -o -name ‘*.h’ -o -name ‘*.s’ -o -name ‘*.S’ \) -print>cscope.files
+cscope -i cscope.files
+```
+
+## cscope with vim
+
+vim에서 편리하게 cscope를 사용하기 위해 .vimrc 파일에 다음과 같은 내용을 추가한다.
+
+```bash
+set csprg=/usr/bin/cscope
+
+set csto=0 “(숫자 0)
+set cst
+set nocsverb
+
+if filereadable(“./cscope.out”)
+cs add cscope.out
+else
+cs add /usr/src/linux/cscope.out
+endif
+set csverb
+```
+
+
+## 명령어
+
+vim에서 cscope를 사용하기 위해 명령어 모드(:)에서 다음과 같은 명령어를 통해 사용이 가능하다.
 
 ```bash
 :cs find {질의종류} {symbol_name}
 ex) cs find s main
 ```
 
-0 or s : symbol_name 중 검색 (Cntl-‘' + s)<br />
-1 or g : symbol_name의 정의를 검색 (Cntl-‘' + g)<br />
-2 or d : symbol_name에 해당하는 함수에서 호출된 함수를 검색 (Cntl-‘' + d)<br />
-3 or c : symbol_name에 해당하는 함수를 호출하는 함수를 검색 (Cntl-‘' + c)<br />
-4 or t : symbol_name에 해당하는 text문자열을 검색 (Cntl-‘' + t)<br />
-6 or e : 확장 정규식을 사용하여 symbol_name을 검색 (Cntl-‘' + e)<br />
-7 or f : 파일 이름중에서 symbol_name을 검색 (Cntl-‘' + f)<br />
-8 or i : symbol_name을 include하는 파일을 검색 (Cntl-‘' + i)<br />
+* `0 or s` : symbol_name 중 검색 (Cntl-‘' + s)<br />
+* `1 or g` : symbol_name의 정의를 검색 (Cntl-‘' + g)<br />
+* `2 or d` : symbol_name에 해당하는 함수에서 호출된 함수를 검색 (Cntl-‘' + d)<br />
+* `3 or c` : symbol_name에 해당하는 함수를 호출하는 함수를 검색 (Cntl-‘' + c)<br />
+* `4 or t` : symbol_name에 해당하는 text문자열을 검색 (Cntl-‘' + t)<br />
+* `6 or e` : 확장 정규식을 사용하여 symbol_name을 검색 (Cntl-‘' + e)<br />
+* `7 or f` : 파일 이름중에서 symbol_name을 검색 (Cntl-‘' + f)<br />
+* `8 or i` : symbol_name을 include하는 파일을 검색 (Cntl-‘' + i)<br />
 
 참고 - <http://hochulshin.com/tool-vi-ctags-cscope-on-osx/> 
 
+# tmux
 
+ssh원격 접속시 세션이 끊기면 사용하던 job들도 종료가 되는 것을 방지함 = 개꿀
+
+## tmux 구성
+
+* session : tmux 실행 단위. 여러개의 window로 구성.
+* window : 터미널 화면. 세션 내에서 탭처럼 사용할 수 있음.
+* pane : 하나의 window 내에서 화면 분할.
+* status bar : 화면 아래 표시되는 상태 막대.
+
+## 명령어
+
+tmux는 prefix 키인 `ctrl+b`를 누른 후 다음 명령 키를 눌러야 동작할 수 있다.
+
+---
+
+#####work in progress...

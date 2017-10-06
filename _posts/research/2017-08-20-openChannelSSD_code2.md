@@ -68,6 +68,7 @@ static int pblk_writer_init(struct pblk *pblk)
 }
 ```
 pblk initialization을 진행 할 떄, write를 위한 thread를 생성, 초기화 시켜준다.
+pblk->write_ts 변수에 write thread에 대한 task_struct 정보가 저장된다.
 
 
 ```c
@@ -85,9 +86,8 @@ int pblk_write_ts(void *data)
   return 0;
 }
 ```
-write 쓰레드 생성시 호출되는 시작되는 함수는 위와 같다.
+write 쓰레드 생성시 호출되는 시작되는 함수는 위와 같다. **_kthread_should_stop_** 함수와 **_pblk_submit_write()_** 함수를 반복적으로 호출하면서 wirte i/o를 수행한다.
 
--------------------------------------------------------------------
 
 
 ```c
@@ -158,11 +158,19 @@ out:
 }
 ```
 
-*pblk_rb_may_write_user*: Atomically check that (i) there is space on the write buffer for the incoming I/O, and (ii) the current I/O type has enough budget in the write buffer (rate-limiter).
+**pblk_rb_may_write_user**:<br />
+Atomically check that (i) there is space on the write buffer for the incoming I/O, and (ii) the current I/O type has enough budget in the write buffer (rate-limiter).
 
-*pblk_rb_write_entry_user*: Write @nr_entries to ring buffer from @data buffer if there is enough space. Typically, 4KB data chunks coming from a bio will be copied to the ring buffer, thus the write will fail if not all incoming data can be copied.
+write buffer의 크기는 몇 일까?
 
-*void pblk_write_should_kick(struct pblk *pblk)*: pblk_write_kick(pblk) 함수 호출
+
+**pblk_rb_write_entry_user**:<br />
+Write @nr_entries to ring buffer from @data buffer if there is enough space. Typically, 4KB data chunks coming from a bio will be copied to the ring buffer, thus the write will fail if not all incoming data can be copied.
+
+ring buffer 의 크기가 일반저긍로 4kb인가보다.
+
+**pblk_write_should_kick(struct pblk *pblk)**:<br />
+pblk_write_kick(pblk) 함수 호출
 
 ```c
 static void pblk_write_kick(struct pblk *pblk)
@@ -193,17 +201,64 @@ write request가 있을 때다 위와 같이 pblk_write_ts 쓰레드가 진행�
 
 ```c
 static int pblk_submit_write(struct pblk *pblk){
-  .
-  .
-  // rqd 에 write request 만큼의 메모리 할당, 0 초기화
-  rqd = pblk_alloc_rqd(pblk, WRITE);
+		.
+		.
+		// rqd 에 write request 만큼의 메모리 할당, 0 초기화
+		rqd = pblk_alloc_rqd(pblk, WRITE);
+		.
+		.
+		// bio forming
+		pblk_rb_read_to_bio(&pblk->rwb, rqd, bio, pos, secs_to_sync,secs_avail);
+		.
+		.
+		.
+		// i/o submit
+		pblk_submit_io_set(pblk,rqd);
+		.
+		.
+}
+```
+**_pblk_rb_read_to_bio()_**:<br />
+ring buffer에서 available한 엔트리 들을 읽어서 bio에 추가 해 준다. 즉 bio을 forming하는 함수.
 
-  bio
+
+**_pblk_submit_io_set_**
+```c
+static int pblk_submit_io_set(struct pblk *pblk, struct nvm_rq *rqd){
+		
+		.
+		.
+		err = pblk_setup_w_rq(pblk, rqd, c_ctx, &erase_ppa);
+		.
+		.
+		.
+
 
 }
 ```
 
 
+```c
+static int pblk_setup_w_rq(struct pblk *pblk, struct nvm_rq *rqd, struct pblk_c_ctx *c_ctx, struct ppa_addr *erase_ppa){
+
+		.
+		.
+		ret = pblk_alloc_w_rq(pblk, rqd, nr_secs, pblk_end_io_write);
+		.
+		.
+		if (likely(!e_line || !atomic_read(&e_line->left_eblks)))
+				pblk_map_rq(pblk, rqd, c_ctx->sentry, lun_bitmap, valid, 0);
+		else
+				pblk_map_erase_rq(pblk, rqd, c_ctx->sentry, lun_bitmap, valid, erase_ppa);
+
+		.
+		.
+}
+
+```
+
+
+rqd structure 생성, structure 체워나가기. bio -> rqd 
 
 
 
@@ -220,21 +275,16 @@ static int pblk_submit_write(struct pblk *pblk){
 
 
 
-_pblk_setup_w_rq_ 함수(_pblk-write.c_) 에서 _pblk_map_rq_ 함수(_pblk-map.c_)를  호출하거나 _pblk_map_erase_rq_ 함수(_pblk-map.c_) 를 호출한다.
-
-_pblk_map_erase_rq_ 함수는 _pblk_map_rq_ 함수를 호출하고, _pblk_map_rq_ 함수는 _pblk_map_page_data_ 함수를 호출하게 된다.
 
 
-| name | call     |
-| :-------------: | :-------------: |
-| _pblk_setup_w_rq_       | _pblk_map_rq_       |
-| ..      | _pblk_map_erase_rq_       |
 
-| name | call     |
-| :-------------: | :-------------: |
-| _pblk_map_rq_       |    _pblk_map_erase_rq_    |
 
-| name | call     |
-| :-------------: | :-------------: |
-| _pblk_map_rq_       | _pblk_map_page_data_       |
-| _pblk_map_erase_rq_     | _pblk_map_page_data_      |
+
+
+
+
+
+
+
+
+
