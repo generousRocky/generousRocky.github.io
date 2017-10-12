@@ -23,7 +23,7 @@ ads: true
 관련 논문:  <a href="/publication/fast17-bjorling.pdf">"LightNVM: The Linux Open-Channel SSD Subsystem"</a>
 
 
-## Overview of write flow (This is a work in progress.)
+## Initialization of write thread (This is a work in progress.)
 
 ```c
 /* physical block device target */
@@ -41,11 +41,11 @@ static struct nvm_tgt_type tt_pblk = {
   .sysfs_exit = pblk_sysfs_exit,
 };
 ```
-위와 같이 pblk_make_rq와 pblk_init 이 nvm_tgt_type에 매핑되어 있다.
+위와 같이 make_rq함수와 init함수가 각각 pblk_make_rq와 pblk_init에 매핑되어 있다.
+
 
 ```c
 static void *pblk_init(struct nvm_tgt_dev *dev, struct gendisk *tdisk, int flags){
-
   .
   .
   ret = pblk_writer_init(pblk);
@@ -67,8 +67,8 @@ static int pblk_writer_init(struct pblk *pblk)
   return 0;
 }
 ```
-pblk initialization을 진행 할 떄, write를 위한 thread를 생성, 초기화 시켜준다.
-pblk->write_ts 변수에 write thread에 대한 task_struct 정보가 저장된다.
+pblk initialization을 진행 할 떄, write를 위한 thread를 생성, 초기화 시켜준다. 
+생성된 thread는 **_pblk_write_ts_**함수를 수행한다.
 
 
 ```c
@@ -86,10 +86,42 @@ int pblk_write_ts(void *data)
   return 0;
 }
 ```
-write 쓰레드 생성시 호출되는 시작되는 함수는 위와 같다. **_kthread_should_stop_** 함수와 **_pblk_submit_write()_** 함수를 반복적으로 호출하면서 wirte i/o를 수행한다.
+write 쓰레드 생성시 호출되는 시작되는 함수는 위와 같다. io 스케줄러에 의해
+**_kthread_should_stop_** 함수와 **_pblk_submit_write()_** 함수를 반복적으로 호출하면서 wirte를 진행한다.
 
 
+## write path
 
+---
+파일시스템으로부터의 write는 make_rq와 매핑된. pblk_make_rq함수에 의해 수행된다.
+```c
+static blk_qc_t pblk_make_rq(struct request_queue *q, struct bio *bio)
+{
+  struct pblk *pblk = q->queuedata;
+
+  if (bio_op(bio) == REQ_OP_DISCARD) {
+    pblk_discard(pblk, bio);
+    if (!(bio->bi_opf & REQ_PREFLUSH)) {
+      bio_endio(bio);
+      return BLK_QC_T_NONE;
+    }
+  }
+
+  switch (pblk_rw_io(q, pblk, bio)) {
+  case NVM_IO_ERR:
+    bio_io_error(bio);
+    break;
+  case NVM_IO_DONE:
+    bio_endio(bio);
+    break;
+  }
+
+  return BLK_QC_T_NONE;
+}
+```
+---
+pblk함수에서 read path와 write path가 분리되어 처리된다.
+reaa request는 pblk_submit_io함수, 그리고 wirte는 pblk_write_to_cache함수를 통해 i/o path가 이어서 진행된다.
 ```c
 static int pblk_rw_io(struct request_queue *q, struct pblk *pblk, struct bio *bio){
 
@@ -104,6 +136,8 @@ static int pblk_rw_io(struct request_queue *q, struct pblk *pblk, struct bio *bi
   return pblk_write_to_cache(pblk, bio, PBLK_IOTYPE_USER);
 }
 ```
+---
+write buffer에 데이터를 체워 넣고, write context를 저장한다. 일반적으로 bio로부터 4kb의 데이터 chunk가 ring buffer에 copy된다.
 
 ```c
 int pblk_write_to_cache(struct pblk *pblk, struct bio *bio, unsigned long flags)
@@ -167,11 +201,18 @@ write buffer의 크기는 몇 일까?
 **pblk_rb_write_entry_user**:<br />
 Write @nr_entries to ring buffer from @data buffer if there is enough space. Typically, 4KB data chunks coming from a bio will be copied to the ring buffer, thus the write will fail if not all incoming data can be copied.
 
-ring buffer 의 크기가 일반저긍로 4kb인가보다.
+---
 
-**pblk_write_should_kick(struct pblk *pblk)**:<br />
-pblk_write_kick(pblk) 함수 호출
+```c
+void pblk_write_should_kick(struct pblk *pblk)
+{
+  unsigned int secs_avail = pblk_rb_read_count(&pblk->rwb);
 
+  if (secs_avail >= pblk->min_write_pgs)
+    pblk_write_kick(pblk);
+}
+```
+---
 ```c
 static void pblk_write_kick(struct pblk *pblk)
 {
@@ -181,7 +222,8 @@ static void pblk_write_kick(struct pblk *pblk)
 ```
 wake_up_process(kernel/sched/core.c) 함수 : Attempt to wake up the nominated process and move it to the set of runnable processes.
 
-
+---
+wake_up_process함수에 의해 pblk_submit_write 함수가 호출된다.
 ```c
 int pblk_write_ts(void *data)
 {
@@ -197,55 +239,59 @@ int pblk_write_ts(void *data)
   return 0;
 }
 ```
-write request가 있을 때다 위와 같이 pblk_write_ts 쓰레드가 진행된다.
+---
 
 ```c
 static int pblk_submit_write(struct pblk *pblk){
-		.
-		.
-		// rqd 에 write request 만큼의 메모리 할당, 0 초기화
-		rqd = pblk_alloc_rqd(pblk, WRITE);
 		.
 		.
 		// bio forming
 		pblk_rb_read_to_bio(&pblk->rwb, rqd, bio, pos, secs_to_sync,secs_avail);
 		.
 		.
-		.
 		// i/o submit
 		pblk_submit_io_set(pblk,rqd);
-		.
-		.
 }
 ```
+
 **_pblk_rb_read_to_bio()_**:<br />
-ring buffer에서 available한 엔트리 들을 읽어서 bio에 추가 해 준다. 즉 bio을 forming하는 함수.
+ring buffer에서 available한 엔트리 들을 읽어서 bio에 추가 해 준다. 즉 write bio을 forming하는 함수.
 
+To avoid a memory copy, a page reference to the write buffer is used to be added to the bio.
+This function is used by the **write thread** to form the write bio that will persist data on the write buffer to the media.
 
-**_pblk_submit_io_set_**
+---
 ```c
 static int pblk_submit_io_set(struct pblk *pblk, struct nvm_rq *rqd){
 		
 		.
 		.
+		/* Assign lbas to ppas and populate request structure */
 		err = pblk_setup_w_rq(pblk, rqd, c_ctx, &erase_ppa);
 		.
 		.
-		.
-
-
+		/* Submit metadata write for previous data line */
+		err = pblk_sched_meta_io(pblk, rqd->ppa_list, rqd->nr_ppas);.
+		err = pblk_submit_io(pblk, rqd);
+		
+		OR
+		
+		/* Submit data write for current data line */
+		err = pblk_submit_io(pblk, rqd);
 }
 ```
-
-
+---
 ```c
+write request setup, logical address를 physical address로 변환, 
 static int pblk_setup_w_rq(struct pblk *pblk, struct nvm_rq *rqd, struct pblk_c_ctx *c_ctx, struct ppa_addr *erase_ppa){
 
 		.
 		.
+		// Setup write request = rqd structure 체우기
 		ret = pblk_alloc_w_rq(pblk, rqd, nr_secs, pblk_end_io_write);
 		.
 		.
+		//
 		if (likely(!e_line || !atomic_read(&e_line->left_eblks)))
 				pblk_map_rq(pblk, rqd, c_ctx->sentry, lun_bitmap, valid, 0);
 		else
@@ -256,17 +302,150 @@ static int pblk_setup_w_rq(struct pblk *pblk, struct nvm_rq *rqd, struct pblk_c_
 }
 
 ```
+**_pblk_alloc_w_rq_**:<br />
+assign lbas to ppas and pipu/late request structure. 
+rqd structure 생성, structure 체워나가기. 
 
 
-rqd structure 생성, structure 체워나가기. bio -> rqd 
+**_pblk_map_rq()_** 또는 **_pblk_map_erase_rq()_**:<br />:
+write buffer에 context를 쓴다. the write buffer is protected by the sync backpointer, and a single writer thread have access to each specific entry at a time. Thus, it is safe to modify the context for the entry we are setting up for submission without taking any lock or memory barrier.
 
 
+위 두 함수를 통해 통해 physical address를 만들어 낸다. [address space 사진 넣기]
+
+---
+```c
+int pblk_submit_io(struct pblk *pblk, struct nvm_rq *rqd)
+{
+		.
+		.
+		return nvm_sumbit_io(dev, rad);
+}
+```
+
+---
+```c
+int nvm_submit_io(struct nvm_tgt_dev *tgt_dev, struct nvm_rq *rqd)
+{
+		.
+		.
+		ret = dev->ops->submit_io(dev, rqd);
+		if(ret)
+				nvm_rq_dev_to_tgt(tgt_dev_rqd);
+
+		return ret;
+}
+
+```
+---
+submit_io는 nvme_nvm_submit_io로 매핑되어 있다.
 
 
+```c
+static int nvme_nvm_submit_io(struct nvm_dev *dev, struct nvm_rq *rqd)
+{
+		.
+		.
+		blk_execute_rq_nowait(q, NULL, rq, 0, nvme_nvm_end_io);
 
+}
+```
+---
+request queue에 I/O를 집어넣는다. 비 동기적으로 실행된다. request queue access시 spin lock.
+```c
+/**
+* blk_execute_rq_nowait - insert a request into queue for execution
+* @q:    queue to insert the request in
+* @bd_disk:  matching gendisk
+* @rq:   request to insert
+* @at_head:    insert request at head or tail of queue
+* @done: I/O completion handler
+*
+* Description:
+*    Insert a fully prepared request at the back of the I/O scheduler queue
+*    for execution.  Don't wait for completion.
+*
+* Note:
+*    This function will invoke @done directly if the queue is dead.
+*/
+void blk_execute_rq_nowait(struct request_queue *q, struct gendisk *bd_disk, struct request *rq, int at_head, rq_end_io_fn *done)
+{
+		int where = at_head ? ELEVATOR_INSERT_FRONT : ELEVATOR_INSERT_BACK;
 
+		WARN_ON(irqs_disabled());
+		WARN_ON(!blk_rq_is_passthrough(rq));
 
+		rq->rq_disk = bd_disk;
+		rq->end_io = done;
 
+		/*
+		* don't check dying flag for MQ because the request won't
+		* be reused after dying flag is set
+		*/
+		if (q->mq_ops) {
+				blk_mq_sched_insert_request(rq, at_head, true, false, false);
+				return;
+		}
+		spin_lock_irq(q->queue_lock);
+
+		if (unlikely(blk_queue_dying(q))) {
+				rq->rq_flags |= RQF_QUIET;
+				__blk_end_request_all(rq, BLK_STS_IOERR);
+				spin_unlock_irq(q->queue_lock);
+				return;
+		}
+
+		__elv_add_request(q, rq, where);
+		__blk_run_queue(q);
+		spin_unlock_irq(q->queue_lock);
+}
+```
+---
+
+```c
+void __blk_run_queue(struct request_queue *q)
+{
+		lockdep_assert_held(q->queue_lock);
+		 WARN_ON_ONCE(q->mq_ops);
+
+		if (unlikely(blk_queue_stopped(q)))
+		return;
+
+		__blk_run_queue_uncond(q);
+}
+```
+---
+구현되어 있는 request_fn을 invoke한다. 여러 쓰레드가 이 request function을 concurrent하게 수행할 수 있음. -> lock 필요.
+```c
+/**
+* __blk_run_queue_uncond - run a queue whether or not it has been stopped
+* @q:  The queue to run
+*
+* Description:
+*    Invoke request handling on a queue if there are any pending requests.
+*    May be used to restart request handling after a request has completed.
+*    This variant runs the queue whether or not the queue has been
+*    stopped. Must be called with the queue lock held and interrupts
+*    disabled. See also @blk_run_queue.
+*/
+inline void __blk_run_queue_uncond(struct request_queue *q)
+{
+		lockdep_assert_held(q->queue_lock);
+		WARN_ON_ONCE(q->mq_ops);
+		if (unlikely(blk_queue_dead(q)))
+				return;
+		/*
+		* Some request_fn implementations, e.g. scsi_request_fn(), unlock
+		* the queue lock internally. As a result multiple threads may be
+		* running such a request function concurrently. Keep track of the
+		* number of active request_fn invocations such that blk_drain_queue()
+		* can wait until all these request_fn calls have finished.
+		*/
+		q->request_fn_active++;
+		q->request_fn(q);
+		q->request_fn_active--;
+}
+```
 
 
 

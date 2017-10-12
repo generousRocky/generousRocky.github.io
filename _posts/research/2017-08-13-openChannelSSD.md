@@ -4,7 +4,7 @@ title:  "LightNVM: The Linux Open-Channel SSD Subsystem"
 date:   2017-08-13 10:00:00 Z
 author: Rocky Lim
 categories: research
-excerpt: "논문 분석"
+excerpt: "note, reading LightNVM: The Linux Open-Channel SSD Subsystem"
 image:
   feature:
   teaser: openChannelSSD.png
