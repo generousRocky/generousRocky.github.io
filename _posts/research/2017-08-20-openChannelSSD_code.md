@@ -161,7 +161,7 @@ pblk_trans_map_get 함수를 통해 address translation을 수행한다. 이때 
 Todo: mapping table에 누가 또 access하는지 찾아보자.
 
 ```c
-void pblk_lookup_l2p_rand(struct pblk *pblk, struct ppa_addr *ppas, u64 *lba_list, int nr_secs)
+void pblk_lookup_l2p_seq(struct pblk *pblk, struct ppa_addr *ppas, u64 *lba_list, int nr_secs)
 {
 		.
 		.

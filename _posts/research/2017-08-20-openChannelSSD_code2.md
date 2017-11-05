@@ -201,7 +201,57 @@ write buffer의 크기는 몇 일까?
 **pblk_rb_write_entry_user**:<br />
 Write @nr_entries to ring buffer from @data buffer if there is enough space. Typically, 4KB data chunks coming from a bio will be copied to the ring buffer, thus the write will fail if not all incoming data can be copied.
 
+logical block address to physical page address mapping table을 업데이트 해 준다.(pblk_trans_map_update 함수)
+
+pblk_rb_write_entry_user -> pblk_update_map_cache -> pblk_update_map -> pblk_trans_map_set
+
+```c
+void pblk_update_map(struct pblk *pblk, sector_t lba, struct ppa_addr ppa)
+{
+  struct ppa_addr ppa_l2p;
+
+  /* logic error: lba out-of-bounds. Ignore update */
+  if (!(lba < pblk->rl.nr_secs)) {
+    WARN(1, "pblk: corrupted L2P map request\n");
+    return;
+  }
+
+  spin_lock(&pblk->trans_lock);
+  ppa_l2p = pblk_trans_map_get(pblk, lba);
+
+  if (!pblk_addr_in_cache(ppa_l2p) && !pblk_ppa_empty(ppa_l2p))
+   pblk_map_invalidate(pblk, ppa_l2p);
+
+  pblk_trans_map_set(pblk, lba, ppa);
+  spin_unlock(&pblk->trans_lock);
+}
+```
+
+```c
+
+static inline void pblk_trans_map_set(struct pblk *pblk, sector_t lba,
+            struct ppa_addr ppa)
+{
+  if (pblk->ppaf_bitsize < 32) {
+    u32 *map = (u32 *)pblk->trans_map;
+
+    map[lba] = pblk_ppa64_to_ppa32(pblk, ppa);
+  } else {
+    u64 *map = (u64 *)pblk->trans_map;
+
+    map[lba] = ppa.ppa;
+  }
+}
+```
+
+
 ---
+
+
+
+
+
+
 
 ```c
 void pblk_write_should_kick(struct pblk *pblk)
@@ -219,7 +269,7 @@ static void pblk_write_kick(struct pblk *pblk)
   wake_up_process(pblk->writer_ts);
   mod_timer(&pblk->wtimer, jiffies + msecs_to_jiffies(1000));
 }
-```
+ ```
 wake_up_process(kernel/sched/core.c) 함수 : Attempt to wake up the nominated process and move it to the set of runnable processes.
 
 ---
@@ -281,8 +331,9 @@ static int pblk_submit_io_set(struct pblk *pblk, struct nvm_rq *rqd){
 }
 ```
 ---
+write request setup, logical address를 physical address로 변환,
+
 ```c
-write request setup, logical address를 physical address로 변환, 
 static int pblk_setup_w_rq(struct pblk *pblk, struct nvm_rq *rqd, struct pblk_c_ctx *c_ctx, struct ppa_addr *erase_ppa){
 
 		.
@@ -303,12 +354,12 @@ static int pblk_setup_w_rq(struct pblk *pblk, struct nvm_rq *rqd, struct pblk_c_
 
 ```
 **_pblk_alloc_w_rq_**:<br />
-assign lbas to ppas and pipu/late request structure. 
+assign lbas to ppas and pipulate request structure. 
 rqd structure 생성, structure 체워나가기. 
 
 
 **_pblk_map_rq()_** 또는 **_pblk_map_erase_rq()_**:<br />:
-write buffer에 context를 쓴다. the write buffer is protected by the sync backpointer, and a single writer thread have access to each specific entry at a time. Thus, it is safe to modify the context for the entry we are setting up for submission without taking any lock or memory barrier.
+ the write buffer is protected by the sync backpointer, and a single writer thread have access to each specific entry at a time. Thus, it is safe to modify the context for the entry we are setting up for submission without taking any lock or memory barrier.
 
 
 위 두 함수를 통해 통해 physical address를 만들어 낸다. [address space 사진 넣기]
