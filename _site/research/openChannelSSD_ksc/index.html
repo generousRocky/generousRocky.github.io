@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms • Rocky's Research Blog</title>
+    <meta name="description" content="Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms">
+	<meta name="twitter:description" content="Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms">
+	<meta property="og:description" content="Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석">
+	<meta property="og:url" content="http://localhost:4000/research/openChannelSSD_ksc/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/openChannelSSD_ksc/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<!--
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD.png" alt="Drawing" style="width: 600;"/>
+</p>
+
+-->
+
+<h1 id="abstraction">Abstraction</h1>
+<p>Open Channel SSD는 스토리지 디바이스에 FTL(Flash Translation Layer)을 구현하지 않고, 운영체제에 게 SSD(Solid-State Drive)의 관리를 맡기는 SSD이다. 따라서 리눅스에서는 LightNVM과 같은 추상화 계 층을 제공한다. pblk(The Physical Block Device)은 LightNVM Layer에 위치하는 커널 모듈로서 기존의 SSD의 FTL에서 수행하는 기능들을 호스트에서 수행한다. 본 논문에서는 Open Channel SSD에서 쓰기 요청의 처리 과정을 보이고, pblk에 구현되어 있는 소프트웨어 버퍼인 쓰기 버퍼(Write Buffer) 및 입출력 요청의 스레드 구성에 따른 성능 분석 결과를 보인다.</p>
+
+<h1 id="introduction">Introduction</h1>
+<p>향후 수년 내에 Solid-State Drive(SSD)는 지배적인 보조기억장치가 될 것으로 예상된다. SSD는 기존의 전통적인 Hard Disk Drive(HDD)에 비해서 우수한 성능을 보이지만, 스토리지 디바이스에 최적화 부족으로 인한 자원의 비효율 적인 이용 문제[4], long taillatency, unpredictable I/O latency와 같은 단점들을 갖는다 [1, 2, 3]. 이러한 문제점들은 대부분 Hard Disk Drive에 최적화 된 Block I/O 인터페이스 때문이다 [5].</p>
+
+<p>Open Channel SSD는 위와 같은 문제점들을 해결할 수 있는 새로운 형태의 SSD 플랫폼이다. Open Channel SSD는 그 내부 Geometry를 호스트 운영체제에 드러내고, 호스트가 스토리지 디바이스 내부의 물리적인 데이터 배치나 I/O 스케줄링을 관리할 수 있게 한다. 이렇게 함으로서, 호스트와 SSD 컨트롤러는 SSD 디바이스 작동과 관련된 기능을 나누어 수행한다 [3]. 기존의 SSD의 FTL Layer에서 수행하던 address translation, garbage collection, error handling 과 같은 기능들이 호스트에서 수행될 수 있다. 따라서 시스템에 따라 스토리지 소프트웨어 스택을 Open Channel SSD를 사용하는 응용 프로그램에 알맞게 재 구성할 수 있다. 리눅스 커널 4.4 이후부터 호스트 기반의 SSD 관리 서브시스템인 LightNVM 계층이 사용되었고, 리눅스 커널 4.12 이후부터는 호스트에서 FLT(Flash Translation Layer)의 기능을 담당하는 pblk이 커널에 포함되었다. 이와 같은 시스템 상에서, Channel SSD는 하나의 물리적인 블록 디바이스로서 호스트에게 노출되어 보여지고, 사용자는 SSD를 특정 워크로드 패턴에 맞게 최적화 할 수 있다</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/2018-02-01-openChannelSSD_ksc01.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<h1 id="experimental-setup-and-evaluation">Experimental setup and evaluation</h1>
+
+<p>본 논문에서 보이는 실험의 목적은 두 가지 이다. 첫 번째로, LightNVM 스택의 pblk모듈에 구현된 쓰기 버퍼의 크기에 따른 입, 출력의 성능을 분석하는 것이다. 두 번째로, 병렬적인 입, 출력의 정도에 따른 성능 변화를 분석한다. 즉 여러 다중 코어, 다중 스레드 환경에서의 Open Channel SSD의 성능을 분석하는 것이다.</p>
+
+<p>본 실험을 위해 72코어의 Intel Xeon E7-8870 프로세서 서버를 사용하였으며, 16Gib DRAM, PIC 3.0 인터페이스 및 CNEX Labs Westlake SDK(2TB NAND MLC Flash) Open Channel SSD를 사용하였다. Open Channel SSD의 상세한 특징은 &lt;표 1&gt;에 나타내었다. 호스트는 Ubuntu 16.04.3 LTS server를 사용하였고, pblk 모듈을 사용한 리눅스 커널 4.14.0-rc2 버전을 사용하였다. 디바이스의 입출력 성능 실험을 위해 fio[6]를 사용하였다. 실험은 파일시스템을 거치지 않고 디바이스에 직접 입출력 요청을 하도록 설정하였고, 동일한 실험 환경에서 3번의 실험을 진행한 뒤 평균값을 결과로 사용하였다. 입출력 스레드 수와 동일한 코어의 수만 활성화 시켜 실험을 진행하였으며, 쓰기 버퍼의 크기는 버퍼를 구성하는 엔트리의 개수를 조정하는 방식으로 시스템을 구현하였다.</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/2018-02-01-openChannelSSD_ksc02.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/2018-02-01-openChannelSSD_ksc03.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>실험 결과에 따르면 Open Channel SSD 읽기 요청 처리 성능은 스레드 수에 비례하여 점점 증가하다 어느 정도 병렬성의 정도가 증가하면 성능의 증가율이 감소하는 모습을 보인다. 특히, 읽기 요청 스레드가 54개에서 72개로 증가할 땐 성능의 변화가 거의 없었다.</p>
+
+<p>쓰기 버퍼의 크기에 따른 성능은 스레드 개수에 상관 없이 모두 일정한 증가 비율을 나타냈는데, 이는 쓰기 버퍼의 크기가 증가함에 따라, 읽기 요청 시 버퍼 캐시 히트 비율이 증가했기 때문이다.</p>
+
+<p>64MB이상의 버퍼 크기에서 진행한 쓰기 요청에 대한 성능 실험결과는 스레드가 2개에서 4개로 증가할 때, 약간의 증가율을 보이지만 나머지 구간에서는 큰 증가율을 보이지 않는다. 쓰기 버퍼의 크기가 32MB일 때에는 임의 쓰기 요청(random write request)시 스레드의 수에 따라 18개 스레드 수 까지는 비교적 큰 비율로 쓰기 성능이 증가한다.</p>
+
+<p>쓰기 버퍼의 크기가 32MB일 때, 일반 쓰기와 임의쓰기 모두 18쓰레드 이후 쓰기 성능이 18개의 스레드 일 때와 비교하여 큰 폭으로 감소함을 보인다. 이는 작은 크기의 버퍼에 비해 많은 쓰기 스레드가 쓰기 요청을 하여, 항상 버퍼가 가득 차있는 상황을 나타내고, 더 이상 성능의 증가가 나타나지 않음을 나타내는 것으로 예상된다.</p>
+
+<p>실험 결과를 통해 쓰기 버퍼의 크기 및 스레드 구성에 따른 입출력 요청의 성능 양상을 확인할 수 있었다. 특히 읽기 요청에 비해 쓰기 요청은 스레드 수 및 쓰기 버퍼가 증가해도 성능의 향상이 크지 않음을 확인하였다. 차후 진행될 연구에서는 이러한 쓰기 요청에서의 성능 증가를 막는 원인을 파악하고, 병렬성을 높이는 것을 포함한다.</p>
+
+<h1 id="reference">Reference</h1>
+
+<p>[1] Hao, M., Soundararajan, G., Kencham mana Hosekote, D. R., Chien, A. A., &amp; Gunawi, H. S. (2016, February). The Tail at Store: A Revelation from Millions of Hours of Disk and SSD Deployments. In FAST (pp. 263-276).</p>
+
+<p>[2] Chen, F., Luo, T., &amp; Zhang, X. (2011, February). CAFTL: A Content-Aware Flash Translation Layer Enhancing the Lifespan of Flash Memory based Solid State Drives. In FAST (Vol. 11, pp. 77-90).</p>
+
+<p>[3] Bjørling, M., González, J., &amp; Bonnet, P. (2017, February). LightNVM: The Linux OpenChannel SSD Subsystem. In FAST (pp. 359374).</p>
+
+<p>[4] Agrawal, N., Prabhakaran, V., Wobber, T., Davis, J. D., Manasse, M. S., &amp; Panigrahy, R. (2008, June). Design Tradeoffs for SSD Performance. In USENIX Annual Technical Conference (Vol. 8, pp. 57-70).</p>
+
+<p>[5] Swanson, S., &amp; Caulfield, A. M. (2013). Refactor, reduce, recycle: Restructuring the i/o stack for the future of storage. Computer, 46(8), 52-59.</p>
+
+<p>[6] AXBOE, J. Fio - Flexible I/O tester. URL http://freecode.com/projects/fio (2014).</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Performance%20Analysis%20Based%20on%20Write%20Buffer%20and%20Thread%20Configuration%20in%20Open%20Channel%20SSD%20Platforms&amp;url=http://localhost:4000/research/openChannelSSD_ksc/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/openChannelSSD_ksc/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/openChannelSSD_ksc/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2018-02-01T19:00:00Z" itemprop="datePublished">February 01, 2018</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

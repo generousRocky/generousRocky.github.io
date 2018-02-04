@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>LightNVM: The Linux Open-Channel SSD Subsystem • Rocky's Research Blog</title>
+    <meta name="description" content="note, reading LightNVM: The Linux Open-Channel SSD Subsystem">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="LightNVM: The Linux Open-Channel SSD Subsystem">
+	<meta name="twitter:description" content="note, reading LightNVM: The Linux Open-Channel SSD Subsystem">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="LightNVM: The Linux Open-Channel SSD Subsystem">
+	<meta property="og:description" content="note, reading LightNVM: The Linux Open-Channel SSD Subsystem">
+	<meta property="og:url" content="http://localhost:4000/research/openChannelSSD/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/openChannelSSD/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>LightNVM: The Linux Open-Channel SSD Subsystem</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<p>관련 논문  <a href="/publication/fast17-bjorling.pdf">“LightNVM: The Linux Open-Channel SSD Subsystem”</a></p>
+
+<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#abstraction" id="markdown-toc-abstraction">Abstraction</a></li>
+  <li><a href="#1-introduction" id="markdown-toc-1-introduction">1. introduction</a></li>
+  <li><a href="#2-open-channel-ssd-management" id="markdown-toc-2-open-channel-ssd-management">2. Open-Channel SSD Management</a></li>
+  <li><a href="#3-physical-page-address-io-interface" id="markdown-toc-3-physical-page-address-io-interface">3. Physical Page Address I/O interface</a></li>
+  <li><a href="#4-lightnvm" id="markdown-toc-4-lightnvm">4. LightNVM</a></li>
+  <li><a href="#5-experiment-evaluation" id="markdown-toc-5-experiment-evaluation">5. Experiment Evaluation</a></li>
+</ul>
+
+</nav>
+
+<h2 id="abstraction">Abstraction</h2>
+
+<p>예측 가능성에 대한 요구사항이 있음.
+Block I/O를 하는 SSD는 왜 unpredictable 하지?
+LightNVM integrates into tra- ditional storage stack. 여기서 traditional storage stack이 뭔지 아직 모르겠음.</p>
+
+<p>LightNVM 은 예측가능한 Latency를 갖는다.</p>
+
+<h2 id="1-introduction">1. introduction</h2>
+<p>These shortcomings are not due to hardware limitations: the non-volatile memory chips at the core of SSDs provide predictable high-performance at the cost of constrained operations and limited en- durance/reliability. It is how tens of non-volatile memory chips are managed within an SSD, providing the same block I/O interface as a magnetic disk, which causes these shortcomings</p>
+
+<p>Open-Channel SSD: They are an excellent plat- form for addressing SSD shortcomings and managing trade-offs related to throughput, latency, power con- sumption, and capacity.</p>
+
+<p>There are two concerns here: (1) a block device abstraction implemented on top of open- channel SSDs should provide high performance, and (2) design choices and trade-off opportunities should be clearly identified.</p>
+
+<p>LightNVM is the first open, generic subsystem for Open- Channel SSDs and host-based SSD management.</p>
+
+<p>여기서 말하는 host-based에서 host는 PC환경을 말하는 것인가? - &gt; 운영체제! (여기서는 리눅스 드라이버를 말함)</p>
+
+<p>4 contribution</p>
+
+<p>First, we describe the character- istics of open-channel SSD management.</p>
+
+<p>Second, we introduce the Physical Page Address (PPA) I/O interface, an interface for Open-Channel SSDs, that defines a hierarchical address space together with control and vectored data commands.</p>
+
+<p>Third, we present LightNVM, the Linux subsystem that we designed and implemented for open-channel SSD management.</p>
+
+<p>Finally, we demonstrate the effectiveness of Light- NVM on top of a first generation open-channel SSD.</p>
+
+<p>Our results show that LightNVM achieves high performance and can be tuned to control I/O latency variability.</p>
+
+<h2 id="2-open-channel-ssd-management">2. Open-Channel SSD Management</h2>
+
+<h3 id="21-nand-flash-characteristics">2.1 NAND Flash Characteristics</h3>
+
+<p>구조적으로 셀 들이 <strong>직렬</strong> 단위로 연결되어 있고, 주소 라인이 없기 때문에 라인에 맞춰 읽기, 쓰기 및 지우기 작업을 진행한다. 따라서 다음과 같이 세 가지 작업을 할 수 있음.</p>
+<ul>
+  <li>읽기 - 페이지 단위로 작업</li>
+  <li>쓰기 - 페이지 단위로 작업</li>
+  <li>지우기 - 블록 단위로</li>
+</ul>
+
+<p>이렇게 낸드 플래시 메모리는 페이지 단위로 읽기 작업을 진행하기 때문에 단 1Byte 의 데이터를 읽고자 할 지라도 우선 해당 데이터가 포함된 페이지 전체를 통채로 읽은 후, 필요한 데이터를 따로 추출하는 방식을 사용한다.</p>
+
+<p>또한 이러한 작업 구조와 덮어쓰기가 불가능한 셀의 특성으로 인해 단 한 1Byte 의 데이터를 바꾸는 경우라도 먼저 블록 전체를 지우고, 해당 블록 내의 모든 페이지를 다시 써야만 하는 문제가 발생하게 된다. 이것은 특히나 문제가 되는데, SSD 에서는 이러한 문제를 해결하기 위해 플래시 변환 계층(FTL)을 통한 웨어 레벨링(Wear Leveling)을 통해 이 문제를 해결함.</p>
+
+<h4 id="slc-mlc-tlc">SLC, MLC, TLC</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">방식</th>
+      <th style="text-align: left">특징</th>
+      <th style="text-align: left">ex</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">SLC</td>
+      <td style="text-align: left">하나의 셀에 1bit를 저장</td>
+      <td style="text-align: left">0, 1</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: left">MLC</td>
+      <td style="text-align: left">하나의 셀에 2bit를 저장</td>
+      <td style="text-align: left">00, 01, 10, 11</td>
+    </tr>
+  </tbody>
+  <tbody>
+    <tr>
+      <td style="text-align: left">TLC</td>
+      <td style="text-align: left">하나의 셀에 3bit를 저장</td>
+      <td style="text-align: left">000, 001, 010, 011, 100, 101, 110, 111</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>성능과 수명은 SLC &gt; MLC &gt; TLMC 순서로 좋고 가격은 그의 역순이다. 왜냐하면 세 가지 SSD방식에서 사용하는 셀은 완전히 동일한데 비해 저장하는 bit는 1, 2, 3으로 각각 1배, 2배, 3배로 차이가 나기 때문. 따라서 SLC, MLC, TLC 낸드 플래시 메모리가 서로 동일한 크기일 때, 이론적으로 SLC 에 비해 MLC 는 2 배의 용량을, TLC 는 3 배의 용량을 가진다.</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD_01.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<h3 id="22-manageing-nand">2.2 Manageing NAND</h3>
+
+<h5 id="write-buffering">Write Buffering</h5>
+<p>if the sector size, host-size defined, is smaller than the NANA Flash page size(eg. 4KB sector size, 16KB flash page), *write buffeing is necessary**</p>
+
+<p><strong>전통적인 해결 방법:</strong><br />
+using cache - sector write is buffered until enough data is gathered to fill flash page. flush 와 같이 write가 강제되어야 할 경우 padding. Read가 있을 경우 cache에서 바로 읽는다.</p>
+
+<p><strong>장, 단점:</strong><br />
+If the cache resides on the host, then the two advantages are that (1) writes are all generated by the host, thus avoiding interference between the host and devices, and that (2) writes are acknowledged as they hit the cache. The disadvantage is that the contents of the cache might be lost in case of a power failure.</p>
+
+<p><strong>Two way to write:</strong><br /></p>
+<ul>
+  <li>The write cache may also be placed on the device side. Either the host writes sectors to the device and lets the device manage writes to the media (when enough data has been accumulated to fill a flash page) - controller-generated writes 가 발생할 수 있기 때문에 workload를 unpredictable하게 할 수 있다.(???)</li>
+  <li>the host explicitly controls writes to the media and lets the device maintain durability - host has full control of media operations</li>
+</ul>
+
+<h5 id="error-handling">Error Handling</h5>
+
+<p><strong>ECC:</strong><br />
+To compensate for bit errors, it is necessary to introduce Error Correcting Codes (ECC), e.g., BCH [53] or LDPC [16]. Typically, the unit of ECC encoding is a sector, which is usually smaller than a page. ECC parities are generally handled as metadata associated with a page and stored within the page’s out-of-band area.</p>
+
+<p><strong>BER:</strong><br />
+To maintain BER below a given threshold, some vendors make it possible to tune NAND threshold voltage [7, 8]. Blocks which are write-cold and read-hot, for which BER is higher than a given threshold, should be rewritten</p>
+
+<p>read dominant한 access를 갖을 때, 왜 rewritten되어야 하지??</p>
+
+<p><strong>Workload and RAID:</strong>
+Note that different workloads might require different RAID configurations. Typically, high read workloads re- quire less redundancy, because they issue fewer PE cycles. This is an argument for host-based RAID implementation. Conversely, for high write workloads, RAID is a source of overhead that might be compensated by hardware acceleration</p>
+
+<p><strong>Write failure:</strong>
+In the case of write failures, due to overcharging or inherent failures [51], recovery is necessary at the block level. When a write fails, part of a block might already have been written and should be read to perform recovery</p>
+
+<p><strong>Erase failure:</strong>
+If a failure occurs on erase, there is no retry or recovery. The block is simply marked bad.</p>
+
+<h3 id="23-lessons-learned">2.3 Lessons Learned</h3>
+
+<h4 id="provide-device-warranty-with-physical-access">Provide device warranty with physical access.</h4>
+<p>P/E cycle은 write operation에 영향. To provide warranty, PE cycles must be managed on the device</p>
+
+<h4 id="exposing-media-characterization-to-the-host-is-inefficient-and-limits-media-abstraction">Exposing media characterization to the host is inefficient and limits media abstraction</h4>
+<p>embedded FTL을 NAND Flash에 맞춰서 characterization 하는 것은 바람직 하지 않다.</p>
+
+<h4 id="write-buffering-should-be-handled-on-the-host-or-the-device-depending-on-the-use-case">Write buffering should be handled on the host or the device depending on the use case.</h4>
+
+<p><strong>host-side:</strong>
+만약 호스트가 write buffering을 Handling한다면, SSD에 dram이 필요 없을 수 있고, 소비전력도 줄어들 수 있다.</p>
+
+<p><strong>device-side:</strong>
+Managing the write buffer on the device, through a CMB, efficiently supports small writes but requires ex- tra device-side logic, together with power-capacitors or similar functionality to guarantee durability. Both op- tions should be available to open-channel SSD vendors.</p>
+
+<h4 id="application-agnostic-wear-leveling-is-mandatory">Application-agnostic wear leveling is mandatory.</h4>
+<p>To make sure that latency does not fluctuate depending on the age of the block accessed, it is mandatory to perform wear-leveling independently from the application workload, even if it introduces an overhead</p>
+
+<p>It must be possible, either for the host or the controller, to pick free blocks from a die in a way that (i) hides bad blocks, (ii) implements dynamic wear leveling by taking the P/E cycle count into account when allocating a block, and possibly (iii) implements static wear level- ing by copying cold data to a hot block.</p>
+
+<p>위와 같은 3가지 방법은 메타데이터(P/E cycle per block, read counts per page, and bad blocks 등)에 의해 결정할 수 있다. 이러한 블록 메타데이터를 관리하는 것 또한 오버헤드가 발생함.</p>
+
+<h3 id="24-architecture">2.4 Architecture</h3>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD_02.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<h2 id="3-physical-page-address-io-interface">3. Physical Page Address I/O interface</h2>
+
+<h3 id="address-space">Address space</h3>
+
+<ul>
+  <li>SSD Architecture. Open-channel SSDs expose to the host a collection of channels, each containing a set of Parallel Units (PUs), also known as LUNs. We define a PU as the unit of parallelism on the device. A PU may cover one or more physical die, and a die may only be a member of one PU. Each PU processes a single I/O request at a time.</li>
+  <li>Media Architecture. Regardless of the media, storage space is quantized on each PU. NAND flash chips are decomposed into blocks, pages (the minimum unit of transfer), and sectors (the minimum unit of ECC). Byte-addressable memories may be organized as a flat space of sectors.</li>
+</ul>
+
+<h4 id="nand-flash-memory-구조">NAND Flash memory 구조</h4>
+
+<p>다음은 NAND Flash memory 구조를 나타내는 예시로서 「2 Die - 2 Plane」 의 구조를 가진 8GB(64Gb) 낸드 플래시 메모리 이다.
+「1 Plane = 1,024 Block」 「1 Block = 256 Page」 「1 Page = 8KB」  로 구성</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD_03.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<p><strong>본 논문에서는 PU는 하나의 physical NAND die라고 가정함.</strong></p>
+
+<ul>
+  <li>PPA를 쓰는 이유, 장점
+Encoding the SSD and media architecture into physical addresses makes it possible to define hardware units, embedded on an open-channel SSD, that map incoming I/Os to their appropriate physical placement. The PPA format is also well-suited for a representation where the identifiers are independent variables as a power of two. This way, operations on the namespace (e.g., get next page on the next channel, or get next page on a different PU) are efficiently implemented by shifting bits.</li>
+</ul>
+
+<h3 id="32-geometry-and-management">3.2 Geometry and Management</h3>
+
+<p>host가 SSD에 대한 관리를 통제하기 위해서 open- channel SSD 는 다음과 같은 네 가지 특징을 보인다.</p>
+
+<ol>
+  <li><strong>수학적 특징:</strong> Its geometry, i.e., the dimensions of the PPA address space. How many channels? How many PUs within a channel? How many planes per PU? How many blocks per plane? How many pages per block? How many sectors per page? How large is the out-of-bound region per page? We assume that PPA dimensions are uniform for a given address space. If an SSD contains different types of storage chips, then the SSD must expose the storage as separate address spaces, each based on similar chips.</li>
+  <li><strong>성능적 특징:</strong> Its performance, i.e., statistics that capture the performance of data commands, channel capacity and controller overhead. The current version of the specification captures typical and max latency for page read, page write, and erase commands and the maximum number of in-flight commands addressed to separate PUs within a channel.</li>
+  <li><strong>저장매체와 관련된 메타데이터:</strong> Media-specific metadata. For instance, NAND flash-specific metadata includes the type of NAND flash on the device, whether multi-plane operations are supported, the size of the user-accessible out-of- bound area, or page pairing information for MLC and TLC chips. As media evolves, and becomes more complex, it may be advantageous to let SSDs handle this complexity.</li>
+  <li><strong>SSD 컨트롤러의 기능:</strong> Controller functionalities. As we have seen in Section 2, a controller might support <strong>write buffering</strong>, <strong>failure handling</strong>, or <strong>provisioning</strong>. Each of these capabilities might be configured (e.g., RAID across PUs). If the controller supports write buffering, then a flush command enables the host to force the con- troller to write the contents of its buffer to the storage media.</li>
+</ol>
+
+<ul>
+  <li><strong>over provisioning:</strong> 웨어레벨링이나 가비지 컬렉션은 SSD에 어느정도 여유공간이 있을 때, 원활하게 작동한다. 따라서 SSD의 저장 공간이 대부분 차지되었을 경우에도 원활한 작동을 위해 여분의(사용자에게는 보여지지 않는) over provisioning space가 존재한다.</li>
+</ul>
+
+<h3 id="33-readwriteerase">3.3 Read/Write/Erase</h3>
+
+<p><strong>Vectored I/Os:</strong>
+a read or write is applied to a vector of addresses to leverage the intrinsic parallelism of the SSD. For example, let us consider 64KB of application data. Assuming a page size of 4KB, this data might be striped with a write command applied to 16 sectors simultaneously, thus efficiently supporting scattered access.</p>
+
+<p>다음과 같은 세 가지 방법을 고려했음, -&gt; (i) NVMe I/O command, (ii) grouped I/Os, and (iii) Vectored I/Os.
+Vectored I/O에서는, an extra DMA is required to communicate the PPA list.</p>
+
+<p><strong>Media specific:</strong>
+The plane operation mode defines how many planes should be programmed at once. The controller may use the plane operation mode hint to efficiently program planes in parallel, as it accesses PUs sequentially by default. Similarly, the erase-suspend al- lows reads to suspend an active write or program, and thus improve its access latency, at the cost of longer write and erase time.</p>
+
+<h2 id="4-lightnvm">4. LightNVM</h2>
+<h3 id="41-architecture">4.1 Architecture</h3>
+
+<p>LightNVM is the open-channel SSD subsystem in Linux</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD_04.png" alt="Drawing" style="width: 700;" />
+</p>
+
+<p><strong>NVMe Device Driver:</strong>
+A LightNVM-enabled NVMe device driver gives kernel modules access to open-channel SSDs through the PPA I/O interface.</p>
+
+<p><strong>LightNVM Subsystem:</strong></p>
+
+<p>???</p>
+
+<p><strong>High-level I/O Interface:</strong>
+High-level I/O Interface를 통해서 커널-영역의 모듈이나 유저-영역의 어플리케이션 접근을 Open-Channel SSDs에 준다.</p>
+
+<h3 id="42-pblk">4.2 pblk</h3>
+
+<p><strong>pblk이 하는 일:</strong>
+pblk’s main responsibilities are to (i) deal with controller- and media-specific constraints (e.g., caching the necessary amount of data to program a flash page), (ii) map logical addresses onto physical addresses (4KB granularity) and guarantee the integrity—and eventual recovery in the face of crashes—of the associated mapping table (L2P), (iii) handle errors, and (iv) implement garbage collection (GC). Since typical flash page sizes are bigger than 4KB, pblk must also (v) handle flushes. A flush forces pblk’s in-flight data to be stored on the device before it completes. It might be required by a file system or an application (i.e., fsync).</p>
+
+<p>Producer &amp; Consumer</p>
+
+<h4 id="422-mapping-table-rocovery">4.2.2 Mapping Table Rocovery</h4>
+
+<p>data consistency를 위해 L2P mapping table redundant 하게 유지 해야한다. 다음과 같이 세 가지 방법을 통해서;</p>
+
+<p>First, as a snapshot, which is stored (i) on power-down, in form of a full copy of the L2P, and (ii) periodically as checkpoints in form of an FTL log that persists operations on blocks (allocate and erase).</p>
+
+<p>Second, as block-level metadata, on the first and last page of each block. When a block is opened, the first page is used to store a block sequence number together with a reference to the previous block. When a block is fully written, the last pages are used to store (1) an FTL-log consisting of the portion of the L2P map table corresponding to data in the block, (2) the same sequence number as in the first page in order to avoid an extra read during recovery, and (3) a pointer to the next block. The number of pages needed depends on the size of the block.</p>
+
+<p>Finally, a portion of the mapping table is kept (iii) within the OOB area of each flash page that is written to the device</p>
+
+<p>To ensure data correctness, it is paramount that half- written lower/upper pages are padded before reads can be issued. If the controller counts on a super capacitor, padding can be done in the device on ungraceful power- down. Otherwise, padding must be implemented on the second phase of recovery, as partially written blocks are recovered.</p>
+
+<h4 id="423-error-handling">4.2.3 Error Handling</h4>
+
+<p>Unlike a traditional FTL that deals with read, write, and erase failures, pblk deals only with write and erase errors.</p>
+
+<p>recovery must be managed by the upper layers of the system, above pblk.</p>
+
+<p>When a write fails, pblk initiates two recovery mechanisms.</p>
+
+<p>In the case of erase failures, the block is directly marked as bad. Since no writes have been issued at this point, there is no data to recover.</p>
+
+<h4 id="424-garbage-collection">4.2.4 Garbage Collection</h4>
+
+<p>Therefore, pblk simply maintains a valid page count for each block, and selects the block with the lowest number of valid sectors for recycling.</p>
+
+<p>The reverse logical to physical mapping table is not stored in host memory. To find a reverse mapping, we leverage the fact that a block is first recycled when it is fully written. Thus, we can use the partial L2P table stored for recovery on the last pages of the block</p>
+
+<p>To prevent user I/Os from interfering with garbage collection, pblk implements a PID controlled [44] rate- limiter, whose feedback loop is based on the total number of free blocks available.</p>
+
+<h2 id="5-experiment-evaluation">5. Experiment Evaluation</h2>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD_05.png" alt="Drawing" style="width: 700;" />
+</p>
+
+<h3 id="51-sanity-check">5.1 Sanity Check</h3>
+
+<h3 id="52-uniform-workloads">5.2 Uniform workloads</h3>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=LightNVM:%20The%20Linux%20Open-Channel%20SSD%20Subsystem&amp;url=http://localhost:4000/research/openChannelSSD/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/openChannelSSD/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/openChannelSSD/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-08-13T19:00:00Z" itemprop="datePublished">August 13, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

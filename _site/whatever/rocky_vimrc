@@ -1,0 +1,75 @@
+set rtp+=~/.vim/bundle/Vundle.vim
+
+set nu
+set nocompatible
+set autoindent
+set sm
+set title
+set hlsearch
+set smartindent
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set cindent
+set nowrapscan
+set nobackup
+set noswapfile
+set visualbell
+set ruler
+set fencs=ucs-bom,utf-8,euc-kr.latin1
+set fileencoding=utf-8
+set tenc=utf-8                                                                " 터미널 인코딩
+set expandtab                                                                 " 탭대신 스페이스
+set hlsearch                                                                " 검색어 강조, set hls 도 가능
+set ignorecase                                                                " 검색시 대소문자 무시, set ic 도 가능
+set tabstop=2                                                                 " 탭을 2칸으로
+set lbr
+set incsearch                                                                 " 키워드 입력시 점진적 검색
+set cursorline
+set laststatus=2
+syntax on 					 														  " 구문강조 사용
+filetype indent on   														  " 파일 종류에 따른 구문강조
+set background=dark  														  " 하이라이팅 lihgt / dark
+set backspace=eol,start,indent 									  "  줄의 끝, 시작, 들여쓰기에서 백스페이스시 이전줄로
+set history=1000     														  " vi 편집기록 기억갯수 .viminfo에 기록
+highlight Comment term=bold cterm=bold ctermfg=4  " 코멘트 하이라이트
+set mouse=a          														  " vim에서 마우스 사용
+set t_Co=256         														  " 색 조정
+
+
+
+if has('cscope')
+	set csprg=/usr/local/bin/cscope
+	set csto=0
+	set cscopetag
+	set nocsverb
+	if filereadable("./cscope.out")
+		cs add ./cscope.out
+	endif
+	set csverb
+endif
+
+
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'tpope/vim-sensible'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'mattn/emmet-vim'
+Plugin 'Shougo/neocomplcache.vim'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'Source-Explorer-srcexpl.vim'
+Plugin 'SrcExpl'                                " 커서가 지시하는변수들의 정보를 보여줌
+Plugin 'taglist.vim'                            " ctags를 사용하여소스코드 파일에서 함수, 전역 변수 리스트를 확인할 수 있는 강력한 사이드바를 제공
+Plugin 'AutoComplPop'                           " 자동완성플러긴
+Plugin 'snipMate'                               " for, while과같은 예약어를 입력할 경우 snip code를 자동으로 제공해 준다. ~/.vim/snippets 에 제공 기준이 있음.
+Plugin 'nanotech/jellybeans.vim'                " vim theme
+Plugin 'NLKNguyen/papercolor-theme'             " vim theme
+
+call vundle#end()
+
+    
+set background=dark
+colorscheme jellybeans

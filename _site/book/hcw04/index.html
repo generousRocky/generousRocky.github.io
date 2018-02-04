@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>How Computers Work [04] • Rocky's Research Blog</title>
+    <meta name="description" content="CIT 강의자료) How Security Software Fights Off Invaders">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="How Computers Work [04]">
+	<meta name="twitter:description" content="CIT 강의자료) How Security Software Fights Off Invaders">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="How Computers Work [04]">
+	<meta property="og:description" content="CIT 강의자료) How Security Software Fights Off Invaders">
+	<meta property="og:url" content="http://localhost:4000/book/hcw04/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/book/hcw04/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/book/" itemprop="url">
+        <span itemprop="title">Book</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>How Computers Work [04]</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw.jpg" alt="Drawing" style="width: 380px;" />
+</p>
+
+<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#hacking-and-cracking" id="markdown-toc-hacking-and-cracking">Hacking and Cracking</a></li>
+  <li><a href="#antivirus-software" id="markdown-toc-antivirus-software">Antivirus Software</a></li>
+  <li><a href="#chapter-9--the-origins-of-computer-dna" id="markdown-toc-chapter-9--the-origins-of-computer-dna">Chapter 9 : The Origins of Computer DNA</a></li>
+</ul>
+
+</nav>
+
+<h2 id="hacking-and-cracking">Hacking and Cracking</h2>
+
+<p>해킹 전체가 범죄는 아니나 해킹을 불순한 의도로 사용하면 범죄가 된다. 해킹의 원래 의미는 프로그램 원 제작자가 걸어놓은 프로그램 코드 락 알고리즘을 뚫어서 프로그램 소스를 알아내거나, 프로그램 소스를 변경해서 자기 입맛에 맞게 바꾸어 버리는 모든 행위를 포함한다. 즉 프로그램 자체를 바꾸는 모든 행위가 해킹이고, 그 프로그램을 나쁘게 바꾸는게 크래킹이다.</p>
+
+<p>현실의 예를 들자면, 자동차 팬 밸트가 끊어졌을 때 팬 밸트(정상적인 사용법)를 스타킹(대체적인 사용법)으로 대체하는 행위도 해킹으로 볼 수 있다. 무림의 예를 들자면, 조금 의미가 다르긴 하지만, 기존에 정해진 규칙대로 수양하지 않는 (즉, 하라는 대로 하지 않는) 사파는 해커라고 볼 수 있다.</p>
+
+<p>나무 위키, “해킹”, <a href="https://namu.wiki/w/해킹">https://namu.wiki/w/해킹</a></p>
+
+<p>영화에서 나오는 멋진 해킹 장면(순식간에 target의 정보를 빼내거나 시스템을 마비시키는 것)은 해킹 프로그램을 이용하는 것. 실제 해커(크래커)들은 target을 해킹하기 위해 오랜시간 조사. 분석한다.</p>
+
+<p>target을 해킹하기 위한 breaking point로 <strong>port</strong>를 스캔한다.</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw04_01.jpg" alt="Drawing" style="width: 600px;" />
+</p>
+
+<h3 id="port포트">port(포트)</h3>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw04_02.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<p>대부분의 해킹이 네트워크를 통해서 이루어지기 때문에, 네트워크를와 포트를 통해 target의 프로세스에 침투한다.(교재에 나와있는 예시, 수많은 해킹 방법 중 하나 정도로 생각 하면 될 것 같다.)</p>
+
+<ul>
+  <li>
+    <p>brute force attack
+특정한 암호를 풀기 위해 가능한 모든 값을 대입하는 것을 의미한다. 대부분의 암호화 방식은 이론적으로 무차별 대입 공격에 대해 안전하지 못하며, 충분한 시간이 존재한다면 암호화된 정보를 해독할 수 있다. 하지만 대부분의 경우 모든 계산을 마치려면 실용적이지 못한 비용이나 시간을 소요하게 됨.</p>
+  </li>
+  <li>
+    <p>spyware
+Spyware is a program on your hard drive that sends information about you and how you use a PC to marketers and advertisers, usually without you being aware it’s happening.</p>
+  </li>
+  <li>
+    <p>Malware
+Malware is cousins of spyware use spyware information to display advertising for products it’s betting will interest you based on your website browsing habits.</p>
+  </li>
+</ul>
+
+<p>불법 프로그램이나 정식 배포판이 아닌 프로그램을 다운로드 받아서 설치 할 경우 노출될 가능성이 높다.</p>
+
+<ul>
+  <li>Virus</li>
+</ul>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw04_03.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw04_04.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw04_05.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw04_06.png" alt="Drawing" style="width: 800px;" />
+</p>
+
+<h2 id="antivirus-software">Antivirus Software</h2>
+
+<ol>
+  <li>
+    <p>Signature scanner
+가장 기본적인 바이러스 백신 프로그램은, 전문가에 의해서 발견된 유명한 바이러스 코드를 컴퓨터의 운영체제 및 각 프로그램의 코드와 비교하여 일치하는 정도를 통해 감염 여부를 판단 하는 것. 유행하는 바이러스의 경우 쉽게 발견 및 치료가 가능하지만, 많은 사용자에 의해 report 되지 않은 바이러스의 경우 감지하기 힘들다.</p>
+  </li>
+  <li>
+    <p>Heuristic detector
+바이러스 코드를 비교하는 것이 아니라 컴퓨터 시스템 상에서 이상적인 동작을 수행하는 프로그램을 감지하는 것. 예를 들어, 디스크(저장 장치)에 쓰기 작업을 수행하는경우 반드시 운영체제를 거쳐야 한다. 만약 디스크 쓰기 작업이 운영체제를 거치지 않고 일반 프로그램에서 직접 이루어졌다면, 이는 바이러스에 감염되었음을 의심할 수 있다.</p>
+  </li>
+  <li>
+    <p>Memory-resident<br />
+Antivirus Software로서(<strong>프로그램</strong>) RAM에 올라와 있으면서, 항상 수행되고 있는 프로그램이다. 즉, 상시 돌아가고 있는 프로세스.<br /><br />
+These programs monitor all the computer’s operations for any action associated with viruses, such as downloading files, running programs directly from an Internet site, copying or unzipping files, attempting to modify program code, or programs that try to remain in memory after they’re executed.<br /><br />
+위와 같은 의심스러운 operation이 있었을때, 사용자에게 피드백을 주거나, 임의로 처리한다.</p>
+  </li>
+</ol>
+
+<p><strong>다양한 주제를 커버하면서도 항상 생각하고 신경쓰고 있어야 할 것은, 컴퓨터가 어떻게 동작하는가! 즉, 프로그램 및 프로세스, 메인 메모리와 cpu 등과 같은 가장 중요한 요소들이 어떻게 각 상황에서 작동하는것을 생각 해야 한다.</strong></p>
+
+<h6 id="chapter-8의-이하-내용은-생략">chapter 8의 이하 내용은 생략</h6>
+
+<h1 id="chapter-9--the-origins-of-computer-dna">Chapter 9 : The Origins of Computer DNA</h1>
+
+<p>이번 챕터는 컴퓨터의 대표적인 하드웨어 및 포트(네트워크 포트 X, 물리적 포트 O)를 확인하고 넘어간다.</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=How%20Computers%20Work%20[04]&amp;url=http://localhost:4000/book/hcw04/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/book/hcw04/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/book/hcw04/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-08-28T19:00:00Z" itemprop="datePublished">August 28, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>How Computers Work [08] • Rocky's Research Blog</title>
+    <meta name="description" content="CIT 강의자료) Chapter19 - How the Web Puts It All at Your Fingertips">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="How Computers Work [08]">
+	<meta name="twitter:description" content="CIT 강의자료) Chapter19 - How the Web Puts It All at Your Fingertips">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="How Computers Work [08]">
+	<meta property="og:description" content="CIT 강의자료) Chapter19 - How the Web Puts It All at Your Fingertips">
+	<meta property="og:url" content="http://localhost:4000/book/hcw08/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/book/hcw08/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/book/" itemprop="url">
+        <span itemprop="title">Book</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>How Computers Work [08]</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw.jpg" alt="Drawing" style="width: 380px;" />
+</p>
+
+<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#how-a-browser-opens-pages" id="markdown-toc-how-a-browser-opens-pages">How a browser opens pages</a>    <ul>
+      <li><a href="#dnsdomain-name-serversystem" id="markdown-toc-dnsdomain-name-serversystem">DNS(Domain Name Server(System))?</a></li>
+      <li><a href="#how-dns-works" id="markdown-toc-how-dns-works">How DNS Works?</a></li>
+    </ul>
+  </li>
+  <li><a href="#how-a-browser-displays-web-pages" id="markdown-toc-how-a-browser-displays-web-pages">How a browser displays web pages</a></li>
+</ul>
+
+</nav>
+
+<h1 id="how-a-browser-opens-pages">How a browser opens pages</h1>
+
+<p>“A website is a collection of files, text, and media that someone has made generally available to others through the Internet. “</p>
+
+<p>웹페이지 간의 이동은</p>
+<ol>
+  <li>텍스트, 또는 이미지 등과 같은 하이퍼링크(Hyperlink)를 통해서</li>
+  <li>URL(Universal Resouce Locator)를 브라우저의 address창에 입력하는 것.</li>
+</ol>
+
+<p>위 두 가지를 통해 가능하다.</p>
+
+<p>브라우저에서 하이퍼 링크를 클릭하거나 특정 address를 입력한다면, 브라우저 프로그램은 해당하는 address를 네트워크를 통해 DNS(Domain Name Server)에 보낸다.</p>
+
+<h2 id="dnsdomain-name-serversystem">DNS(Domain Name Server(System))?</h2>
+<p>호스트의 도메인 이름(human readable)을 호스트의 네트워크 주소(computer readable)로 바꾸어 주거나 그 반대의 변환을 수행할 수 있도록 해 주는 서버 또는 시스템.
+특정 컴퓨터(또는 네트워크로 연결된 임의의 장치)의 주소를 찾기위해, 사람이 이해하기 쉬운 도메인 이름을 숫자로 된 식별 변호(IP 주소)로 변환 해 준다. 예를 들어, www.dcslab.snu.ac.kr 와 같은 컴퓨터 도메인 이름을 192.108.1.4와 같은 주소로 변환하고, 라우팅 정보를 제공하는 데이터베이스 시스템</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw08_1.png" alt="Drawing" style="width: 600px;" />
+</p>
+
+<h2 id="how-dns-works">How DNS Works?</h2>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw08_2.png" alt="Drawing" style="width: 600px;" />
+</p>
+
+<ol>
+  <li>web browser에 주소를 입력한다.</li>
+  <li>만약 www.micosoft.com을 입력한다면, 입력 값이 위와 같이 이동한다.
+    <ol>
+      <li>DNS 서버</li>
+      <li>루트 DNS서버</li>
+      <li>.com DNS서버</li>
+      <li>Microsoft.com DNS서버</li>
+    </ol>
+  </li>
+  <li>각각의 DNS서버를 차례대로 이동하며 해당 웹 사이트의 ip주소를 찾는다.</li>
+</ol>
+
+<p>DNS Server: 웹 서버 주소에 해당하는 ip주소 테이블을 저장하고 있는 컴퓨터</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw08_3.png" alt="Drawing" style="width: 600px;" />
+</p>
+
+<p>위에서 설정하는 DNS서버 주소는 Local DNS 서버 주소 라고 생각하면 된다.</p>
+
+<h1 id="how-a-browser-displays-web-pages">How a browser displays web pages</h1>
+
+<ol>
+  <li>
+    <p>Stored on the server, the web page itself consists of an HTML text file. HTML is a collection of codes enclosed in angle brackets—&lt;&gt;—that control the formatting of text in the file.</p>
+  </li>
+  <li>
+    <p>HTML Code는 텍스트 뿐 아니라 이미지나 영상, 음성 파일등 서버에서 저장할 수 있는 대부분의 파일들을 포함 할 수 있다.</p>
+  </li>
+  <li>
+    <p>특정 웹페이지를 보기 위해서 Client가 원하는 웹페이지의 주소를 해당 서버로 보내면 해당 서버는 HTML Code를 return 한다.</p>
+  </li>
+  <li>
+    <p>동시에 서버는 HTML 코드에 있는 이미지, 영상 등의 파일을 Client로 보내도록 명령한다.</p>
+  </li>
+  <li>
+    <p>클라이언트는 HTML 코드와 이미지, 영상과 같은 파일을 RAM에 캐싱한다.(크롬 브라우저가 메모리를 많이 사용하는 대신 빠른 이유) 나중에 브라우저가 전에 보았던 웹 페이지나 이미지, 영상을 다시 볼때는 서버에 다시 요청하는 것이 아니라 RAM에 캐싱되어 있던 부분에서 가져온다.</p>
+  </li>
+  <li>
+    <p>브라우저는 서버로 부터 받은 HTML, 텍스트, 이미지, 영상들을 합하여 웹 페이지를 재 구성하여 화면에 배치할 위치를 결정한다(HTML코드를 따라서). 웹페이지의 모든 구성요소가 동시에 Client로 도착하는 것은 아니기 때문에 가장 간단한 요소인 텍스트가 일반적으로 가장 먼저 표시되고 그 이후에 이미지나 영상이 보여진다.</p>
+  </li>
+</ol>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw08_4.png" alt="Drawing" style="width: 600px;" />
+</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=How%20Computers%20Work%20[08]&amp;url=http://localhost:4000/book/hcw08/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/book/hcw08/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/book/hcw08/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-11-04T21:00:00Z" itemprop="datePublished">November 04, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

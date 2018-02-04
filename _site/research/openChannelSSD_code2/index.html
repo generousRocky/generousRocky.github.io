@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The Linux Open-Channel SSD Subsystem - Write Path • Rocky's Research Blog</title>
+    <meta name="description" content="Kernel Code Analysis - Write path">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="The Linux Open-Channel SSD Subsystem - Write Path">
+	<meta name="twitter:description" content="Kernel Code Analysis - Write path">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="The Linux Open-Channel SSD Subsystem - Write Path">
+	<meta property="og:description" content="Kernel Code Analysis - Write path">
+	<meta property="og:url" content="http://localhost:4000/research/openChannelSSD_code2/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/openChannelSSD_code2/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>The Linux Open-Channel SSD Subsystem - Write Path</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<p>관련 논문:  <a href="/publication/fast17-bjorling.pdf">“LightNVM: The Linux Open-Channel SSD Subsystem”</a></p>
+
+<h2 id="initialization-of-write-thread-this-is-a-work-in-progress">Initialization of write thread (This is a work in progress.)</h2>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cm">/* physical block device target */</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">nvm_tgt_type</span> <span class="n">tt_pblk</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s">"pblk"</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">version</span>  <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span>
+
+  <span class="p">.</span><span class="n">make_rq</span>  <span class="o">=</span> <span class="n">pblk_make_rq</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">pblk_capacity</span><span class="p">,</span>
+
+  <span class="p">.</span><span class="n">init</span>   <span class="o">=</span> <span class="n">pblk_init</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">exit</span>   <span class="o">=</span> <span class="n">pblk_exit</span><span class="p">,</span>
+
+  <span class="p">.</span><span class="n">sysfs_init</span> <span class="o">=</span> <span class="n">pblk_sysfs_init</span><span class="p">,</span>
+  <span class="p">.</span><span class="n">sysfs_exit</span> <span class="o">=</span> <span class="n">pblk_sysfs_exit</span><span class="p">,</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+<p>위와 같이 make_rq함수와 init함수가 각각 pblk_make_rq와 pblk_init에 매핑되어 있다.</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="o">*</span><span class="n">pblk_init</span><span class="p">(</span><span class="k">struct</span> <span class="n">nvm_tgt_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">gendisk</span> <span class="o">*</span><span class="n">tdisk</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">){</span>
+  <span class="p">.</span>
+  <span class="p">.</span>
+  <span class="n">ret</span> <span class="o">=</span> <span class="n">pblk_writer_init</span><span class="p">(</span><span class="n">pblk</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="nf">pblk_writer_init</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">setup_timer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">wtimer</span><span class="p">,</span> <span class="n">pblk_write_timer_fn</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">pblk</span><span class="p">);</span>
+  <span class="n">mod_timer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">wtimer</span><span class="p">,</span> <span class="n">jiffies</span> <span class="o">+</span> <span class="n">msecs_to_jiffies</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span>
+
+  <span class="n">pblk</span><span class="o">-&gt;</span><span class="n">writer_ts</span> <span class="o">=</span> <span class="n">kthread_create</span><span class="p">(</span><span class="n">pblk_write_ts</span><span class="p">,</span> <span class="n">pblk</span><span class="p">,</span> <span class="s">"pblk-writer-t"</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">IS_ERR</span><span class="p">(</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">writer_ts</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">pr_err</span><span class="p">(</span><span class="s">"pblk: could not allocate writer kthread</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">PTR_ERR</span><span class="p">(</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">writer_ts</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>pblk initialization을 진행 할 떄, write를 위한 thread를 생성, 초기화 시켜준다. 
+생성된 thread는 <strong><em>pblk_write_ts</em></strong>함수를 수행한다.</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">pblk_write_ts</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">kthread_should_stop</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pblk_submit_write</span><span class="p">(</span><span class="n">pblk</span><span class="p">))</span>
+      <span class="k">continue</span><span class="p">;</span>
+    <span class="n">set_current_state</span><span class="p">(</span><span class="n">TASK_INTERRUPTIBLE</span><span class="p">);</span>
+    <span class="n">io_schedule</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>write 쓰레드 생성시 호출되는 시작되는 함수는 위와 같다. io 스케줄러에 의해
+<strong><em>kthread_should_stop</em></strong> 함수와 <strong><em>pblk_submit_write()</em></strong> 함수를 반복적으로 호출하면서 wirte를 진행한다.</p>
+
+<h2 id="write-path">write path</h2>
+
+<hr />
+<p>파일시스템으로부터의 write는 make_rq와 매핑된. pblk_make_rq함수에 의해 수행된다.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="n">blk_qc_t</span> <span class="nf">pblk_make_rq</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="k">struct</span> <span class="n">bio</span> <span class="o">*</span><span class="n">bio</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span> <span class="o">=</span> <span class="n">q</span><span class="o">-&gt;</span><span class="n">queuedata</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">bio_op</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span> <span class="o">==</span> <span class="n">REQ_OP_DISCARD</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pblk_discard</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">bio</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">bio</span><span class="o">-&gt;</span><span class="n">bi_opf</span> <span class="o">&amp;</span> <span class="n">REQ_PREFLUSH</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">bio_endio</span><span class="p">(</span><span class="n">bio</span><span class="p">);</span>
+      <span class="k">return</span> <span class="n">BLK_QC_T_NONE</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">switch</span> <span class="p">(</span><span class="n">pblk_rw_io</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">pblk</span><span class="p">,</span> <span class="n">bio</span><span class="p">))</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="n">NVM_IO_ERR</span><span class="p">:</span>
+    <span class="n">bio_io_error</span><span class="p">(</span><span class="n">bio</span><span class="p">);</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="k">case</span> <span class="n">NVM_IO_DONE</span><span class="p">:</span>
+    <span class="n">bio_endio</span><span class="p">(</span><span class="n">bio</span><span class="p">);</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="n">BLK_QC_T_NONE</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>pblk함수에서 read path와 write path가 분리되어 처리된다.
+reaa request는 pblk_submit_io함수, 그리고 wirte는 pblk_write_to_cache함수를 통해 i/o path가 이어서 진행된다.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="n">pblk_rw_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">bio</span> <span class="o">*</span><span class="n">bio</span><span class="p">){</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">read</span> <span class="err">일</span> <span class="err">경우</span><span class="p">){</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">pblk_submit_read</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">bio</span><span class="p">);</span>
+      <span class="p">.</span>
+      <span class="p">.</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// write 일 경우
+</span>  <span class="k">return</span> <span class="n">pblk_write_to_cache</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">bio</span><span class="p">,</span> <span class="n">PBLK_IOTYPE_USER</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>write buffer에 데이터를 체워 넣고, write context를 저장한다. 일반적으로 bio로부터 4kb의 데이터 chunk가 ring buffer에 copy된다.</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">pblk_write_to_cache</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">bio</span> <span class="o">*</span><span class="n">bio</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">struct</span> <span class="n">pblk_w_ctx</span> <span class="n">w_ctx</span><span class="p">;</span>
+  <span class="n">sector_t</span> <span class="n">lba</span> <span class="o">=</span> <span class="n">pblk_get_lba</span><span class="p">(</span><span class="n">bio</span><span class="p">);</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">bpos</span><span class="p">,</span> <span class="n">pos</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">nr_entries</span> <span class="o">=</span> <span class="n">pblk_get_secs</span><span class="p">(</span><span class="n">bio</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">ret</span><span class="p">;</span>
+
+  <span class="cm">/* Update the write buffer head (mem) with the entries that we can
+   * write. The write in itself cannot fail, so there is no need to
+   * rollback from here on.
+   */</span>
+<span class="nl">retry:</span>
+  <span class="n">ret</span> <span class="o">=</span> <span class="n">pblk_rb_may_write_user</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">rwb</span><span class="p">,</span> <span class="n">bio</span><span class="p">,</span> <span class="n">nr_entries</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bpos</span><span class="p">);</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="n">NVM_IO_REQUEUE</span><span class="p">:</span>
+    <span class="n">io_schedule</span><span class="p">();</span>
+    <span class="k">goto</span> <span class="n">retry</span><span class="p">;</span>
+  <span class="k">case</span> <span class="n">NVM_IO_ERR</span><span class="p">:</span>
+    <span class="n">pblk_pipeline_stop</span><span class="p">(</span><span class="n">pblk</span><span class="p">);</span>
+    <span class="k">goto</span> <span class="n">out</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">pblk_ppa_set_empty</span><span class="p">(</span><span class="o">&amp;</span><span class="n">w_ctx</span><span class="p">.</span><span class="n">ppa</span><span class="p">);</span>
+  <span class="n">w_ctx</span><span class="p">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">flags</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">bio</span><span class="o">-&gt;</span><span class="n">bi_opf</span> <span class="o">&amp;</span> <span class="n">REQ_PREFLUSH</span><span class="p">)</span>
+    <span class="n">w_ctx</span><span class="p">.</span><span class="n">flags</span> <span class="o">|=</span> <span class="n">PBLK_FLUSH_ENTRY</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nr_entries</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">bio_data</span><span class="p">(</span><span class="n">bio</span><span class="p">);</span>
+
+    <span class="n">w_ctx</span><span class="p">.</span><span class="n">lba</span> <span class="o">=</span> <span class="n">lba</span> <span class="o">+</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">pblk_rb_wrap_pos</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">rwb</span><span class="p">,</span> <span class="n">bpos</span> <span class="o">+</span> <span class="n">i</span><span class="p">);</span>
+    <span class="n">pblk_rb_write_entry_user</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">rwb</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">w_ctx</span><span class="p">,</span> <span class="n">pos</span><span class="p">);</span>
+
+    <span class="n">bio_advance</span><span class="p">(</span><span class="n">bio</span><span class="p">,</span> <span class="n">PBLK_EXPOSED_PAGE_SIZE</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="cp">#ifdef CONFIG_NVM_DEBUG
+</span>  <span class="n">atomic_long_add</span><span class="p">(</span><span class="n">nr_entries</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">inflight_writes</span><span class="p">);</span>
+  <span class="n">atomic_long_add</span><span class="p">(</span><span class="n">nr_entries</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">req_writes</span><span class="p">);</span>
+<span class="cp">#endif
+</span>
+  <span class="n">pblk_rl_inserted</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">rl</span><span class="p">,</span> <span class="n">nr_entries</span><span class="p">);</span>
+
+<span class="nl">out:</span>
+  <span class="n">pblk_write_should_kick</span><span class="p">(</span><span class="n">pblk</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p><strong>pblk_rb_may_write_user</strong>:<br />
+Atomically check that (i) there is space on the write buffer for the incoming I/O, and (ii) the current I/O type has enough budget in the write buffer (rate-limiter).</p>
+
+<p>write buffer의 크기는 몇 일까?</p>
+
+<p><strong>pblk_rb_write_entry_user</strong>:<br />
+Write @nr_entries to ring buffer from @data buffer if there is enough space. Typically, 4KB data chunks coming from a bio will be copied to the ring buffer, thus the write will fail if not all incoming data can be copied.</p>
+
+<p>logical block address to physical page address mapping table을 업데이트 해 준다.(pblk_trans_map_update 함수)</p>
+
+<p>pblk_rb_write_entry_user -&gt; pblk_update_map_cache -&gt; pblk_update_map -&gt; pblk_trans_map_set</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">pblk_update_map</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="n">sector_t</span> <span class="n">lba</span><span class="p">,</span> <span class="k">struct</span> <span class="n">ppa_addr</span> <span class="n">ppa</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">struct</span> <span class="n">ppa_addr</span> <span class="n">ppa_l2p</span><span class="p">;</span>
+
+  <span class="cm">/* logic error: lba out-of-bounds. Ignore update */</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">lba</span> <span class="o">&lt;</span> <span class="n">pblk</span><span class="o">-&gt;</span><span class="n">rl</span><span class="p">.</span><span class="n">nr_secs</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">WARN</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">"pblk: corrupted L2P map request</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">trans_lock</span><span class="p">);</span>
+  <span class="n">ppa_l2p</span> <span class="o">=</span> <span class="n">pblk_trans_map_get</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">lba</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pblk_addr_in_cache</span><span class="p">(</span><span class="n">ppa_l2p</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">pblk_ppa_empty</span><span class="p">(</span><span class="n">ppa_l2p</span><span class="p">))</span>
+   <span class="n">pblk_map_invalidate</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">ppa_l2p</span><span class="p">);</span>
+
+  <span class="n">pblk_trans_map_set</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">lba</span><span class="p">,</span> <span class="n">ppa</span><span class="p">);</span>
+  <span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">trans_lock</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">pblk_trans_map_set</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="n">sector_t</span> <span class="n">lba</span><span class="p">,</span>
+            <span class="k">struct</span> <span class="n">ppa_addr</span> <span class="n">ppa</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">ppaf_bitsize</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">u32</span> <span class="o">*</span><span class="n">map</span> <span class="o">=</span> <span class="p">(</span><span class="n">u32</span> <span class="o">*</span><span class="p">)</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">trans_map</span><span class="p">;</span>
+
+    <span class="n">map</span><span class="p">[</span><span class="n">lba</span><span class="p">]</span> <span class="o">=</span> <span class="n">pblk_ppa64_to_ppa32</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">ppa</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="n">u64</span> <span class="o">*</span><span class="n">map</span> <span class="o">=</span> <span class="p">(</span><span class="n">u64</span> <span class="o">*</span><span class="p">)</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">trans_map</span><span class="p">;</span>
+
+    <span class="n">map</span><span class="p">[</span><span class="n">lba</span><span class="p">]</span> <span class="o">=</span> <span class="n">ppa</span><span class="p">.</span><span class="n">ppa</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">pblk_write_should_kick</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">secs_avail</span> <span class="o">=</span> <span class="n">pblk_rb_read_count</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">rwb</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">secs_avail</span> <span class="o">&gt;=</span> <span class="n">pblk</span><span class="o">-&gt;</span><span class="n">min_write_pgs</span><span class="p">)</span>
+    <span class="n">pblk_write_kick</span><span class="p">(</span><span class="n">pblk</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">void</span> <span class="nf">pblk_write_kick</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">wake_up_process</span><span class="p">(</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">writer_ts</span><span class="p">);</span>
+  <span class="n">mod_timer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">wtimer</span><span class="p">,</span> <span class="n">jiffies</span> <span class="o">+</span> <span class="n">msecs_to_jiffies</span><span class="p">(</span><span class="mi">1000</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>wake_up_process(kernel/sched/core.c) 함수 : Attempt to wake up the nominated process and move it to the set of runnable processes.</p>
+
+<hr />
+<p>wake_up_process함수에 의해 pblk_submit_write 함수가 호출된다.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">pblk_write_ts</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">kthread_should_stop</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pblk_submit_write</span><span class="p">(</span><span class="n">pblk</span><span class="p">))</span>
+      <span class="k">continue</span><span class="p">;</span>
+    <span class="n">set_current_state</span><span class="p">(</span><span class="n">TASK_INTERRUPTIBLE</span><span class="p">);</span>
+    <span class="n">io_schedule</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="n">pblk_submit_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">){</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="c1">// bio forming
+</span>		<span class="n">pblk_rb_read_to_bio</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">rwb</span><span class="p">,</span> <span class="n">rqd</span><span class="p">,</span> <span class="n">bio</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">secs_to_sync</span><span class="p">,</span><span class="n">secs_avail</span><span class="p">);</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="c1">// i/o submit
+</span>		<span class="n">pblk_submit_io_set</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span><span class="n">rqd</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p><strong><em>pblk_rb_read_to_bio()</em></strong>:<br />
+ring buffer에서 available한 엔트리 들을 읽어서 bio에 추가 해 준다. 즉 write bio을 forming하는 함수.</p>
+
+<p>To avoid a memory copy, a page reference to the write buffer is used to be added to the bio.
+This function is used by the <strong>write thread</strong> to form the write bio that will persist data on the write buffer to the media.</p>
+
+<hr />
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="n">pblk_submit_io_set</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">){</span>
+		
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="cm">/* Assign lbas to ppas and populate request structure */</span>
+		<span class="n">err</span> <span class="o">=</span> <span class="n">pblk_setup_w_rq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">,</span> <span class="n">c_ctx</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">erase_ppa</span><span class="p">);</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="cm">/* Submit metadata write for previous data line */</span>
+		<span class="n">err</span> <span class="o">=</span> <span class="n">pblk_sched_meta_io</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="o">-&gt;</span><span class="n">ppa_list</span><span class="p">,</span> <span class="n">rqd</span><span class="o">-&gt;</span><span class="n">nr_ppas</span><span class="p">);.</span>
+		<span class="n">err</span> <span class="o">=</span> <span class="n">pblk_submit_io</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">);</span>
+		
+		<span class="n">OR</span>
+		
+		<span class="cm">/* Submit data write for current data line */</span>
+		<span class="n">err</span> <span class="o">=</span> <span class="n">pblk_submit_io</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>write request setup, logical address를 physical address로 변환,</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="n">pblk_setup_w_rq</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pblk_c_ctx</span> <span class="o">*</span><span class="n">c_ctx</span><span class="p">,</span> <span class="k">struct</span> <span class="n">ppa_addr</span> <span class="o">*</span><span class="n">erase_ppa</span><span class="p">){</span>
+
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="c1">// Setup write request = rqd structure 체우기
+</span>		<span class="n">ret</span> <span class="o">=</span> <span class="n">pblk_alloc_w_rq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">,</span> <span class="n">nr_secs</span><span class="p">,</span> <span class="n">pblk_end_io_write</span><span class="p">);</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="c1">//
+</span>		<span class="k">if</span> <span class="p">(</span><span class="n">likely</span><span class="p">(</span><span class="o">!</span><span class="n">e_line</span> <span class="o">||</span> <span class="o">!</span><span class="n">atomic_read</span><span class="p">(</span><span class="o">&amp;</span><span class="n">e_line</span><span class="o">-&gt;</span><span class="n">left_eblks</span><span class="p">)))</span>
+				<span class="n">pblk_map_rq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">,</span> <span class="n">c_ctx</span><span class="o">-&gt;</span><span class="n">sentry</span><span class="p">,</span> <span class="n">lun_bitmap</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+		<span class="k">else</span>
+				<span class="n">pblk_map_erase_rq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">,</span> <span class="n">c_ctx</span><span class="o">-&gt;</span><span class="n">sentry</span><span class="p">,</span> <span class="n">lun_bitmap</span><span class="p">,</span> <span class="n">valid</span><span class="p">,</span> <span class="n">erase_ppa</span><span class="p">);</span>
+
+		<span class="p">.</span>
+		<span class="p">.</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+<p><strong><em>pblk_alloc_w_rq</em></strong>:<br />
+assign lbas to ppas and pipulate request structure. 
+rqd structure 생성, structure 체워나가기.</p>
+
+<p><strong><em>pblk_map_rq()</em></strong> 또는 <strong><em>pblk_map_erase_rq()</em></strong>:<br />:
+ the write buffer is protected by the sync backpointer, and a single writer thread have access to each specific entry at a time. Thus, it is safe to modify the context for the entry we are setting up for submission without taking any lock or memory barrier.</p>
+
+<p>위 두 함수를 통해 통해 physical address를 만들어 낸다. [address space 사진 넣기]</p>
+
+<hr />
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">pblk_submit_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="k">return</span> <span class="n">nvm_sumbit_io</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">rad</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">nvm_submit_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">nvm_tgt_dev</span> <span class="o">*</span><span class="n">tgt_dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="n">ret</span> <span class="o">=</span> <span class="n">dev</span><span class="o">-&gt;</span><span class="n">ops</span><span class="o">-&gt;</span><span class="n">submit_io</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">rqd</span><span class="p">);</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+				<span class="n">nvm_rq_dev_to_tgt</span><span class="p">(</span><span class="n">tgt_dev_rqd</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+<hr />
+<p>submit_io는 nvme_nvm_submit_io로 매핑되어 있다.</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="nf">nvme_nvm_submit_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">nvm_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="n">blk_execute_rq_nowait</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rq</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nvme_nvm_end_io</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>request queue에 I/O를 집어넣는다. 비 동기적으로 실행된다. request queue access시 spin lock.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+* blk_execute_rq_nowait - insert a request into queue for execution
+* @q:    queue to insert the request in
+* @bd_disk:  matching gendisk
+* @rq:   request to insert
+* @at_head:    insert request at head or tail of queue
+* @done: I/O completion handler
+*
+* Description:
+*    Insert a fully prepared request at the back of the I/O scheduler queue
+*    for execution.  Don't wait for completion.
+*
+* Note:
+*    This function will invoke @done directly if the queue is dead.
+*/</span>
+<span class="kt">void</span> <span class="nf">blk_execute_rq_nowait</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="k">struct</span> <span class="n">gendisk</span> <span class="o">*</span><span class="n">bd_disk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">request</span> <span class="o">*</span><span class="n">rq</span><span class="p">,</span> <span class="kt">int</span> <span class="n">at_head</span><span class="p">,</span> <span class="n">rq_end_io_fn</span> <span class="o">*</span><span class="n">done</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="kt">int</span> <span class="n">where</span> <span class="o">=</span> <span class="n">at_head</span> <span class="o">?</span> <span class="n">ELEVATOR_INSERT_FRONT</span> <span class="o">:</span> <span class="n">ELEVATOR_INSERT_BACK</span><span class="p">;</span>
+
+		<span class="n">WARN_ON</span><span class="p">(</span><span class="n">irqs_disabled</span><span class="p">());</span>
+		<span class="n">WARN_ON</span><span class="p">(</span><span class="o">!</span><span class="n">blk_rq_is_passthrough</span><span class="p">(</span><span class="n">rq</span><span class="p">));</span>
+
+		<span class="n">rq</span><span class="o">-&gt;</span><span class="n">rq_disk</span> <span class="o">=</span> <span class="n">bd_disk</span><span class="p">;</span>
+		<span class="n">rq</span><span class="o">-&gt;</span><span class="n">end_io</span> <span class="o">=</span> <span class="n">done</span><span class="p">;</span>
+
+		<span class="cm">/*
+		* don't check dying flag for MQ because the request won't
+		* be reused after dying flag is set
+		*/</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">mq_ops</span><span class="p">)</span> <span class="p">{</span>
+				<span class="n">blk_mq_sched_insert_request</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">at_head</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+				<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="n">spin_lock_irq</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">blk_queue_dying</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span> <span class="p">{</span>
+				<span class="n">rq</span><span class="o">-&gt;</span><span class="n">rq_flags</span> <span class="o">|=</span> <span class="n">RQF_QUIET</span><span class="p">;</span>
+				<span class="n">__blk_end_request_all</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">BLK_STS_IOERR</span><span class="p">);</span>
+				<span class="n">spin_unlock_irq</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+				<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="n">__elv_add_request</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">rq</span><span class="p">,</span> <span class="n">where</span><span class="p">);</span>
+		<span class="n">__blk_run_queue</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+		<span class="n">spin_unlock_irq</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">__blk_run_queue</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="n">lockdep_assert_held</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+		 <span class="n">WARN_ON_ONCE</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">mq_ops</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">blk_queue_stopped</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
+		<span class="k">return</span><span class="p">;</span>
+
+		<span class="n">__blk_run_queue_uncond</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>구현되어 있는 request_fn을 invoke한다. 여러 쓰레드가 이 request function을 concurrent하게 수행할 수 있음. -&gt; lock 필요.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+* __blk_run_queue_uncond - run a queue whether or not it has been stopped
+* @q:  The queue to run
+*
+* Description:
+*    Invoke request handling on a queue if there are any pending requests.
+*    May be used to restart request handling after a request has completed.
+*    This variant runs the queue whether or not the queue has been
+*    stopped. Must be called with the queue lock held and interrupts
+*    disabled. See also @blk_run_queue.
+*/</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="nf">__blk_run_queue_uncond</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="n">lockdep_assert_held</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+		<span class="n">WARN_ON_ONCE</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">mq_ops</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">blk_queue_dead</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
+				<span class="k">return</span><span class="p">;</span>
+		<span class="cm">/*
+		* Some request_fn implementations, e.g. scsi_request_fn(), unlock
+		* the queue lock internally. As a result multiple threads may be
+		* running such a request function concurrently. Keep track of the
+		* number of active request_fn invocations such that blk_drain_queue()
+		* can wait until all these request_fn calls have finished.
+		*/</span>
+		<span class="n">q</span><span class="o">-&gt;</span><span class="n">request_fn_active</span><span class="o">++</span><span class="p">;</span>
+		<span class="n">q</span><span class="o">-&gt;</span><span class="n">request_fn</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+		<span class="n">q</span><span class="o">-&gt;</span><span class="n">request_fn_active</span><span class="o">--</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=The%20Linux%20Open-Channel%20SSD%20Subsystem%20-%20Write%20Path&amp;url=http://localhost:4000/research/openChannelSSD_code2/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/openChannelSSD_code2/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/openChannelSSD_code2/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-09-09T20:00:00Z" itemprop="datePublished">September 09, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

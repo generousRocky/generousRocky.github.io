@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>How Computers Work [09] • Rocky's Research Blog</title>
+    <meta name="description" content="CIT 강의자료) Chapter20 - How we keep in touch the Internet way">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="How Computers Work [09]">
+	<meta name="twitter:description" content="CIT 강의자료) Chapter20 - How we keep in touch the Internet way">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="How Computers Work [09]">
+	<meta property="og:description" content="CIT 강의자료) Chapter20 - How we keep in touch the Internet way">
+	<meta property="og:url" content="http://localhost:4000/book/hcw09/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/book/hcw09/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/book/" itemprop="url">
+        <span itemprop="title">Book</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>How Computers Work [09]</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw.jpg" alt="Drawing" style="width: 380px;" />
+</p>
+
+<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#how-email-outtraces-snail-mail" id="markdown-toc-how-email-outtraces-snail-mail">How Email outtraces snail mail</a></li>
+  <li><a href="#how-internet-file-sharing-wroks" id="markdown-toc-how-internet-file-sharing-wroks">How Internet File Sharing Wroks</a></li>
+  <li><a href="#how-clouds-encompass-us-all" id="markdown-toc-how-clouds-encompass-us-all">HOW CLOUDS ENCOMPASS US ALL</a></li>
+</ul>
+
+</nav>
+
+<h1 id="how-email-outtraces-snail-mail">How Email outtraces snail mail</h1>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw09_1.jpg" alt="Drawing" style="width: 600px;" />
+</p>
+
+<ol>
+  <li>
+    <p>Using an email client, Jane creates a message to go to Bob. She also attaches a photo of herself for the company website, which is encoded using a standard algorithm, such as MIME, uuencode, or BINHEX. Just as easily, Jane could enclose a word processing document, spreadsheet, or program.</p>
+  </li>
+  <li>
+    <p>The encoding turns the data making up the photograph into ASCII text, which computers commonly use for unformatted, simple text. The email software might also compress the enclosure before attaching it to the message so it takes less time to send.</p>
+  </li>
+  <li>
+    <p>The client software contacts the Internet service provider’s computer server over a modem or network connection. The client software connects to a piece of software called an <strong>SMTP</strong> server, short for <strong>Simple Mail Transfer Protocol</strong>. The server acknowledges that it has been contacted, and the client tells the server it has a message to be sent to a certain address. The SMTP replies with a message saying either, “Send it now,” or “Too busy; send later.”</p>
+  </li>
+</ol>
+
+<p>프로토콜(Protocol) - 응용프로그램 간(즉, 클라이언트와 데이터베이스 서버 간)의 데이터 전송 방식을 제어하는 규칙들의 집합을 네트워크 프로토콜이라고 한다. 네트워크 프로토콜은 네트워크를 통해 데이터를 전송할 때 사용하는 유형을 지정함. 네트워크 프로토콜의 예로는 TCP/IP, SMTP가 있다.</p>
+
+<p>프로토콜은 두 가지로 이루어져 있으며 물리적 측면과 논리적 측면으로 나뉜다.</p>
+
+<ul>
+  <li>물리적 측면: 자료 전송에 쓰이는 전송 매체, 접속용 단자 및 전송 신호, 회선 규격 등.</li>
+  <li>논리적 측면: 프레임(Frame, 자료의 표현 형식 단위) 구성, 프레임 안에 있는 각 항목의 뜻과 기능, 자료 전송의 절차 등.
+      1. 폐쇄적인 프로토콜: 자사 장치들끼리 통신하기 위한 독자적인 통신 규약이며, 자세한 규격이 공개되어 있지 않아서 크래킹 위협에 상대적으로 안전하다. (보기: IBM의 SNA, SDLC 프로토콜)
+      2. 공개된 범용 프로토콜: 여러 장치들에 쓰이는 널리 알려진 규격이며, 규격이 널리 공개되어 있기 때문에 컴퓨터와 네트워크 크래킹에 취약한 편이다. (보기: 인터넷의 TCP/IP)</li>
+</ul>
+
+<ol>
+  <li>
+    <p>The client sends the message to the SMTP server and asks for confirmation. The server confirms that it has received the message.</p>
+  </li>
+  <li>
+    <p>The SMTP server asks another piece of software, a domain name server, how to route the message through the Internet. The <strong>domain name server</strong> looks up the domain name—the part of the address after the @ character—to locate the recipient’s email server. The domain name server tells the SMTP the best path for the message.</p>
+  </li>
+</ol>
+
+<p>’@’ 문자 뒤에 주소의 일부인 도메인 이름을 조회하여받는 사람의 전자 메일 서버를 찾습니다. 도메인 이름 서버는 SMTP에 메시지의 가장 적합한 경로를 알려줌.</p>
+
+<ol>
+  <li>After the <strong>SMTP</strong> sends the message, the email travels through various Internet routers. Routers decide which electronic pathway to send the email along based on how busy the routes are. The message might also pass through one or more <strong>gateways</strong>, which translate the data from one type of computer system—such as Windows, Unix, and Macintosh—to the type of computer system that’s the next pass-through point on the route.</li>
+</ol>
+
+<ul>
+  <li>라우터는 경로가 얼마나 바쁜지에 따라 전자 메일을 보낼 전자 경로를 결정</li>
+</ul>
+
+<ol>
+  <li>When the email arrives at Bob’s SMTP server, the server transfers the message to another server, usually of the <strong>POP (Post Office Protocol) or IMAP (Internet Message Access Protocol)</strong> variety. The email server holds the message until Bob asks for it.</li>
+</ol>
+
+<p>POP, IMAP도 서버에서 돌아가고 있는 프로그램으로 생각해도 된다. 네이버 메일의 경우, 네이버 회사 데이터센터에서 운용되고 있는 서버에 구현되어 있을 것 같음(예상)</p>
+
+<ol>
+  <li>
+    <p>Using his email client, Bob logs on to the email server with a username and password and then asks the server to check for mail.</p>
+  </li>
+  <li>
+    <p>The email server retrieves Jane’s stored message and transmits it to Bob’s email client. Some email software decodes and decompresses any enclosures. Others make Bob use a utility program to expand and decode the attachment. Either way, Bob can now read Jane’s message and any attachments.</p>
+  </li>
+</ol>
+
+<h1 id="how-internet-file-sharing-wroks">How Internet File Sharing Wroks</h1>
+
+<ul>
+  <li>네트워크 프로그래밍 위해서,</li>
+</ul>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw09_2.jpg" alt="Drawing" style="width: 600px;" />
+</p>
+
+<ol>
+  <li>
+    <p>A file-sharing program user logs on to one of several file-sharing servers (although many file-sharing programs have no central servers, in which case, consider the “server” shown here to be a virtual server that connects multiple user computers). The client software sends the server a list of files in the user’s library that other users can then search for and download—these files can be anything from MP3 songs to Microsoft Word documents or program files.</p>
+  </li>
+  <li>
+    <p>The host posts the list in a database where other users can search it. The server lists the libraries for hundreds of users, but all files found in those libraries remain on the computers of the other users.</p>
+  </li>
+</ol>
+
+<ul>
+  <li>데이터베이스?</li>
+</ul>
+
+<ol>
+  <li>Another client enters a search term. This can be file metadata, such as a band name or movie director, or any other phrase you would expect to be associated with the file.</li>
+</ol>
+
+<ul>
+  <li>메타데이터?</li>
+</ul>
+
+<ol>
+  <li>The client looks at all the library records on the server and displays any titles that match at least some of the search criteria. The results include the names of the files, the type of Internet connection, <strong>Internet protocol (IP)</strong> addresses of other clients making those files available, and other assorted trivia.</li>
+</ol>
+
+<ul>
+  <li>인터넷 프로토콜(IP) -  IP 주소에 따라 다른 네트워크 간 패킷의 전송, 즉 경로 제어를 위한 규약으로 다른 네트워크 간의 데이터 전송을 가능하게 한다. 그러나 패킷이 발신된 순서대로 도착하는 것은 보증하지 않는다. 전송 제어 프로토콜(TCP) 또는 사용자 데이터그램 프로토콜(UDP)과 함께 사용한다.
+[네이버 지식백과] 인터넷 프로토콜 [Internet Protocol] (IT용어사전, 한국정보통신기술협회)</li>
+</ul>
+
+<ol>
+  <li>
+    <p>The user selects one or more of the files for transfer. His client software sends a message to the other client using its IP address. The message asks permission to download the song, and the remote client obliges by becoming a server and sending the file to the computer that asked for it.</p>
+  </li>
+  <li>
+    <p>At the same time someone is downloading a file, other users are finding songs on that person’s hard drive and are downloading them. Several uploads/downloads can run simultaneously by taking turns sharing the Internet connections.</p>
+  </li>
+</ol>
+
+<h1 id="how-clouds-encompass-us-all">HOW CLOUDS ENCOMPASS US ALL</h1>
+
+<ol>
+  <li><strong>Cloud</strong> storage has two parts. The first—the <strong>front end</strong>—is you or other computer users, all called clients, working at their PCs. Every time a client saves or opens a file, the request is passed to the <strong>back end</strong>—an elaborate system that makes up the electronic clouds. Because the client’s files are saved in a cloud, the client does not have to be at an office or personal computer to retrieve them. With correct usernames and passwords, clients may retrieve their files on other computers, tablets, and smartphones to share them with others through a service such as Dropbox, Google Drive, or OneDrive.</li>
+</ol>
+
+<ul>
+  <li>front end - client</li>
+  <li>back end - server</li>
+</ul>
+
+<p>구글드라이브를 통해 파일을 클라우드에 저장 해 두면, server를 통해 물리적인 기기에 제한 없이 자신의 파일에 접근 할 수 있다.</p>
+
+<ol>
+  <li>The client’s request first goes to a <strong>central server</strong>, a computer responsible for managing all the traffic coming from hundreds or thousands of clients. To make sure all client requests are handled properly, the central server follows a set of rules, called <strong>protocols</strong>, written to ensure there are no gaps, contradictions, or impossibilities embedded in the client request.</li>
+</ol>
+
+<p>다수의 클라이언트 - 하나의 서버(사실, 여러 개 일 수도)</p>
+
+<ol>
+  <li>After the request passes the central server’s inspection, the server uses middleware software, so called because its digital turf lies between the clients and the legions of file servers whose purpose is to be repositories of whatever a client creates. With the demand for storage space so large and so immediate, a dedicated server for each client is impractical and, as we’ll see, not a good idea. But the middleware lets the storage system act as if the client does have a direct path to a dedicated, single-client server.</li>
+</ol>
+
+<p>이후는 그냥 읽어보자, 아~ 이런게 있구나~</p>
+
+<ol>
+  <li>
+    <p>At the same time the middleware pulls a trick on the numerous high-powered computers that make up the cloud—also called server farms—where the stored file resides. Because most of the servers are not running at full capacity, the central server uses empty storage space and otherwise idle processor time to create virtual computers. Each virtual computer operates as though it were the only computer on the farm. A neat juggling act of timing lets each virtual computer have its opportunity to send and receive information and get access to the server’s hard drives in the times when the other virtual servers are at rest.</p>
+  </li>
+  <li>
+    <p>When the central server receives a request from a client to save a file, it may first encrypt the file to deter hackers who would break into the server’s farm to steal sensitive information. Then the central server consults a record of traffic and storage use among the hundreds of servers at more than one farm location. (Google is estimated to have 1 million servers.) A reputable cloud has twice the number of servers needed to store all of its clients’ file. In case of server malfunction, the cloud stores all of its data in more than one place and in more than one physical location. Doubling the number of servers and keeping copies—and sometimes copies of previous versions of a file—is referred to as <strong>redundancy</strong>.</p>
+  </li>
+</ol>
+
+<ul>
+  <li>같은 파일을 저장하는 동일한 서버가 두 개 이상 있다.</li>
+</ul>
+
+<ol>
+  <li>In case of a major catastrophe, parts of the file may be distributed among several servers, making it more difficult for a file to be totally eradicated. Such a strategy was part of the original impetus for the Internet among the U.S. military, which wanted a redundant system of information in case some computer centers were taken out in a nuclear war. The system has also been cited as a way to ensure the distribution of information among insurgents otherwise censored by a repressive government.</li>
+</ol>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=How%20Computers%20Work%20[09]&amp;url=http://localhost:4000/book/hcw09/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/book/hcw09/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/book/hcw09/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-11-10T21:00:00Z" itemprop="datePublished">November 10, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

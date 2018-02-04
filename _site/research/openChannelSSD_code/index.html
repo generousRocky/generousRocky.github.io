@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Linux Open-Channel SSD Subsystem - Read Path • Rocky's Research Blog</title>
+    <meta name="description" content="Kernel Code Analysis - Read path">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="Linux Open-Channel SSD Subsystem - Read Path">
+	<meta name="twitter:description" content="Kernel Code Analysis - Read path">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Linux Open-Channel SSD Subsystem - Read Path">
+	<meta property="og:description" content="Kernel Code Analysis - Read path">
+	<meta property="og:url" content="http://localhost:4000/research/openChannelSSD_code/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/openChannelSSD_code/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>Linux Open-Channel SSD Subsystem - Read Path</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<p>관련 논문:  <a href="/publication/fast17-bjorling.pdf">“LightNVM: The Linux Open-Channel SSD Subsystem”</a></p>
+
+<h1 id="pblk-physical-block-device-target">pblk: Physical Block Device Target</h1>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD_code.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<p>pblk implements a fully associative, host-based FTL that exposes a traditional block I/O interface. Its primary responsibilities are:</p>
+
+<ul>
+  <li>Map logical addresses onto physical addresses (4KB granularity) in a logical-to-physical (L2P) table.</li>
+  <li>Maintain the integrity and consistency of the L2P table as well as its recovery from normal tear down and power outage.</li>
+  <li>Deal with controller- and media-specific constrains.</li>
+  <li>Handle I/O errors.</li>
+  <li>Implement garbage collection.</li>
+  <li>Maintain consistency across the I/O stack during synchronization points.</li>
+</ul>
+
+<p>For more information please refer to: <a href="http://lightnvm.io">http://lightnvm.io</a></p>
+
+<h2 id="source-code-overview">Source Code Overview</h2>
+
+<p>LightNVM와 관련된 중요한 기능의 대부분은 커널 소스코드의 /driver/lightnvm/에 구현되어 있으며 각 file별 주요 구현 내용은 다음과 같다.</p>
+
+<p>nvme block device의 creation은 core.c 파일에 구현되어 있다. write buffering, address mapping, garbage collection과 같은 기존의 FTL에서 수행하고 있던 기능들은 pblk-* file에 구현되어 있다.</p>
+
+<ul>
+  <li><em>pblk.h</em> - Implementation of a Physical Block-device target for Open-channel SSDs.</li>
+  <li>rrpc.h, rrpc.c - Implementation of a Round-robin page-based Hybrid FTL for Open-channel SSDs.</li>
+  <li><em>pblk-cache.c</em> - pblk’s write cache</li>
+  <li><em>pblk-core.c</em> - pblk’s core functionality</li>
+  <li><em>pblk-gc.c</em> - pblk’s garbage collector</li>
+  <li><em>pblk-init.c</em> - pblk’s initialization.</li>
+  <li><em>pblk-map.c</em> - pblk’s lba-ppa mapping strategy</li>
+  <li><em>pblk-rb.c</em> - pblk’s write buffer</li>
+  <li><em>pblk-read.c</em> - pblk’s read path</li>
+  <li><em>pblk-recovery.c</em> - pblk’s recovery path</li>
+  <li><em>pblk-rl.c</em> - pblk’s rate limiter for user I/O</li>
+  <li><em>pblk-sysfs.c</em> - pblk’s sysfs</li>
+  <li><em>pblk-write.c</em> - pblk’s write path from write buffer to media</li>
+</ul>
+
+<h2 id="overview-of-read-path-this-is-a-work-in-progress">Overview of read path (This is a work in progress.)</h2>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD_code_01.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<p>파일 시스템으로부터의 I/O는 make_rq와 mapping 된 pblk_make_rq함수에 의해 수행된다.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="n">blk_qc_t</span> <span class="nf">pblk_make_rq</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="k">struct</span> <span class="n">bio</span> <span class="o">*</span><span class="n">bio</span><span class="p">)</span>
+<span class="p">{</span>
+				<span class="p">.</span>
+				<span class="p">.</span>
+	<span class="k">switch</span> <span class="p">(</span><span class="n">pblk_rw_io</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">pblk</span><span class="p">,</span> <span class="n">bio</span><span class="p">))</span> <span class="p">{</span>
+				<span class="p">.</span>
+				<span class="p">.</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="nf">pblk_rw_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">bio</span> <span class="o">*</span><span class="n">bio</span><span class="p">){</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">bio_data_dir</span><span class="p">(</span><span class="n">bio</span><span class="p">)</span> <span class="o">==</span> <span class="n">READ</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">.</span> <span class="p">.</span> <span class="p">.</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">pblk_submit_read</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">bio</span><span class="p">);</span>
+    <span class="p">.</span> <span class="p">.</span> <span class="p">.</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">//else -&gt; write
+</span>    <span class="p">.</span>
+    <span class="p">.</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>pblk_rw_io에서 read i/o일 경우 pblk_submit_read함수 호출</p>
+
+<hr />
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="n">pblk_submit_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">bio</span> <span class="o">*</span><span class="n">bio</span><span class="p">){</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="c1">// rqd는 nvm_rq structure 타입의 변수로서,
+</span>		<span class="c1">// bio structure, ppa address 등을 멤버 변수로 갖는다.
+</span>		<span class="c1">// 본 함수 내에서 bio, ppa를 포함한 rqd를 완성하여
+</span>		<span class="c1">// submit 함.
+</span>		<span class="n">rqd</span> <span class="n">structure</span> <span class="n">forming</span>
+
+
+		<span class="c1">// lba to ppa translation
+</span>		<span class="k">if</span><span class="p">(</span><span class="n">nr_secs</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">){</span>
+				<span class="p">.</span> <span class="p">.</span> <span class="p">.</span>
+				<span class="n">pblk_read_ppalist_rq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">,</span> <span class="n">blba</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">read_bitmap</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+				<span class="n">pblk_read_rq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">,</span> <span class="n">blba</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">read_bitmap</span><span class="p">);</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		
+		<span class="n">ret</span> <span class="o">=</span> <span class="n">pblk_submit_read_io</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="n">pblk_read_ppalist_rq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">,</span> <span class="n">blba</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">read_bitmap</span><span class="p">){</span>
+<span class="c1">//pblk_read_rq(pblk, rqd, blba, &amp;read_bitmap) 함수 공통
+</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="c1">//blba to  ppa translation
+</span>		<span class="n">pblk_lookup_l2p_seq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ppa</span><span class="p">,</span> <span class="n">lba</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="c1">// 만약 캐시에 있으면 캐시에서 읽는다.
+</span>		<span class="c1">// 여기서 캐시는 write buffer를 말함.
+</span>		<span class="k">if</span> <span class="p">(</span><span class="n">pblk_addr_in_cache</span><span class="p">(</span><span class="n">ppa</span><span class="p">))</span> 
+		<span class="p">{</span>
+				<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">pblk_read_from_cache</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">bio</span><span class="p">,</span> <span class="n">lba</span><span class="p">,</span> <span class="n">ppa</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span> 		<span class="p">{</span>
+						<span class="n">pblk_lookup_l2p_seq</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ppa</span><span class="p">,</span> <span class="n">lba</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> 
+								<span class="k">goto</span> <span class="n">retry</span><span class="p">;</span>                                     
+				<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+				<span class="n">rqd</span><span class="o">-&gt;</span><span class="n">ppa_addr</span> <span class="o">=</span> <span class="n">ppa</span><span class="p">;</span>
+
+		<span class="p">.</span>
+		<span class="p">.</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>pblk_trans_map_get 함수를 통해 address translation을 수행한다. 이때 mapping table 에 access는 spin lock에 의해 sychronize 된다.</p>
+
+<p>Todo: mapping table에 누가 또 access하는지 찾아보자.</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">pblk_lookup_l2p_seq</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">ppa_addr</span> <span class="o">*</span><span class="n">ppas</span><span class="p">,</span> <span class="n">u64</span> <span class="o">*</span><span class="n">lba_list</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nr_secs</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">trans_lock</span><span class="p">);</span>
+		<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nr_secs</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+				<span class="n">lba</span> <span class="o">=</span> <span class="n">lba_list</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+				<span class="p">.</span>
+				<span class="p">.</span>
+				<span class="n">ppas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pblk_trans_map_get</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">lba</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">trans_lock</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>pblk structure에서 trans_map이라는 자료구조를 통해 translation mapping table을 관리하고 있으며, 본 함수를 통해 logical block address를 physical page address로 변환한다.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kr">inline</span> <span class="k">struct</span> <span class="n">ppa_addr</span> <span class="nf">pblk_trans_map_get</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="n">sector_t</span> <span class="n">lba</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="k">struct</span> <span class="n">ppa_addr</span> <span class="n">ppa</span><span class="p">;</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">ppaf_bitsize</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">)</span> <span class="p">{</span>
+				<span class="n">u32</span> <span class="o">*</span><span class="n">map</span> <span class="o">=</span> <span class="p">(</span><span class="n">u32</span> <span class="o">*</span><span class="p">)</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">trans_map</span><span class="p">;</span>
+
+				<span class="n">ppa</span> <span class="o">=</span> <span class="n">pblk_ppa32_to_ppa64</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">map</span><span class="p">[</span><span class="n">lba</span><span class="p">]);</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+		<span class="k">struct</span> <span class="n">ppa_addr</span> <span class="o">*</span><span class="n">map</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">ppa_addr</span> <span class="o">*</span><span class="p">)</span><span class="n">pblk</span><span class="o">-&gt;</span><span class="n">trans_map</span><span class="p">;</span>
+
+		<span class="n">ppa</span> <span class="o">=</span> <span class="n">map</span><span class="p">[</span><span class="n">lba</span><span class="p">];</span>
+		<span class="p">}</span>
+
+		<span class="k">return</span> <span class="n">ppa</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="n">pblk_submit_read_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">){</span>
+
+		<span class="p">..</span>
+		<span class="n">err</span> <span class="o">=</span> <span class="n">pblk_submit_io</span><span class="p">(</span><span class="n">pblk</span><span class="p">,</span> <span class="n">rqd</span><span class="p">);</span>
+		<span class="p">..</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>rqd-&gt;nr_ppas 만큼 bad ppa 검사, 이때 spin lock으로 synchronization구현.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">pblk_submit_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">pblk</span> <span class="o">*</span><span class="n">pblk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span> <span class="n">rqd</span><span class="o">-&gt;</span><span class="n">nr_ppas</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+
+				<span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">line</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">);</span>
+				<span class="c1">//pad ppa 검사
+</span>				<span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">line</span><span class="o">-&gt;</span><span class="n">unlock</span><span class="p">)</span>
+		<span class="p">}</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="k">return</span> <span class="n">nvm_submit_io</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">rqd</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">nvm_submit_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">nvm_tgt_dev</span> <span class="o">*</span><span class="n">tgt_dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="n">ret</span> <span class="o">=</span> <span class="n">dev</span><span class="o">-&gt;</span><span class="n">ops</span><span class="o">-&gt;</span><span class="n">submit_io</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">rqd</span><span class="p">);</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+				<span class="n">nvm_rq_dev_to_tgt</span><span class="p">(</span><span class="n">tgt_dev_rqd</span><span class="p">);</span>
+
+		<span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre>
+</div>
+<hr />
+<p>submit_io는 nvme_nvm_submit_io로 매핑되어 있다.</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="k">static</span> <span class="kt">int</span> <span class="nf">nvme_nvm_submit_io</span><span class="p">(</span><span class="k">struct</span> <span class="n">nvm_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="k">struct</span> <span class="n">nvm_rq</span> <span class="o">*</span><span class="n">rqd</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="p">.</span>
+		<span class="p">.</span>
+		<span class="n">blk_execute_rq_nowait</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">rq</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nvme_nvm_end_io</span><span class="p">);</span>
+
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>request queue에 I/O를 집어넣는다. 비 동기적으로 실행된다. request queue access시 spin lock.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+* blk_execute_rq_nowait - insert a request into queue for execution
+* @q:    queue to insert the request in
+* @bd_disk:  matching gendisk
+* @rq:   request to insert
+* @at_head:    insert request at head or tail of queue
+* @done: I/O completion handler
+*
+* Description:
+*    Insert a fully prepared request at the back of the I/O scheduler queue
+*    for execution.  Don't wait for completion.
+*
+* Note:
+*    This function will invoke @done directly if the queue is dead.
+*/</span>
+<span class="kt">void</span> <span class="nf">blk_execute_rq_nowait</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="k">struct</span> <span class="n">gendisk</span> <span class="o">*</span><span class="n">bd_disk</span><span class="p">,</span> <span class="k">struct</span> <span class="n">request</span> <span class="o">*</span><span class="n">rq</span><span class="p">,</span> <span class="kt">int</span> <span class="n">at_head</span><span class="p">,</span> <span class="n">rq_end_io_fn</span> <span class="o">*</span><span class="n">done</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="kt">int</span> <span class="n">where</span> <span class="o">=</span> <span class="n">at_head</span> <span class="o">?</span> <span class="n">ELEVATOR_INSERT_FRONT</span> <span class="o">:</span> <span class="n">ELEVATOR_INSERT_BACK</span><span class="p">;</span>
+
+		<span class="n">WARN_ON</span><span class="p">(</span><span class="n">irqs_disabled</span><span class="p">());</span>
+		<span class="n">WARN_ON</span><span class="p">(</span><span class="o">!</span><span class="n">blk_rq_is_passthrough</span><span class="p">(</span><span class="n">rq</span><span class="p">));</span>
+
+		<span class="n">rq</span><span class="o">-&gt;</span><span class="n">rq_disk</span> <span class="o">=</span> <span class="n">bd_disk</span><span class="p">;</span>
+		<span class="n">rq</span><span class="o">-&gt;</span><span class="n">end_io</span> <span class="o">=</span> <span class="n">done</span><span class="p">;</span>
+
+		<span class="cm">/*
+		* don't check dying flag for MQ because the request won't
+		* be reused after dying flag is set
+		*/</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">mq_ops</span><span class="p">)</span> <span class="p">{</span>
+				<span class="n">blk_mq_sched_insert_request</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">at_head</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+				<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="n">spin_lock_irq</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">blk_queue_dying</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span> <span class="p">{</span>
+				<span class="n">rq</span><span class="o">-&gt;</span><span class="n">rq_flags</span> <span class="o">|=</span> <span class="n">RQF_QUIET</span><span class="p">;</span>
+				<span class="n">__blk_end_request_all</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">BLK_STS_IOERR</span><span class="p">);</span>
+				<span class="n">spin_unlock_irq</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+				<span class="k">return</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="n">__elv_add_request</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">rq</span><span class="p">,</span> <span class="n">where</span><span class="p">);</span>
+		<span class="n">__blk_run_queue</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+		<span class="n">spin_unlock_irq</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">__blk_run_queue</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="n">lockdep_assert_held</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+		 <span class="n">WARN_ON_ONCE</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">mq_ops</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">blk_queue_stopped</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
+		<span class="k">return</span><span class="p">;</span>
+
+		<span class="n">__blk_run_queue_uncond</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<hr />
+<p>구현되어 있는 request_fn을 invoke한다. 여러 쓰레드가 이 request function을 concurrent하게 수행할 수 있음. -&gt; lock 필요.</p>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="cm">/**
+* __blk_run_queue_uncond - run a queue whether or not it has been stopped
+* @q:  The queue to run
+*
+* Description:
+*    Invoke request handling on a queue if there are any pending requests.
+*    May be used to restart request handling after a request has completed.
+*    This variant runs the queue whether or not the queue has been
+*    stopped. Must be called with the queue lock held and interrupts
+*    disabled. See also @blk_run_queue.
+*/</span>
+<span class="kr">inline</span> <span class="kt">void</span> <span class="nf">__blk_run_queue_uncond</span><span class="p">(</span><span class="k">struct</span> <span class="n">request_queue</span> <span class="o">*</span><span class="n">q</span><span class="p">)</span>
+<span class="p">{</span>
+		<span class="n">lockdep_assert_held</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">queue_lock</span><span class="p">);</span>
+		<span class="n">WARN_ON_ONCE</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">mq_ops</span><span class="p">);</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">blk_queue_dead</span><span class="p">(</span><span class="n">q</span><span class="p">)))</span>
+				<span class="k">return</span><span class="p">;</span>
+		<span class="cm">/*
+		* Some request_fn implementations, e.g. scsi_request_fn(), unlock
+		* the queue lock internally. As a result multiple threads may be
+		* running such a request function concurrently. Keep track of the
+		* number of active request_fn invocations such that blk_drain_queue()
+		* can wait until all these request_fn calls have finished.
+		*/</span>
+		<span class="n">q</span><span class="o">-&gt;</span><span class="n">request_fn_active</span><span class="o">++</span><span class="p">;</span>
+		<span class="n">q</span><span class="o">-&gt;</span><span class="n">request_fn</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+		<span class="n">q</span><span class="o">-&gt;</span><span class="n">request_fn_active</span><span class="o">--</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Linux%20Open-Channel%20SSD%20Subsystem%20-%20Read%20Path&amp;url=http://localhost:4000/research/openChannelSSD_code/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/openChannelSSD_code/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/openChannelSSD_code/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-08-20T19:00:00Z" itemprop="datePublished">August 20, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

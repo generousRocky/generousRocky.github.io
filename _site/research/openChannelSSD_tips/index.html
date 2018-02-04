@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC) • Rocky's Research Blog</title>
+    <meta name="description" content="Tips for getting started with CNEX SSD">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC)">
+	<meta name="twitter:description" content="Tips for getting started with CNEX SSD">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC)">
+	<meta property="og:description" content="Tips for getting started with CNEX SSD">
+	<meta property="og:url" content="http://localhost:4000/research/openChannelSSD_tips/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/openChannelSSD_tips/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC)</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/openChannelSSD_tips_01.png" alt="Drawing" style="width: 600;" />
+</p>
+
+<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#1-install-supported-linux-kernel-and-boot-as-it" id="markdown-toc-1-install-supported-linux-kernel-and-boot-as-it">1. Install supported Linux Kernel and boot as it</a></li>
+  <li><a href="#2-install-nvme-cli-tool" id="markdown-toc-2-install-nvme-cli-tool">2. Install nvme-cli tool</a></li>
+  <li><a href="#3-using-open-channel-ssd-hardware" id="markdown-toc-3-using-open-channel-ssd-hardware">3. Using Open-Channel SSD hardware</a></li>
+  <li><a href="#4-instantiate-media-manager-and-target" id="markdown-toc-4-instantiate-media-manager-and-target">4. Instantiate media manager and target</a></li>
+  <li><a href="#5-mount-and-use" id="markdown-toc-5-mount-and-use">5. Mount and use</a></li>
+  <li><a href="#5-extra" id="markdown-toc-5-extra">5. Extra</a></li>
+</ul>
+
+</nav>
+
+<h6 id="original-page-link-httpsopenchannelssdreadthedocsioenlatest">Original page link: <a href="https://openchannelssd.readthedocs.io/en/latest/">https://openchannelssd.readthedocs.io/en/latest/</a></h6>
+
+<h1 id="1-install-supported-linux-kernel-and-boot-as-it">1. Install supported Linux Kernel and boot as it</h1>
+
+<p>LightNVM is directly supported in Linux since kernel 4.4. Pblk, which is used to get started, is available since 4.12+. Make sure to install 4.12+ or later if you want to use pblk.</p>
+
+<p>To use Open-Channel SSDs, support in the operating system kernel is required. Support in the Linux kernel has been supported since 4.4 with the inclusion of the LightNVM subsystem. The project is still under development, therefore the latest release or release candidate is preferred. The latest source code is available at <a href="https://github.com/OpenChannelSSD/linux">https://github.com/OpenChannelSSD/linux</a>.</p>
+
+<ul>
+  <li>Tips:<br />
+    <div class="language-sh highlighter-rouge"><pre class="highlight"><code>git clone -b pblk.cnex  https://github.com/OpenChannelSSD/linux.
+</code></pre>
+    </div>
+    <p>Like above script, you have to use pblk.cnex branch in the Linux repository witch has couple of extra patches.
+you can see an issue about this here: <a href="https://github.com/OpenChannelSSD/liblightnvm/issues/7">https://github.com/OpenChannelSSD/liblightnvm/issues/7</a>
+<br /><br />When you compile Kernel, make sure that the .config file at least includes:</p>
+  </li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>    <span class="nv">CONFIG_NVM</span><span class="o">=</span>y
+    <span class="c"># Expose the /sys/module/lnvm/parameters/configure_debug interface</span>
+    <span class="nv">CONFIG_NVM_DEBUG</span><span class="o">=</span>y
+    <span class="c"># Target support (required to expose the open-channel SSD as a block device)</span>
+    <span class="nv">CONFIG_NVM_PBLK</span><span class="o">=</span>y    
+    <span class="c"># For NVMe support</span>
+    <span class="nv">CONFIG_BLK_DEV_NVME</span><span class="o">=</span>y
+</code></pre>
+</div>
+
+<p>After booting the a supported kernel. The following must be met:</p>
+
+<ol>
+  <li>A compatible device, such as QEMU NVMe or an Open-Channel SSD, such as the CNEX Labs LightNVM SDK.</li>
+  <li>A media manager on top of the device driver. The media manager manages the partition table for the device.</li>
+  <li>A target on top of the block manager that exposes the Open-Channel SSD.</li>
+</ol>
+
+<ul>
+  <li>Tips:<br />
+You don’t have to concern #2 becasue it is deprecated since 4.8.
+you can see an issue regarding this here: <a href="https://github.com/OpenChannelSSD/documentation/issues/5">https://github.com/OpenChannelSSD/documentation/issues/5</a></li>
+</ul>
+
+<h1 id="2-install-nvme-cli-tool">2. Install nvme-cli tool</h1>
+
+<p>nvme-cli is the tool used to administrate nvme devices. It can be installed typing like</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>git clone https://github.com/linux-nvme/nvme-cli
+<span class="nb">cd </span>nvme-cli
+sudo make; sudo make install
+
+sudo add-apt-repository ppa:sbates
+sudo apt-get update
+sudo apt-get install nvme-cli
+</code></pre>
+</div>
+
+<p>or installed from <a href="https://github.com/linux-nvme/nvme-cli">https://github.com/linux-nvme/nvme-cli</a></p>
+
+<p>If you are not running Ubuntu, please see the nvme-cli github project for instructions.</p>
+
+<h1 id="3-using-open-channel-ssd-hardware">3. Using Open-Channel SSD hardware</h1>
+
+<p>If you have a LightNVM SDK from CNEX Labs, or another Open-Channel SSD, you should be able to see the device using</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo nvme lnvm list
+</code></pre>
+</div>
+
+<p>which should output the following:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>nvme lnvm list
+Number of devices: 1
+Device      	Block manager	Version
+nvme0n1     	gennvm      	(0,1,0)
+</code></pre>
+</div>
+
+<h1 id="4-instantiate-media-manager-and-target">4. Instantiate media manager and target</h1>
+
+<p>When the installation is finished and the kernel have been booted. Devices can be enumerated by:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo nvme lnvm list
+</code></pre>
+</div>
+
+<p>and initialized by:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo nvme lnvm init -d nvme0n1
+sudo nvme lnvm create -d nvme0n1 --lun-begin=0 --lun-end=3 -n mydevice -t pblk
+</code></pre>
+</div>
+
+<p>use the option -f to avoid recovering the L2P table from the device for quick initialization</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo nvme lnvm create -d nvme0n1 --lun-begin=0 --lun-end=3 -n mydevice -t pblk -f
+</code></pre>
+</div>
+
+<p>or</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo nvme lnvm create -d /dev/nvme0n1 -n mydevice -t pblk -b 0 -e 127
+</code></pre>
+</div>
+
+<p>for other options for –help on each command. For example
+    sudo nvme lnvm create –help</p>
+
+<p>Assuming nvme0n1 was shown during “nvme lnvm list”, it will then expose /dev/mydevice as a block device using it as the backend. Please note that pblk is only available at the Linux kernel Github repository, and it yet to be upstream.</p>
+
+<h1 id="5-mount-and-use">5. Mount and use</h1>
+
+<p>If you get here without any error, you can mount the device and use it like:</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>sudo mkfs -t ext4 /dev/mydevice
+sudo mkdir /media/nvme
+sudo mount /dev/mydevice /media/nvme
+</code></pre>
+</div>
+
+<p>you can see “nvme” directory created and mounted to /dev/mydevice</p>
+
+<h1 id="5-extra">5. Extra</h1>
+
+<p>At first time, I used Ubuntu 16.04 Desktop. There are some problem like a kernel panic or taking forever for <em>mkfs</em>. So, I changed and use 16.04 server.</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Getting%20started%20with%20Open-Channel-SSD%20with%20CNEX%20SSD(CNEX%20Labs%20Westlake%20ASIC)&amp;url=http://localhost:4000/research/openChannelSSD_tips/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/openChannelSSD_tips/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/openChannelSSD_tips/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-08-28T19:00:00Z" itemprop="datePublished">August 28, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

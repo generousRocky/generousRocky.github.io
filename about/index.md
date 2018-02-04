@@ -84,7 +84,7 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 	<img src="{{ site.url }}/images/CIT-BG-1_small.png" align="left" style="width: 200px;" hspace="15" vspace="30">
 	<br />
 	CIT Code Academy, CIT 코드 아카데미 ㈜디지틀조선일보<br />
-	teacher, 강사<br />
+	lecturer, 강사<br />
 	2017 ~
 </p><br />
 
@@ -110,9 +110,10 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 <br /><br />
 ## Publication
 ### Domestic
-1. Dec 2016  <a href="/publication/OpenSSD.pdf">"Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform"</a>
-2. Jun 2016  "Design & Simulation method for the Pre-scan Active suspension control system on the Virtual AUTOSAR Platform"
 
+* Dec 2017  <a href="/publication/Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석.pdf">"Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석"</a>
+* Dec 2016  <a href="/publication/OpenSSD.pdf">"Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform"</a>
+* Jun 2016  "Design & Simulation method for the Pre-scan Active suspension control system on the Virtual AUTOSAR Platform"
 ### International
 Hope soon...
 

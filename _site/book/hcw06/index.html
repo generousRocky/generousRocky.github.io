@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>How Computers Work [06] • Rocky's Research Blog</title>
+    <meta name="description" content="CIT 강의자료) Chapter 17 - How Network Tie Computer Togethe ">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="How Computers Work [06]">
+	<meta name="twitter:description" content="CIT 강의자료) Chapter 17 - How Network Tie Computer Togethe ">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="How Computers Work [06]">
+	<meta property="og:description" content="CIT 강의자료) Chapter 17 - How Network Tie Computer Togethe ">
+	<meta property="og:url" content="http://localhost:4000/book/hcw06/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/book/hcw06/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/book/" itemprop="url">
+        <span itemprop="title">Book</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>How Computers Work [06]</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw.jpg" alt="Drawing" style="width: 380px;" />
+</p>
+
+<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#chapter-11" id="markdown-toc-chapter-11">Chapter 11</a>    <ul>
+      <li><a href="#lanlocal-area-network" id="markdown-toc-lanlocal-area-network">LAN(Local Area Network)</a></li>
+      <li><a href="#wwwworld-wide-web" id="markdown-toc-wwwworld-wide-web">WWW(world wide web)</a></li>
+      <li><a href="#packer-and-network" id="markdown-toc-packer-and-network">packer and network</a></li>
+    </ul>
+  </li>
+</ul>
+
+</nav>
+<p>i</p>
+<h1 id="chapter-11">Chapter 11</h1>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw06_1.jpg" alt="Drawing" style="width: 600px;" />
+</p>
+
+<h2 id="lanlocal-area-network">LAN(Local Area Network)</h2>
+<p>개념적 의미는 물리적으로 연결되어 있는 여러대의 pc, server등을 말함. node끼리의 물리적 연결은 cable, 광섬유, 구리선, 라디오 시그널이나 적외선 또한 포함한다.</p>
+
+<p>LAN에서 어떤 기술을 사용하던 간에, 궁극적인 목표는 data을 한 node에서 다른 node로 전송하기 위함(+빠르고, 안정적이고, 싼 값에). 여기서 data는 단순한 정보 일 수도 있고, <strong>데이터에 대한 요청(request), 그에 대한 reply</strong>일 수 있다. 또한 네트워크 상으로 연결된 어떤 프로그램에 대한 instruction 일 수도 있다.</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw06_2.png" alt="Drawing" style="width: 600px;" />
+</p>
+
+<p><strong>대부분의 네트크 상의node들은 client server 관계로 연결되어 있다.</strong></p>
+
+<ul>
+  <li>
+    <p><strong>client</strong> - server에 request를 보내는 node(pc, 또다른 server가 될 수도 있음)</p>
+  </li>
+  <li>
+    <p><strong>file server</strong> - which is a specialized computer with multiple large hard drives that are not used exclusively by any individual on the network.</p>
+  </li>
+  <li>
+    <p><strong>internet server</strong> - WWW(world wide web)에 LAN에 속해 있는 node들이 접속할 수 있도록 도와주는 server. ISP(Internet Service Provider, 우리나라는 KT, 하나로통신 등이 있음)에서 이 서버를 운영하고 있다.</p>
+  </li>
+</ul>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw06_3.png" alt="Drawing" style="width: 600px;" />
+</p>
+
+<ul>
+  <li><strong>peer-to-peer network(p2p, p to p)</strong> - client-server 네트워크 모델과는 다른 네트워크 연결 방식, 각 node는 client를 거치지 않고 직접 연결되어 있으며, 토렌트, 웹하드, 등이 있다. 최근 모바일 기기, iot기기가 많이 등장하면서 일상생활 곳곳에 사용되는 네트워크 연결 방식. <strong>직접 연결된 peer사이에는 다시 client-server 모델이 적용된다.</strong> ex) 맥-iphone,</li>
+</ul>
+
+<h2 id="wwwworld-wide-web">WWW(world wide web)</h2>
+
+<p>월드 와이드 웹(World Wide Web, WWW, W3)은 인터넷에 연결된 컴퓨터들을 통해 사람들이 정보를 공유할 수 있는 전 세계적인 정보 공간을 말한다. 간단히 웹(Web)이라 부르는 경우가 많다. 이 용어는 인터넷과 동의어로 쓰이는 경우가 많으나 엄격히 말해 서로 다른 개념이다. 웹은 전자 메일과 같이 인터넷 상에서 동작하는 하나의 서비스일 뿐이다</p>
+
+<p>인터넷상의 정보를 하이퍼텍스트 방식과 멀티미디어 환경에서 검색할 수 있게 해주는 정보검색 시스템이다. 하이퍼텍스트 형식으로 표현된 인터넷상의 다양한 정보를 효과적으로 검색하는 시스템으로 전 세계적으로 가장 널리 보급되어 있다</p>
+
+<p>하이퍼텍스트는 웹 브라우저라 불리는 프로그램을 통해 웹 서버에서 “문서”나 웹 페이지등의 정보 조각을 읽어들여 컴퓨터 모니터에 출력하는 형태로 보이게 된다. 그러고 나서 사용자는 각 페이지에 있는 하이퍼링크를 따라 다른 문서로 이동하거나, 그 페이지를 서비스하고 있는 서버로 일련의 정보를 보낼 수도 있다. 하이퍼링크를 따라 이동하는 행위를 흔히 웹 서핑(web surfing, 문화어: 망유람[2]) 또는 웹 브라우징이라 한다. 그리고 관련된 내용들이 모여있는 웹 페이지들의 집합을 웹 사이트라 한다.</p>
+
+<p><a href="https://ko.wikipedia.org/wiki/월드_와이드_웹">https://ko.wikipedia.org/wiki/월드_와이드_웹</a></p>
+
+<h2 id="packer-and-network">packer and network</h2>
+
+<p>네트워크를 통해 각 node는 다른 node에게 <strong>packet</strong>의 형태로 데이터를 전송한다. packet의 구성은 다음과 같이 <strong>매우 간단하게</strong> 나누어 볼 수 있다.</p>
+
+<ul>
+  <li>Preamble - Synchronizes the network nodes
+““나 지금부터 packet 보낼거야~””, <strong>101010101 또는 010101010</strong></li>
+  <li>Destination Address—A single PC or all PCs on a network</li>
+  <li>Source Address—The address of the computer from which the packet originated</li>
+</ul>
+
+<blockquote>
+  <p>network address란?<br />
+인터넷 상에 존재하는 호스트 들을 구분하기 위한 32비트 주소 체계. 일반적으로 다음고 같이 점이 찍혀진 10진수를 사용하여 표현한다.<br />
+<strong>192.168.0.12</strong><br /></p>
+</blockquote>
+
+<ul>
+  <li>Type—Defines the format used for the data</li>
+  <li>Data—The actual information</li>
+  <li>CRC—Cyclical Redundancy Check, which is used to spot transmission errors</li>
+</ul>
+
+<h3 id="어떻게-주소로-길을-찾아가지">어떻게 주소로 길을 찾아가지?</h3>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw06_4.jpg" alt="Drawing" style="width: 600px;" />
+</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/hcw06_5.png" alt="Drawing" style="width: 600px;" />
+</p>
+
+<ul>
+  <li>
+    <p>라우터 - 라우터(router[a], 문화어: 경로기) 혹은 라우팅 기능을 갖는 공유기는 패킷의 위치를 추출하여, 그 위치에 대한 최적의 경로를 지정하며, 이 경로를 따라 데이터 패킷을 다음 장치로 전향시키는 장치이다. 이때 최적의 경로는 일반적으로는 가장 빠르게 통신이 가능한 경로이므로, 이것이 최단 거리 일수도 있지만, 돌아가는 경로라도 고속의 전송로를 통하여 전달이 되는 경로가 될 수 있다. 간단히 말해 서로 다른 내트워크 간에 중계 역할을 해준다.</p>
+  </li>
+  <li>
+    <p>스위치(switch) -  작은 라우터, 기능은 같음.</p>
+  </li>
+  <li>
+    <p>hub - 병목현상(bottle neck)을 해결하기 위함, 메모리 버퍼를 가지고 있다.</p>
+  </li>
+</ul>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=How%20Computers%20Work%20[06]&amp;url=http://localhost:4000/book/hcw06/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/book/hcw06/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/book/hcw06/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2017-09-28T19:00:00Z" itemprop="datePublished">September 28, 2017</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>
