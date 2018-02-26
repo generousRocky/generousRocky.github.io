@@ -23,6 +23,10 @@ ads: true
 
 -->
 
+
+{% include toc.html %}
+
+
 # Abstraction
 Open Channel SSD는 스토리지 디바이스에 FTL(Flash Translation Layer)을 구현하지 않고, 운영체제에 게 SSD(Solid-State Drive)의 관리를 맡기는 SSD이다. 따라서 리눅스에서는 LightNVM과 같은 추상화 계 층을 제공한다. pblk(The Physical Block Device)은 LightNVM Layer에 위치하는 커널 모듈로서 기존의 SSD의 FTL에서 수행하는 기능들을 호스트에서 수행한다. 본 논문에서는 Open Channel SSD에서 쓰기 요청의 처리 과정을 보이고, pblk에 구현되어 있는 소프트웨어 버퍼인 쓰기 버퍼(Write Buffer) 및 입출력 요청의 스레드 구성에 따른 성능 분석 결과를 보인다.
 

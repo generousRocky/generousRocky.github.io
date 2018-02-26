@@ -1,10 +1,176 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-02-04T19:20:37+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms</title><link href="http://localhost:4000/research/openChannelSSD_ksc/" rel="alternate" type="text/html" title="Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms" /><published>2018-02-01T19:00:00+09:00</published><updated>2018-02-01T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_ksc</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_ksc/">&lt;!--
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-02-26T20:36:41+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">개발자와 DBA를 위한 real mysql</title><link href="http://localhost:4000/research/mysql_01/" rel="alternate" type="text/html" title="개발자와 DBA를 위한 real mysql" /><published>2018-02-20T19:00:00+09:00</published><updated>2018-02-20T19:00:00+09:00</updated><id>http://localhost:4000/research/mysql_01</id><content type="html" xml:base="http://localhost:4000/research/mysql_01/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#path-overview&quot; id=&quot;markdown-toc-path-overview&quot;&gt;Path Overview&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#threading&quot; id=&quot;markdown-toc-threading&quot;&gt;Threading&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;path-overview&quot;&gt;Path Overview&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Mysql 엔진
+클라이언트로부터 접속 및 sql 쿼리 요청을 받아 문장을 분석, 최적화한다. 데이터를 스토리지로부터 읽거나 써야 할 떄는 스토리지 엔진에게 요청한다. 이러한 요청을 Handler Request라고 한다. 여기에 사용되는 API는 Handler API라고 함.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;스토리지 엔진
+실제 데이터를 디바이스에 저장하거나 읽어오는 부분을 담당. MySQL서버에서 Mysql엔진은 하나이지만 스토리지 엔진은 여러 개 일 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;threading&quot;&gt;Threading&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;포그라운드 스레드(클라이언트 스레드) - mysql 서버에 접속한 클라이언트 만큼 존재하며, 클라이언트가 요청하는 쿼리 문장을 처리한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;백그라운더 스레드 - InnoDB의 경우 여러가지 작업이 백그라운드로 처리된다. 예를 들어, insert Buffer를 병합, 로그를 디스크로 기록, InnoDB의 버퍼 풀의 데이터를 디스크에 기록, 데이터를 버퍼로 읽기, 모니터링 등이 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;읽기의 경우 클라이언트 스레드에서 처리되기 때문에, 읽기 스레드가 많을 필요가 없지만, 쓰기 스레드는 많은 작업들을 백그라운드로 처리하기 때문에, 충분하게 설정 해 주는 것이 좋다.&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">mysql architecture</summary></entry><entry><title type="html">liblightnvm</title><link href="http://localhost:4000/research/openChannelSSD_liblightnvm/" rel="alternate" type="text/html" title="liblightnvm" /><published>2018-02-20T19:00:00+09:00</published><updated>2018-02-20T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_liblightnvm</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_liblightnvm/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#obtaining-device-information&quot; id=&quot;markdown-toc-obtaining-device-information&quot;&gt;Obtaining device information&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#physical-addressing&quot; id=&quot;markdown-toc-physical-addressing&quot;&gt;Physical Addressing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#vectorized-io&quot; id=&quot;markdown-toc-vectorized-io&quot;&gt;vectorized IO&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#write-constraint&quot; id=&quot;markdown-toc-write-constraint&quot;&gt;write constraint&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#read-constraint&quot; id=&quot;markdown-toc-read-constraint&quot;&gt;read constraint&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#virtual-block&quot; id=&quot;markdown-toc-virtual-block&quot;&gt;virtual block&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#block-line&quot; id=&quot;markdown-toc-block-line&quot;&gt;Block Line&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;obtaining-device-information&quot;&gt;Obtaining device information&lt;/h1&gt;
+
+&lt;p&gt;다음과 같은 명령어를 통해서 Open Channel SSD의 physical geometry를 알 수 있다. 즉, 디바이스의 정보를 얻을 수 있음.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvm_dev info /dev/nvme0n1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Device information -- nvm_dev_pr&lt;/span&gt;
+dev:
+  verid: 0x02
+  be_id: 0x02
+  name: &lt;span class=&quot;s1&quot;&gt;'nvme0n1'&lt;/span&gt;
+  path: &lt;span class=&quot;s1&quot;&gt;'/dev/nvme0n1'&lt;/span&gt;
+  fd: 3
+  ssw: 12
+  pmode: &lt;span class=&quot;s1&quot;&gt;'DUAL'&lt;/span&gt;
+  erase_naddrs_max: 64
+  read_naddrs_max: 64
+  write_naddrs_max: 64
+  meta_mode: 0
+  bbts_cached: 0
+dev_geo:
+  nchannels: 16
+  nluns: 8
+  nplanes: 2
+  nblocks: 1020
+  npages: 512
+  nsectors: 4
+  page_nbytes: 16384
+  sector_nbytes: 4096
+  meta_nbytes: 16
+  tbytes: 2190433320960
+  tmbytes: 2088960
+dev_ppaf:
+  ch_off: 25
+  ch_len: 04
+  lun_off: 22
+  lun_len: 03
+  pl_off: 02
+  pl_len: 01
+  blk_off: 12
+  blk_len: 10
+  pg_off: 03
+  pg_len: 09
+  sec_off: 00
+  sec_len: 02
+dev_ppaf_mask:
+  ch:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000011110000000000000000000000000'&lt;/span&gt;
+  lun: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000001110000000000000000000000'&lt;/span&gt;
+  pl:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000000000000100'&lt;/span&gt;
+  blk: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000001111111111000000000000'&lt;/span&gt;
+  pg:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000111111111000'&lt;/span&gt;
+  sec: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000000000000011'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;physical-addressing&quot;&gt;Physical Addressing&lt;/h1&gt;
+
+&lt;p&gt;struct nvm_addr 라는 자료구조로 물리 페이지 주소가 표현된다.&lt;/p&gt;
+
+&lt;p&gt;Construct an address for sector 3 within page 11 in block 200 on plane 0 of LUN 1 in channel 4:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvm_addr from_geo /dev/nvme0n1 4 1 0 200 10 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Yielding:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0x04010003000a00c8: {ch: 04, lun: 01, pl: 0, blk: 0200, pg: 010, sec: 3}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;플래시 메모리에 I/O 할 수 있도록 해주는  유저스페이스 라이브러리, I/O 인텐시브한 어플리케이션이 어플리케이션에서 FTL을 구현할 수 있도록 도와줄 수 있다.&lt;/p&gt;
+
+&lt;p&gt;liblightnvm is a user space library that manages provisioning of and I/O submission to physical flash. The motivation is to enable I/O-intensive applications to implement their own Flash Translation Layer (FTLs) using the internal application data structures. The design is based on the principle that high-performance I/O applications often use structures that assimilates structures found within a Flash translation layer. This include log-structured data structures that provides their own mechanisms for data placement, garbage collection, and I/O scheduling strategies.&lt;/p&gt;
+
+&lt;p&gt;For example, popular key-value stores often use a form of Log Structured Merge Trees (LSMs) as their base data structure (including RocksDB, MongoDB, Apache Cassandra). The LSM is in itself a form of FTL, which manages data placement and garbage collection. This class of applications can benefit from a direct path to physical flash to take full advantage of the optimizations they do and spend host resources on, instead of missing them through the several levels of indirection that the traditional I/O stack imposes to enable genericity: page cache, VFS, file system, and device physical - logical translation table. liblightnvm exposes append-only primitives using direct physical flash to support this class of applications.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/OpenChannelSSD/liblightnvm&quot;&gt;https://github.com/OpenChannelSSD/liblightnvm&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;vectorized-io&quot;&gt;vectorized IO&lt;/h1&gt;
+
+&lt;h2 id=&quot;write-constraint&quot;&gt;write constraint&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Erase before write&lt;/li&gt;
+  &lt;li&gt;they must be at the granularity of a full flash page&lt;/li&gt;
+  &lt;li&gt;they must be contiguous within a block&lt;/li&gt;
+  &lt;li&gt;writes must be performed to the block accross all planes(minimum write)
+  한 die에 plane이 두 개 있을때, 쓰기는 이 plane에 모두 이루어져야 한다. 따라서, 이 조건을 만족하도록 쓰기를 하거나 &lt;em&gt;plane-mode&lt;/em&gt;를 꺼 주는 옵션을 써야 한다.&lt;/li&gt;
+  &lt;li&gt;we can construct a command with 64 addresses.(maximum write)
+  한 nvme command에 64개의 ppa를 지정 해 줄 수 있다. 따라서, 4k X 64크기 만큼의 데이터 쓰기를 한 커멘드를 통해 요청할 수 있다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;read-constraint&quot;&gt;read constraint&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The granularity of a read is a single sector (the smallest addressable unit) and can be performed non-contiguously.&lt;/li&gt;
+  &lt;li&gt;The primary constraint for a read to adhere to is that the block which is read from must be closed. That is, all pages within the block must have been written
+  읽기 전에 해당 블록은 모든 페이지가 다 쓰여져 있는 상태 이어야 한다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;virtual-block&quot;&gt;virtual block&lt;/h1&gt;
+&lt;p&gt;liblightnvm, therefore, introduces a pure software abstraction, a virtual block, to reduce the cognitive load for application developers.&lt;/p&gt;
+
+&lt;p&gt;A virtual block behaves as a physical, that is, the constraints of working with NAND media also apply to a virtual block. However, the abstraction encapsulates the command and address construction of parallel vectorized IO and exposes a flat address space which is read/written in a manner equivalent to the read/write primitives offered by libc.&lt;/p&gt;
+
+&lt;h1 id=&quot;block-line&quot;&gt;Block Line&lt;/h1&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">유저스페이스에서 Open Channel SSD 컨트롤 하기</summary></entry><entry><title type="html">Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms</title><link href="http://localhost:4000/research/openChannelSSD_ksc/" rel="alternate" type="text/html" title="Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms" /><published>2018-02-01T19:00:00+09:00</published><updated>2018-02-01T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_ksc</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_ksc/">&lt;!--
 
 &lt;p style=&quot;text-align: center;&quot;&gt;
 	&lt;img src=&quot;http://localhost:4000/images/openChannelSSD.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot;/&gt;
 &lt;/p&gt;
 
 --&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#abstraction&quot; id=&quot;markdown-toc-abstraction&quot;&gt;Abstraction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot; id=&quot;markdown-toc-introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#experimental-setup-and-evaluation&quot; id=&quot;markdown-toc-experimental-setup-and-evaluation&quot;&gt;Experimental setup and evaluation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot; id=&quot;markdown-toc-conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#reference&quot; id=&quot;markdown-toc-reference&quot;&gt;Reference&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
 
 &lt;h1 id=&quot;abstraction&quot;&gt;Abstraction&lt;/h1&gt;
 &lt;p&gt;Open Channel SSD는 스토리지 디바이스에 FTL(Flash Translation Layer)을 구현하지 않고, 운영체제에 게 SSD(Solid-State Drive)의 관리를 맡기는 SSD이다. 따라서 리눅스에서는 LightNVM과 같은 추상화 계 층을 제공한다. pblk(The Physical Block Device)은 LightNVM Layer에 위치하는 커널 모듈로서 기존의 SSD의 FTL에서 수행하는 기능들을 호스트에서 수행한다. 본 논문에서는 Open Channel SSD에서 쓰기 요청의 처리 과정을 보이고, pblk에 구현되어 있는 소프트웨어 버퍼인 쓰기 버퍼(Write Buffer) 및 입출력 요청의 스레드 구성에 따른 성능 분석 결과를 보인다.&lt;/p&gt;
@@ -1316,278 +1482,4 @@ rqd structure 생성, structure 체워나가기.&lt;/p&gt;
 		&lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request_fn_active&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Kernel Code Analysis - Write path</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/openChannelSSD.png" /></entry><entry><title type="html">Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC)</title><link href="http://localhost:4000/research/openChannelSSD_tips/" rel="alternate" type="text/html" title="Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC)" /><published>2017-08-28T19:00:00+09:00</published><updated>2017-08-28T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_tips</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_tips/">&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/openChannelSSD_tips_01.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-install-supported-linux-kernel-and-boot-as-it&quot; id=&quot;markdown-toc-1-install-supported-linux-kernel-and-boot-as-it&quot;&gt;1. Install supported Linux Kernel and boot as it&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-install-nvme-cli-tool&quot; id=&quot;markdown-toc-2-install-nvme-cli-tool&quot;&gt;2. Install nvme-cli tool&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#3-using-open-channel-ssd-hardware&quot; id=&quot;markdown-toc-3-using-open-channel-ssd-hardware&quot;&gt;3. Using Open-Channel SSD hardware&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#4-instantiate-media-manager-and-target&quot; id=&quot;markdown-toc-4-instantiate-media-manager-and-target&quot;&gt;4. Instantiate media manager and target&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#5-mount-and-use&quot; id=&quot;markdown-toc-5-mount-and-use&quot;&gt;5. Mount and use&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#5-extra&quot; id=&quot;markdown-toc-5-extra&quot;&gt;5. Extra&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;h6 id=&quot;original-page-link-httpsopenchannelssdreadthedocsioenlatest&quot;&gt;Original page link: &lt;a href=&quot;https://openchannelssd.readthedocs.io/en/latest/&quot;&gt;https://openchannelssd.readthedocs.io/en/latest/&lt;/a&gt;&lt;/h6&gt;
-
-&lt;h1 id=&quot;1-install-supported-linux-kernel-and-boot-as-it&quot;&gt;1. Install supported Linux Kernel and boot as it&lt;/h1&gt;
-
-&lt;p&gt;LightNVM is directly supported in Linux since kernel 4.4. Pblk, which is used to get started, is available since 4.12+. Make sure to install 4.12+ or later if you want to use pblk.&lt;/p&gt;
-
-&lt;p&gt;To use Open-Channel SSDs, support in the operating system kernel is required. Support in the Linux kernel has been supported since 4.4 with the inclusion of the LightNVM subsystem. The project is still under development, therefore the latest release or release candidate is preferred. The latest source code is available at &lt;a href=&quot;https://github.com/OpenChannelSSD/linux&quot;&gt;https://github.com/OpenChannelSSD/linux&lt;/a&gt;.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Tips:&lt;br /&gt;
-    &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone -b pblk.cnex  https://github.com/OpenChannelSSD/linux.
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-    &lt;p&gt;Like above script, you have to use pblk.cnex branch in the Linux repository witch has couple of extra patches.
-you can see an issue about this here: &lt;a href=&quot;https://github.com/OpenChannelSSD/liblightnvm/issues/7&quot;&gt;https://github.com/OpenChannelSSD/liblightnvm/issues/7&lt;/a&gt;
-&lt;br /&gt;&lt;br /&gt;When you compile Kernel, make sure that the .config file at least includes:&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nv&quot;&gt;CONFIG_NVM&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y
-    &lt;span class=&quot;c&quot;&gt;# Expose the /sys/module/lnvm/parameters/configure_debug interface&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;CONFIG_NVM_DEBUG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y
-    &lt;span class=&quot;c&quot;&gt;# Target support (required to expose the open-channel SSD as a block device)&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;CONFIG_NVM_PBLK&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y    
-    &lt;span class=&quot;c&quot;&gt;# For NVMe support&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;CONFIG_BLK_DEV_NVME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;After booting the a supported kernel. The following must be met:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;A compatible device, such as QEMU NVMe or an Open-Channel SSD, such as the CNEX Labs LightNVM SDK.&lt;/li&gt;
-  &lt;li&gt;A media manager on top of the device driver. The media manager manages the partition table for the device.&lt;/li&gt;
-  &lt;li&gt;A target on top of the block manager that exposes the Open-Channel SSD.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Tips:&lt;br /&gt;
-You don’t have to concern #2 becasue it is deprecated since 4.8.
-you can see an issue regarding this here: &lt;a href=&quot;https://github.com/OpenChannelSSD/documentation/issues/5&quot;&gt;https://github.com/OpenChannelSSD/documentation/issues/5&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;2-install-nvme-cli-tool&quot;&gt;2. Install nvme-cli tool&lt;/h1&gt;
-
-&lt;p&gt;nvme-cli is the tool used to administrate nvme devices. It can be installed typing like&lt;/p&gt;
-
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/linux-nvme/nvme-cli
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;nvme-cli
-sudo make; sudo make install
-
-sudo add-apt-repository ppa:sbates
-sudo apt-get update
-sudo apt-get install nvme-cli
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or installed from &lt;a href=&quot;https://github.com/linux-nvme/nvme-cli&quot;&gt;https://github.com/linux-nvme/nvme-cli&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;If you are not running Ubuntu, please see the nvme-cli github project for instructions.&lt;/p&gt;
-
-&lt;h1 id=&quot;3-using-open-channel-ssd-hardware&quot;&gt;3. Using Open-Channel SSD hardware&lt;/h1&gt;
-
-&lt;p&gt;If you have a LightNVM SDK from CNEX Labs, or another Open-Channel SSD, you should be able to see the device using&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm list
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;which should output the following:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvme lnvm list
-Number of devices: 1
-Device      	Block manager	Version
-nvme0n1     	gennvm      	(0,1,0)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;4-instantiate-media-manager-and-target&quot;&gt;4. Instantiate media manager and target&lt;/h1&gt;
-
-&lt;p&gt;When the installation is finished and the kernel have been booted. Devices can be enumerated by:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm list
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;and initialized by:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm init -d nvme0n1
-sudo nvme lnvm create -d nvme0n1 --lun-begin=0 --lun-end=3 -n mydevice -t pblk
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;use the option -f to avoid recovering the L2P table from the device for quick initialization&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm create -d nvme0n1 --lun-begin=0 --lun-end=3 -n mydevice -t pblk -f
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm create -d /dev/nvme0n1 -n mydevice -t pblk -b 0 -e 127
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;for other options for –help on each command. For example
-    sudo nvme lnvm create –help&lt;/p&gt;
-
-&lt;p&gt;Assuming nvme0n1 was shown during “nvme lnvm list”, it will then expose /dev/mydevice as a block device using it as the backend. Please note that pblk is only available at the Linux kernel Github repository, and it yet to be upstream.&lt;/p&gt;
-
-&lt;h1 id=&quot;5-mount-and-use&quot;&gt;5. Mount and use&lt;/h1&gt;
-
-&lt;p&gt;If you get here without any error, you can mount the device and use it like:&lt;/p&gt;
-
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo mkfs -t ext4 /dev/mydevice
-sudo mkdir /media/nvme
-sudo mount /dev/mydevice /media/nvme
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;you can see “nvme” directory created and mounted to /dev/mydevice&lt;/p&gt;
-
-&lt;h1 id=&quot;5-extra&quot;&gt;5. Extra&lt;/h1&gt;
-
-&lt;p&gt;At first time, I used Ubuntu 16.04 Desktop. There are some problem like a kernel panic or taking forever for &lt;em&gt;mkfs&lt;/em&gt;. So, I changed and use 16.04 server.&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Tips for getting started with CNEX SSD</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/oopenChannelSSD_tips_01.png" /></entry><entry><title type="html">How Computers Work [05]</title><link href="http://localhost:4000/book/hcw05/" rel="alternate" type="text/html" title="How Computers Work [05]" /><published>2017-08-28T19:00:00+09:00</published><updated>2017-08-28T19:00:00+09:00</updated><id>http://localhost:4000/book/hcw05</id><content type="html" xml:base="http://localhost:4000/book/hcw05/">&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#chapter-9&quot; id=&quot;markdown-toc-chapter-9&quot;&gt;Chapter 9&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#chapter-10&quot; id=&quot;markdown-toc-chapter-10&quot;&gt;Chapter 10&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#how-file-compression-makes-files-smaller&quot; id=&quot;markdown-toc-how-file-compression-makes-files-smaller&quot;&gt;HOW FILE COMPRESSION MAKES FILES SMALLER&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#how-solid-state-drives-command-the-instant&quot; id=&quot;markdown-toc-how-solid-state-drives-command-the-instant&quot;&gt;How Solid State Drives Command the Instant&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;h1 id=&quot;chapter-9&quot;&gt;Chapter 9&lt;/h1&gt;
-&lt;p&gt;이번 챕터는 컴퓨터의 대표적인 하드웨어 및 포트(네트워크 포트 X, 물리적 포트 O)를 확인하고 넘어간다.&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_01.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 480px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;A. &lt;strong&gt;Power supply&lt;/strong&gt;: 흔히 “파워”라고 많이 하는 부분, 컴퓨터에 전원을 안정적으로 공급 해 주도록 한다. 고성능의 데스크탑에 가장 기본적으로 중요한 부품.&lt;/p&gt;
-
-&lt;p&gt;B. Optical drives: 클라우드나 flash 메모리(usb)가 상용화 되기 전에는 많이 쓰였지만, 현재 거의 쓰이지 않는 저장장치.&lt;/p&gt;
-
-&lt;p&gt;C. Tape drive: 어렸을 적, 카셋트 테잎으로 노래들 들었던 기억이 있지만, 컴퓨터에 쓰이는것을 한 번도 보지 못했다.&lt;/p&gt;
-
-&lt;p&gt;D. &lt;strong&gt;Hard disk drive&lt;/strong&gt;: It’s still the cheapest way to store mass quantities of data, and it’s been used in mobile devices as small as an iPod. But smartphones, which have more to do than simply store and play songs, are using RAM and clouds for storage. And in all devices, RAM-based solid-state drives are replacing the spinning disks for all but gargantuan mass storage.&lt;/p&gt;
-
-&lt;p&gt;하드 디스크 드라이브(Hard disk drive, HDD)는 비휘발성, 순차접근이 가능한 컴퓨터의 보조 기억 장치이다. 보호 케이스 안에 있는 플래터를 회전시켜, 이것에 자기 패턴으로 정보를 기록한다. 여기서 이 플래터를 구동하는 장치가 스핀들 모터로 이루어진 것이 특징이다. 데이터는 플래터 표면에 코팅된 자성체에 기록되며, 회전하는 플래터 위에 부상하는 입출력 헤드에 의해 자기적으로 데이터를 쓰고 읽을 수 있다.&lt;/p&gt;
-
-&lt;p&gt;하드 디스크는 플로피 디스크와 같은 자기 기록 매체이나, 플로피 디스크와 다르게 금속 재질의 플래터에 데이터를 기록하기 때문에, 플로피디스크와 구분짓기 위해, 재질적으로 단단하다는 뜻으로 하드라는 이름이 붙었다. 일반적으로 아직까지는 개인용 컴퓨터의 운영 체제를 담는 용도로, 없어서는 안 될 저장 매체로 많이 쓰이고 있다. 여러 가지 특성이 우수한 반도체 기반의 기록 매체인 솔리드 스테이트 드라이브가 가격하락과 함께 저장 매체 시장에 서서히 진입하고는 있으나, 저장 용량당 가격에서 하드 디스크에 비해 높은 가격을 가지고 있으므로 성능적인 우위에도 불구하고 하드 디스크는 여전히 중요한 저장 매체로 사용되고 있다.&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_04.gif&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_05.gif&quot; alt=&quot;Drawing&quot; style=&quot;width: 400px;&quot; /&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_06.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 400px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;read &amp;amp; write 속도가 비슷함.
-Seeking algorithm = random access가 느림.
-HDD를 쓰는 컴퓨터가 느려지는 이유 = 고속으로 돌아가는 platter때문에 기스가 남 -&amp;gt; 쓰지 못하는 sector발생&lt;/p&gt;
-
-&lt;p&gt;D2. &lt;strong&gt;Solid state Drive(SSD)&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;p&gt;물리적인 기계장치가 아니고 반도체 이기 때문에 HDD에 비해 충격에 강하고, random access나 sequential access가 차이가 없음.
-read, write속도가 다름&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_07.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 800px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;E. Floppy drives: 초등학교 이후 X&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_02.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 480px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;F. Wide, flat drive cables: The old connections from the motherboard to the drives were stiff and a pain to maneuver through the usual tangle of wires. They’re replaced by the slimmer, more manageable SATA cables.&lt;/p&gt;
-
-&lt;p&gt;G. &lt;strong&gt;Video card(GPU)&lt;/strong&gt;: “Unless you’re a hell-bent-for-leather gamer, the video circuitry that comes on your motherboard will do nicely, thank you.” 라고 책에 나와있지만 고성능 게임과 더불어, 머신러닝, 딥러닝, 블록체인, 비트코인, 컴퓨터 비전 등 여러 분양에서 CPU가 아닌 GPU(Graphic Processing Unit)가 필수적으로 사용된다. 매트릭스 연산, 간단한 연산의 반복에 매우 특화되어 있으며, CPU와 별개로 연산을 수행할 수 있으므로, Graphical 연산(꼭 이미지나 영상처리가 아니더라도, matrix연산이 필요한 머신러닝, 비트코인 연산)*시 굉장히 큰 computing 성능을 얻어낼 수 있다.&lt;/p&gt;
-
-&lt;p&gt;H. Sound card: At one time if you wanted to hear more than a beep from your computer, you needed a sound card. Today built-in sound on desktops and laptops rivals home theater amps. An expansion card isn’t needed unless you’re a picky, picky audiophile.&lt;/p&gt;
-
-&lt;p&gt;I. &lt;strong&gt;RAM&lt;/strong&gt;: No matter whether you’re a desktop, laptop, notebook, tablet, smartphone, MP3 player, smartwatch, or smartgoggles, you gotta have RAM. That’s all there is to it. Of course that could mean some sort of quantum memory.&lt;/p&gt;
-
-&lt;p&gt;J. &lt;strong&gt;Microprocessor(CPU)&lt;/strong&gt;: No matter what the device, no matter how large or how small, there will always be a microprocessor—the brain—which goes through its own sort of evolution to become faster and smarter.&lt;/p&gt;
-
-&lt;p&gt;K. Required equipment on desktops and laptops has always included:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A real-time clock to keep all components marching to the same drummer.&lt;/li&gt;
-  &lt;li&gt;The CMOS chip that retained basic, necessary information when the computer was turned off, along with the battery that kept the CMOS chip powered.&lt;/li&gt;
-  &lt;li&gt;And the BIOS (basic input/output system), a compendium of information about the components in a computer and how to get information in and out of them.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_03.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 300px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;h1 id=&quot;chapter-10&quot;&gt;Chapter 10&lt;/h1&gt;
-
-&lt;h2 id=&quot;how-file-compression-makes-files-smaller&quot;&gt;HOW FILE COMPRESSION MAKES FILES SMALLER&lt;/h2&gt;
-&lt;hr /&gt;
-&lt;p&gt;파일 압축(zipping file)은&lt;/p&gt;
-
-&lt;h2 id=&quot;how-solid-state-drives-command-the-instant&quot;&gt;How Solid State Drives Command the Instant&lt;/h2&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;pc의 성능을 측정하는 하나의 기준 = access latancy.&lt;/p&gt;
-
-&lt;p&gt;프로세서가 ram으로부터 데이터를 기다리는데 보통 수십 클록이 소요된다. 반면, 프로세서가 hard disk로 부터 데이터를 전달 받는데는 수백만 클록이 걸린다. 즉 메모리에 비해 하드디스크는 굉장히 처리 속도(read &amp;amp; write)가 느린 device 임.&lt;/p&gt;
-
-&lt;p&gt;전통적인 하드 디스크 드라이븐 항상 이러한 긴 latency 문제를 갖고 있다. 이러한 문제의 원인은 하드디스크의 기계적 설계로 인한 물리적인 한계 때문이다.&lt;/p&gt;
-
-&lt;p&gt;하드디스크에서 소요되는 대부분의 시간은 헤드가 target sector를 찾아가는데 걸리는 시간이다. 특히 그 중에서도 한 트렉에서 다른 트렉으로 암이 직접 움직이는 경우에 critical함.
-#i## SSD overview
-—
-SSD는 하드디스크와 같은 물리적 장치가 아니라 &lt;strong&gt;NAND flash memory&lt;/strong&gt; 라 불리는 디지털 회로 gate(강의 자료 3,4번 참고)를 사용한 반도체 메모리 저장장치 이다.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;NAND flash memory 란?&lt;br /&gt;
-DRAM(Dynamic RAM)과 매우 유사한 특징을 가지는 메모리 로서 non-volatil하다는 점이 DRAM과 다르다. NAND라는 이름은 AND gate와 NOT gate를 합친 NAND gate를 사용하여 메모리 구조를 형성했기 때문이다. NAND와는 반대로 NOR flash memory라는 것도 존재하며, NOR gate로 구성된다.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_08.gif&quot; alt=&quot;NAND gate&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;DARAM &lt;br /&gt;
-Dynamic Random Access Memory의 약자로서, 하나늬 기억 소자에 하나의 트렌지스터와 1개의 capacitor로 구성되어 있는 메모리. 구성이 간단하기 때문에 높은 직접도로 메모리를 제작할 수 있고, 저 비용으로 &lt;strong&gt;비교적&lt;/strong&gt; 큰 용량의 메모리를 제작할 수 있다. capacitor의 특성상, 전원이 공급되고 있는 동안에 정보를 기억할 수 있으며, 전원이 공급되지 않으면, 데이터는 사라진다. 주기억장치(메인 메모리) 에 주로 사용된다.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;ssd---어떻게-정보가-저장이-되는가&quot;&gt;SSD - 어떻게 정보가 저장이 되는가.&lt;/h3&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_09.png&quot; alt=&quot;NAND gate&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://www.kbench.com/?q=node/99265&amp;amp;page=0&quot;&gt;http://www.kbench.com/?q=node/99265&amp;amp;page=0&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;architecture-of-ssd&quot;&gt;architecture of SSD&lt;/h3&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_10.jpg&quot; alt=&quot;NAND gate&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw05_11.jpg&quot; alt=&quot;NAND gate&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) The Origins of Computer DNA</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw05_0.png" /></entry></feed>
+&lt;/div&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Kernel Code Analysis - Write path</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/openChannelSSD.png" /></entry></feed>
