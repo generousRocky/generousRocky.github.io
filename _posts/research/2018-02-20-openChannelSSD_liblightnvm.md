@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "liblightnvm"
+title:  "liblightnvm(work in progress)"
 date:   2018-02-20 10:00:00 Z
 author: Rocky Lim
 categories: research
