@@ -2,13 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>How Computers Work [08] • Rocky's Research Blog</title>
-    <meta name="description" content="CIT 강의자료) Chapter19 - How the Web Puts It All at Your Fingertips">
+    <title>liblightnvm(work in progress) • Rocky's Research Blog</title>
+    <meta name="description" content="유저스페이스에서 Open Channel SSD 컨트롤 하기">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="How Computers Work [08]">
-	<meta name="twitter:description" content="CIT 강의자료) Chapter19 - How the Web Puts It All at Your Fingertips">
+	<meta name="twitter:title" content="liblightnvm(work in progress)">
+	<meta name="twitter:description" content="유저스페이스에서 Open Channel SSD 컨트롤 하기">
 	
 	<meta name="twitter:creator" content="@">
 	
@@ -18,12 +18,12 @@
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="How Computers Work [08]">
-	<meta property="og:description" content="CIT 강의자료) Chapter19 - How the Web Puts It All at Your Fingertips">
-	<meta property="og:url" content="http://localhost:4000/book/hcw08/">
+	<meta property="og:title" content="liblightnvm(work in progress)">
+	<meta property="og:description" content="유저스페이스에서 Open Channel SSD 컨트롤 하기">
+	<meta property="og:url" content="http://localhost:4000/research/openChannelSSD_liblightnvm/">
 	<meta property="og:site_name" content="Rocky's Research Blog">
 
-    <link rel="canonical" href="http://localhost:4000/book/hcw08/">
+    <link rel="canonical" href="http://localhost:4000/research/openChannelSSD_liblightnvm/">
 
     <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
@@ -125,108 +125,142 @@
         <span itemprop="title">Home</span>
       </a> › 
     <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-      <a href="http://localhost:4000/book/" itemprop="url">
-        <span itemprop="title">Book</span>
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
       </a>
     </span>
   </nav><!-- /.breadcrumbs -->
 
 		<div class="page-title">
-			<h1>How Computers Work [08]</h1>
+			<h1>liblightnvm(work in progress)</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
-				<p style="text-align: center;">
-	<img src="http://localhost:4000/images/hcw.jpg" alt="Drawing" style="width: 380px;" />
-</p>
-
-<nav class="toc">
+				<nav class="toc">
 <ul id="markdown-toc">
-  <li><a href="#how-a-browser-opens-pages" id="markdown-toc-how-a-browser-opens-pages">How a browser opens pages</a>    <ul>
-      <li><a href="#dnsdomain-name-serversystem" id="markdown-toc-dnsdomain-name-serversystem">DNS(Domain Name Server(System))?</a></li>
-      <li><a href="#how-dns-works" id="markdown-toc-how-dns-works">How DNS Works?</a></li>
+  <li><a href="#obtaining-device-information" id="markdown-toc-obtaining-device-information">Obtaining device information</a></li>
+  <li><a href="#physical-addressing" id="markdown-toc-physical-addressing">Physical Addressing</a></li>
+  <li><a href="#vectorized-io" id="markdown-toc-vectorized-io">vectorized IO</a>    <ul>
+      <li><a href="#write-constraint" id="markdown-toc-write-constraint">write constraint</a></li>
+      <li><a href="#read-constraint" id="markdown-toc-read-constraint">read constraint</a></li>
     </ul>
   </li>
-  <li><a href="#how-a-browser-displays-web-pages" id="markdown-toc-how-a-browser-displays-web-pages">How a browser displays web pages</a></li>
+  <li><a href="#virtual-block" id="markdown-toc-virtual-block">virtual block</a></li>
+  <li><a href="#block-line" id="markdown-toc-block-line">Block Line</a></li>
 </ul>
 
 </nav>
 
-<h1 id="how-a-browser-opens-pages">How a browser opens pages</h1>
+<h1 id="obtaining-device-information">Obtaining device information</h1>
 
-<p>“A website is a collection of files, text, and media that someone has made generally available to others through the Internet. “</p>
+<p>다음과 같은 명령어를 통해서 Open Channel SSD의 physical geometry를 알 수 있다. 즉, 디바이스의 정보를 얻을 수 있음.</p>
 
-<p>웹페이지 간의 이동은</p>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>nvm_dev info /dev/nvme0n1
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># Device information -- nvm_dev_pr</span>
+dev:
+  verid: 0x02
+  be_id: 0x02
+  name: <span class="s1">'nvme0n1'</span>
+  path: <span class="s1">'/dev/nvme0n1'</span>
+  fd: 3
+  ssw: 12
+  pmode: <span class="s1">'DUAL'</span>
+  erase_naddrs_max: 64
+  read_naddrs_max: 64
+  write_naddrs_max: 64
+  meta_mode: 0
+  bbts_cached: 0
+dev_geo:
+  nchannels: 16
+  nluns: 8
+  nplanes: 2
+  nblocks: 1020
+  npages: 512
+  nsectors: 4
+  page_nbytes: 16384
+  sector_nbytes: 4096
+  meta_nbytes: 16
+  tbytes: 2190433320960
+  tmbytes: 2088960
+dev_ppaf:
+  ch_off: 25
+  ch_len: 04
+  lun_off: 22
+  lun_len: 03
+  pl_off: 02
+  pl_len: 01
+  blk_off: 12
+  blk_len: 10
+  pg_off: 03
+  pg_len: 09
+  sec_off: 00
+  sec_len: 02
+dev_ppaf_mask:
+  ch:  <span class="s1">'0000000000000000000000000000000000011110000000000000000000000000'</span>
+  lun: <span class="s1">'0000000000000000000000000000000000000001110000000000000000000000'</span>
+  pl:  <span class="s1">'0000000000000000000000000000000000000000000000000000000000000100'</span>
+  blk: <span class="s1">'0000000000000000000000000000000000000000001111111111000000000000'</span>
+  pg:  <span class="s1">'0000000000000000000000000000000000000000000000000000111111111000'</span>
+  sec: <span class="s1">'0000000000000000000000000000000000000000000000000000000000000011'</span>
+</code></pre>
+</div>
+
+<h1 id="physical-addressing">Physical Addressing</h1>
+
+<p>struct nvm_addr 라는 자료구조로 물리 페이지 주소가 표현된다.</p>
+
+<p>Construct an address for sector 3 within page 11 in block 200 on plane 0 of LUN 1 in channel 4:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>nvm_addr from_geo /dev/nvme0n1 4 1 0 200 10 3
+</code></pre>
+</div>
+
+<p>Yielding:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>0x04010003000a00c8: {ch: 04, lun: 01, pl: 0, blk: 0200, pg: 010, sec: 3}
+</code></pre>
+</div>
+
+<p>플래시 메모리에 I/O 할 수 있도록 해주는  유저스페이스 라이브러리, I/O 인텐시브한 어플리케이션이 어플리케이션에서 FTL을 구현할 수 있도록 도와줄 수 있다.</p>
+
+<p>liblightnvm is a user space library that manages provisioning of and I/O submission to physical flash. The motivation is to enable I/O-intensive applications to implement their own Flash Translation Layer (FTLs) using the internal application data structures. The design is based on the principle that high-performance I/O applications often use structures that assimilates structures found within a Flash translation layer. This include log-structured data structures that provides their own mechanisms for data placement, garbage collection, and I/O scheduling strategies.</p>
+
+<p>For example, popular key-value stores often use a form of Log Structured Merge Trees (LSMs) as their base data structure (including RocksDB, MongoDB, Apache Cassandra). The LSM is in itself a form of FTL, which manages data placement and garbage collection. This class of applications can benefit from a direct path to physical flash to take full advantage of the optimizations they do and spend host resources on, instead of missing them through the several levels of indirection that the traditional I/O stack imposes to enable genericity: page cache, VFS, file system, and device physical - logical translation table. liblightnvm exposes append-only primitives using direct physical flash to support this class of applications.</p>
+
+<p><a href="https://github.com/OpenChannelSSD/liblightnvm">https://github.com/OpenChannelSSD/liblightnvm</a></p>
+
+<h1 id="vectorized-io">vectorized IO</h1>
+
+<h2 id="write-constraint">write constraint</h2>
+
 <ol>
-  <li>텍스트, 또는 이미지 등과 같은 하이퍼링크(Hyperlink)를 통해서</li>
-  <li>URL(Universal Resouce Locator)를 브라우저의 address창에 입력하는 것.</li>
+  <li>Erase before write</li>
+  <li>they must be at the granularity of a full flash page</li>
+  <li>they must be contiguous within a block</li>
+  <li>writes must be performed to the block accross all planes(minimum write)
+  한 die에 plane이 두 개 있을때, 쓰기는 이 plane에 모두 이루어져야 한다. 따라서, 이 조건을 만족하도록 쓰기를 하거나 <em>plane-mode</em>를 꺼 주는 옵션을 써야 한다.</li>
+  <li>we can construct a command with 64 addresses.(maximum write)
+  한 nvme command에 64개의 ppa를 지정 해 줄 수 있다. 따라서, 4k X 64크기 만큼의 데이터 쓰기를 한 커멘드를 통해 요청할 수 있다.</li>
 </ol>
 
-<p>위 두 가지를 통해 가능하다.</p>
-
-<p>브라우저에서 하이퍼 링크를 클릭하거나 특정 address를 입력한다면, 브라우저 프로그램은 해당하는 address를 네트워크를 통해 DNS(Domain Name Server)에 보낸다.</p>
-
-<h2 id="dnsdomain-name-serversystem">DNS(Domain Name Server(System))?</h2>
-<p>호스트의 도메인 이름(human readable)을 호스트의 네트워크 주소(computer readable)로 바꾸어 주거나 그 반대의 변환을 수행할 수 있도록 해 주는 서버 또는 시스템.
-특정 컴퓨터(또는 네트워크로 연결된 임의의 장치)의 주소를 찾기위해, 사람이 이해하기 쉬운 도메인 이름을 숫자로 된 식별 변호(IP 주소)로 변환 해 준다. 예를 들어, www.dcslab.snu.ac.kr 와 같은 컴퓨터 도메인 이름을 192.108.1.4와 같은 주소로 변환하고, 라우팅 정보를 제공하는 데이터베이스 시스템</p>
-
-<p style="text-align: center;">
-	<img src="http://localhost:4000/images/hcw08_1.png" alt="Drawing" style="width: 600px;" />
-</p>
-
-<h2 id="how-dns-works">How DNS Works?</h2>
-
-<p style="text-align: center;">
-	<img src="http://localhost:4000/images/hcw08_2.png" alt="Drawing" style="width: 600px;" />
-</p>
+<h2 id="read-constraint">read constraint</h2>
 
 <ol>
-  <li>web browser에 주소를 입력한다.</li>
-  <li>만약 www.micosoft.com을 입력한다면, 입력 값이 위와 같이 이동한다.
-    <ol>
-      <li>DNS 서버</li>
-      <li>루트 DNS서버</li>
-      <li>.com DNS서버</li>
-      <li>Microsoft.com DNS서버</li>
-    </ol>
-  </li>
-  <li>각각의 DNS서버를 차례대로 이동하며 해당 웹 사이트의 ip주소를 찾는다.</li>
+  <li>The granularity of a read is a single sector (the smallest addressable unit) and can be performed non-contiguously.</li>
+  <li>The primary constraint for a read to adhere to is that the block which is read from must be closed. That is, all pages within the block must have been written
+  읽기 전에 해당 블록은 모든 페이지가 다 쓰여져 있는 상태 이어야 한다.</li>
 </ol>
 
-<p>DNS Server: 웹 서버 주소에 해당하는 ip주소 테이블을 저장하고 있는 컴퓨터</p>
+<h1 id="virtual-block">virtual block</h1>
+<p>liblightnvm, therefore, introduces a pure software abstraction, a virtual block, to reduce the cognitive load for application developers.</p>
 
-<p style="text-align: center;">
-	<img src="http://localhost:4000/images/hcw08_3.png" alt="Drawing" style="width: 600px;" />
-</p>
+<p>A virtual block behaves as a physical, that is, the constraints of working with NAND media also apply to a virtual block. However, the abstraction encapsulates the command and address construction of parallel vectorized IO and exposes a flat address space which is read/written in a manner equivalent to the read/write primitives offered by libc.</p>
 
-<p>위에서 설정하는 DNS서버 주소는 Local DNS 서버 주소 라고 생각하면 된다.</p>
+<h1 id="block-line">Block Line</h1>
 
-<h1 id="how-a-browser-displays-web-pages">How a browser displays web pages</h1>
-
-<ol>
-  <li>
-    <p>Stored on the server, the web page itself consists of an HTML text file. HTML is a collection of codes enclosed in angle brackets—&lt;&gt;—that control the formatting of text in the file.</p>
-  </li>
-  <li>
-    <p>HTML Code는 텍스트 뿐 아니라 이미지나 영상, 음성 파일등 서버에서 저장할 수 있는 대부분의 파일들을 포함 할 수 있다.</p>
-  </li>
-  <li>
-    <p>특정 웹페이지를 보기 위해서 Client가 원하는 웹페이지의 주소를 해당 서버로 보내면 해당 서버는 HTML Code를 return 한다.</p>
-  </li>
-  <li>
-    <p>동시에 서버는 HTML 코드에 있는 이미지, 영상 등의 파일을 Client로 보내도록 명령한다.</p>
-  </li>
-  <li>
-    <p>클라이언트는 HTML 코드와 이미지, 영상과 같은 파일을 RAM에 캐싱한다.(크롬 브라우저가 메모리를 많이 사용하는 대신 빠른 이유) 나중에 브라우저가 전에 보았던 웹 페이지나 이미지, 영상을 다시 볼때는 서버에 다시 요청하는 것이 아니라 RAM에 캐싱되어 있던 부분에서 가져온다.</p>
-  </li>
-  <li>
-    <p>브라우저는 서버로 부터 받은 HTML, 텍스트, 이미지, 영상들을 합하여 웹 페이지를 재 구성하여 화면에 배치할 위치를 결정한다(HTML코드를 따라서). 웹페이지의 모든 구성요소가 동시에 Client로 도착하는 것은 아니기 때문에 가장 간단한 요소인 텍스트가 일반적으로 가장 먼저 표시되고 그 이후에 이미지나 영상이 보여진다.</p>
-  </li>
-</ol>
-
-<p style="text-align: center;">
-	<img src="http://localhost:4000/images/hcw08_4.png" alt="Drawing" style="width: 600px;" />
-</p>
 
 				<hr />
 				<footer class="page-footer">
@@ -240,13 +274,13 @@
 	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=How%20Computers%20Work%20[08]&amp;url=http://localhost:4000/book/hcw08/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/book/hcw08/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/book/hcw08/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=liblightnvm(work%20in%20progress)&amp;url=http://localhost:4000/research/openChannelSSD_liblightnvm/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/openChannelSSD_liblightnvm/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/openChannelSSD_liblightnvm/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2017-11-04T21:00:00Z" itemprop="datePublished">November 04, 2017</time></p>
+	<p>Updated <time datetime="2018-02-20T19:00:00Z" itemprop="datePublished">February 20, 2018</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>
