@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>liblightnvm(work in progress) • Rocky's Research Blog</title>
+    <meta name="description" content="유저스페이스에서 Open Channel SSD 컨트롤 하기">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="liblightnvm(work in progress)">
+	<meta name="twitter:description" content="유저스페이스에서 Open Channel SSD 컨트롤 하기">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="liblightnvm(work in progress)">
+	<meta property="og:description" content="유저스페이스에서 Open Channel SSD 컨트롤 하기">
+	<meta property="og:url" content="http://localhost:4000/research/openChannelSSD_liblightnvm/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/openChannelSSD_liblightnvm/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>liblightnvm(work in progress)</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#obtaining-device-information" id="markdown-toc-obtaining-device-information">Obtaining device information</a></li>
+  <li><a href="#physical-addressing" id="markdown-toc-physical-addressing">Physical Addressing</a></li>
+  <li><a href="#vectorized-io" id="markdown-toc-vectorized-io">vectorized IO</a>    <ul>
+      <li><a href="#write-constraint" id="markdown-toc-write-constraint">write constraint</a></li>
+      <li><a href="#read-constraint" id="markdown-toc-read-constraint">read constraint</a></li>
+    </ul>
+  </li>
+  <li><a href="#virtual-block" id="markdown-toc-virtual-block">virtual block</a></li>
+  <li><a href="#block-line" id="markdown-toc-block-line">Block Line</a></li>
+</ul>
+
+</nav>
+
+<h1 id="obtaining-device-information">Obtaining device information</h1>
+
+<p>다음과 같은 명령어를 통해서 Open Channel SSD의 physical geometry를 알 수 있다. 즉, 디바이스의 정보를 얻을 수 있음.</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>nvm_dev info /dev/nvme0n1
+</code></pre>
+</div>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># Device information -- nvm_dev_pr</span>
+dev:
+  verid: 0x02
+  be_id: 0x02
+  name: <span class="s1">'nvme0n1'</span>
+  path: <span class="s1">'/dev/nvme0n1'</span>
+  fd: 3
+  ssw: 12
+  pmode: <span class="s1">'DUAL'</span>
+  erase_naddrs_max: 64
+  read_naddrs_max: 64
+  write_naddrs_max: 64
+  meta_mode: 0
+  bbts_cached: 0
+dev_geo:
+  nchannels: 16
+  nluns: 8
+  nplanes: 2
+  nblocks: 1020
+  npages: 512
+  nsectors: 4
+  page_nbytes: 16384
+  sector_nbytes: 4096
+  meta_nbytes: 16
+  tbytes: 2190433320960
+  tmbytes: 2088960
+dev_ppaf:
+  ch_off: 25
+  ch_len: 04
+  lun_off: 22
+  lun_len: 03
+  pl_off: 02
+  pl_len: 01
+  blk_off: 12
+  blk_len: 10
+  pg_off: 03
+  pg_len: 09
+  sec_off: 00
+  sec_len: 02
+dev_ppaf_mask:
+  ch:  <span class="s1">'0000000000000000000000000000000000011110000000000000000000000000'</span>
+  lun: <span class="s1">'0000000000000000000000000000000000000001110000000000000000000000'</span>
+  pl:  <span class="s1">'0000000000000000000000000000000000000000000000000000000000000100'</span>
+  blk: <span class="s1">'0000000000000000000000000000000000000000001111111111000000000000'</span>
+  pg:  <span class="s1">'0000000000000000000000000000000000000000000000000000111111111000'</span>
+  sec: <span class="s1">'0000000000000000000000000000000000000000000000000000000000000011'</span>
+</code></pre>
+</div>
+
+<h1 id="physical-addressing">Physical Addressing</h1>
+
+<p>struct nvm_addr 라는 자료구조로 물리 페이지 주소가 표현된다.</p>
+
+<p>Construct an address for sector 3 within page 11 in block 200 on plane 0 of LUN 1 in channel 4:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>nvm_addr from_geo /dev/nvme0n1 4 1 0 200 10 3
+</code></pre>
+</div>
+
+<p>Yielding:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>0x04010003000a00c8: {ch: 04, lun: 01, pl: 0, blk: 0200, pg: 010, sec: 3}
+</code></pre>
+</div>
+
+<p>플래시 메모리에 I/O 할 수 있도록 해주는  유저스페이스 라이브러리, I/O 인텐시브한 어플리케이션이 어플리케이션에서 FTL을 구현할 수 있도록 도와줄 수 있다.</p>
+
+<p>liblightnvm is a user space library that manages provisioning of and I/O submission to physical flash. The motivation is to enable I/O-intensive applications to implement their own Flash Translation Layer (FTLs) using the internal application data structures. The design is based on the principle that high-performance I/O applications often use structures that assimilates structures found within a Flash translation layer. This include log-structured data structures that provides their own mechanisms for data placement, garbage collection, and I/O scheduling strategies.</p>
+
+<p>For example, popular key-value stores often use a form of Log Structured Merge Trees (LSMs) as their base data structure (including RocksDB, MongoDB, Apache Cassandra). The LSM is in itself a form of FTL, which manages data placement and garbage collection. This class of applications can benefit from a direct path to physical flash to take full advantage of the optimizations they do and spend host resources on, instead of missing them through the several levels of indirection that the traditional I/O stack imposes to enable genericity: page cache, VFS, file system, and device physical - logical translation table. liblightnvm exposes append-only primitives using direct physical flash to support this class of applications.</p>
+
+<p><a href="https://github.com/OpenChannelSSD/liblightnvm">https://github.com/OpenChannelSSD/liblightnvm</a></p>
+
+<h1 id="vectorized-io">vectorized IO</h1>
+
+<h2 id="write-constraint">write constraint</h2>
+
+<ol>
+  <li>Erase before write</li>
+  <li>they must be at the granularity of a full flash page</li>
+  <li>they must be contiguous within a block</li>
+  <li>writes must be performed to the block accross all planes(minimum write)
+  한 die에 plane이 두 개 있을때, 쓰기는 이 plane에 모두 이루어져야 한다. 따라서, 이 조건을 만족하도록 쓰기를 하거나 <em>plane-mode</em>를 꺼 주는 옵션을 써야 한다.</li>
+  <li>we can construct a command with 64 addresses.(maximum write)
+  한 nvme command에 64개의 ppa를 지정 해 줄 수 있다. 따라서, 4k X 64크기 만큼의 데이터 쓰기를 한 커멘드를 통해 요청할 수 있다.</li>
+</ol>
+
+<h2 id="read-constraint">read constraint</h2>
+
+<ol>
+  <li>The granularity of a read is a single sector (the smallest addressable unit) and can be performed non-contiguously.</li>
+  <li>The primary constraint for a read to adhere to is that the block which is read from must be closed. That is, all pages within the block must have been written
+  읽기 전에 해당 블록은 모든 페이지가 다 쓰여져 있는 상태 이어야 한다.</li>
+</ol>
+
+<h1 id="virtual-block">virtual block</h1>
+<p>liblightnvm, therefore, introduces a pure software abstraction, a virtual block, to reduce the cognitive load for application developers.</p>
+
+<p>A virtual block behaves as a physical, that is, the constraints of working with NAND media also apply to a virtual block. However, the abstraction encapsulates the command and address construction of parallel vectorized IO and exposes a flat address space which is read/written in a manner equivalent to the read/write primitives offered by libc.</p>
+
+<h1 id="block-line">Block Line</h1>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=liblightnvm(work%20in%20progress)&amp;url=http://localhost:4000/research/openChannelSSD_liblightnvm/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/openChannelSSD_liblightnvm/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/openChannelSSD_liblightnvm/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2018-02-20T10:00:00Z" itemprop="datePublished">February 20, 2018</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

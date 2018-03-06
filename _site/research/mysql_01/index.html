@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>개발자와 DBA를 위한 real mysql(work in progress) • Rocky's Research Blog</title>
+    <meta name="description" content="mysql architecture">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="개발자와 DBA를 위한 real mysql(work in progress)">
+	<meta name="twitter:description" content="mysql architecture">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="개발자와 DBA를 위한 real mysql(work in progress)">
+	<meta property="og:description" content="mysql architecture">
+	<meta property="og:url" content="http://localhost:4000/research/mysql_01/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/mysql_01/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>개발자와 DBA를 위한 real mysql(work in progress)</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#architecture" id="markdown-toc-architecture">Architecture</a>    <ul>
+      <li><a href="#path-overview" id="markdown-toc-path-overview">Path Overview</a></li>
+      <li><a href="#threading" id="markdown-toc-threading">Threading</a></li>
+      <li><a href="#메모리-할당-및-사용-구조" id="markdown-toc-메모리-할당-및-사용-구조">메모리 할당 및 사용 구조</a></li>
+      <li><a href="#플러그인-스토리지-엔진-모델" id="markdown-toc-플러그인-스토리지-엔진-모델">플러그인 스토리지 엔진 모델</a></li>
+      <li><a href="#쿼리-실행-구조" id="markdown-toc-쿼리-실행-구조">쿼리 실행 구조</a></li>
+      <li><a href="#replication" id="markdown-toc-replication">replication</a></li>
+      <li><a href="#쿼리-캐시" id="markdown-toc-쿼리-캐시">쿼리 캐시</a></li>
+      <li><a href="#innodb-스토리지-엔진-아키텍쳐" id="markdown-toc-innodb-스토리지-엔진-아키텍쳐">InnoDB 스토리지 엔진 아키텍쳐</a></li>
+      <li><a href="#innodb-버퍼-풀" id="markdown-toc-innodb-버퍼-풀">InnoDB 버퍼 풀</a></li>
+      <li><a href="#insert-buffer" id="markdown-toc-insert-buffer">Insert Buffer</a></li>
+      <li><a href="#redo-로그-로그-버퍼" id="markdown-toc-redo-로그-로그-버퍼">Redo 로그, 로그 버퍼</a></li>
+    </ul>
+  </li>
+  <li><a href="#실행-계획" id="markdown-toc-실행-계획">실행 계획</a>    <ul>
+      <li><a href="#쿼리-실행-절차" id="markdown-toc-쿼리-실행-절차">쿼리 실행 절차</a></li>
+    </ul>
+  </li>
+</ul>
+
+</nav>
+
+<h1 id="architecture">Architecture</h1>
+
+<h2 id="path-overview">Path Overview</h2>
+
+<ol>
+  <li>
+    <p>Mysql 엔진
+클라이언트로부터 접속 및 sql 쿼리 요청을 받아 문장을 분석, 최적화한다. 데이터를 스토리지로부터 읽거나 써야 할 떄는 스토리지 엔진에게 요청한다. 이러한 요청을 Handler Request라고 한다. 여기에 사용되는 API는 Handler API라고 함.</p>
+  </li>
+  <li>
+    <p>스토리지 엔진
+실제 데이터를 디바이스에 저장하거나 읽어오는 부분을 담당. MySQL서버에서 Mysql엔진은 하나이지만 스토리지 엔진은 여러 개 일 수 있다.</p>
+  </li>
+</ol>
+
+<h2 id="threading">Threading</h2>
+
+<ol>
+  <li>
+    <p><strong>포그라운드 스레드(클라이언트 스레드)</strong> - mysql 서버에 접속한 클라이언트 만큼 존재하며, 클라이언트가 요청하는 쿼리 문장을 처리한다. MySQL에서 사용자 스레드와 포그라운드 스레드는 같은의미로 사용됨. 클라이언트가 서버에 접속하게 되면 그 서버는 클라이언트의 요청을 처리해 줄 스레드를 클라이언트에게 할당 해 준다.</p>
+  </li>
+  <li>
+    <p><strong>백그라운더 스레드</strong> - InnoDB의 경우 여러가지 작업이 백그라운드로 처리된다. 예를 들어, insert Buffer를 병합, 로그를 디스크로 기록, InnoDB의 버퍼 풀의 데이터를 디스크에 기록, 데이터를 버퍼로 읽기, 모니터링 등이 있다. 읽기의 경우 클라이언트 스레드에서 처리되기 때문에, 읽기 스레드가 많을 필요가 없지만, 쓰기 스레드는 많은 작업들을 백그라운드로 처리하기 때문에, 충분하게 설정 해 주는 것이 좋다.</p>
+  </li>
+</ol>
+
+<p>sql 처리에서 읽기는 지연이 없지만, 쓰기는 배치 프로세싱을 할 수 있음. InnoDB에서는 INSERT와 UPDATE 그리고 DELETE 쿼리로 데이터가 변경되는 경우, 데이터가 디스크의 데이터 파일로 완정히 저장될 때 까지 기다리지 않아도 된다. 하지만, MyISAM에서 일반적인 쿼리는 쓰기 버퍼링 기능을 사용할 수 없다.</p>
+
+<h2 id="메모리-할당-및-사용-구조">메모리 할당 및 사용 구조</h2>
+
+<p>MySQL에서 사용되는 메모리 공간은 크게 글로벌 메모리 영역과 로컬 메모리 영역으로 구분된다. 글로벌 메모리 영역의 모든 메모리 공간은 MySQL서버가 시작되면서 OS로부터 할당된다.</p>
+
+<ol>
+  <li>
+    <p><strong>글로벌 메모리 영역</strong> - 클라이언트 스레드의 수와 무관하게 하나의(일반적으로) 메모리 공간으로 할당 된다. 모든 스레드에 의해 공유된다.</p>
+  </li>
+  <li>
+    <p><strong>로컬 메모리 영역</strong> - 세션 메모리 영역이라고도 표현하며, MySQL 서버상에 존재하는 클라이언트 스레드가 쿼리를 처리하는데 사용하는 메모리 영역,  클라이언트 메모리 영역, 또는 세션 메모리 영역이라고도 한다.
+로컬 메모리 영역은 각 클라이언트 스레드 별로 독립적으로 할당되며, 절대 공유되어 사용되지 않는다.</p>
+  </li>
+</ol>
+
+<h2 id="플러그인-스토리지-엔진-모델">플러그인 스토리지 엔진 모델</h2>
+
+<p>대부분의 MySQL기능은 MySQL엔진에서 처리된다. I/O 작업만 스토리지 엔진에서 처리됨, 따라서 플러그인 처럼 서로다른 스토리지 엔진을 사용할 수 있다.</p>
+
+<p>MySQL 엔진이 스토리지 엔진을 조정하기 위해 핸들러라는 것을 사용하게 된다. MySQL엔진이 각 스토리지 엔진에게 데이터를 읽어오거나 저장하도록 명령하려면 핸들러를 반드시 통해야 한다.</p>
+
+<h2 id="쿼리-실행-구조">쿼리 실행 구조</h2>
+
+<p style="text-align: center;">
+		<img src="http://localhost:4000/images/mysql_01_01.jpg" alt="Drawing" style="width: 600;" />
+</p>
+
+<p><a href="http://rrhh234cm.tistory.com/140">http://rrhh234cm.tistory.com/140</a></p>
+
+<ol>
+  <li><strong>파서</strong> - 문법 체크, 토큰분리</li>
+  <li><strong>전처리기</strong> - 객체의 존재 유무, 접근 권한 확인 등.</li>
+  <li><strong>옵티마이저</strong> - 두뇌, 가장 중요</li>
+  <li><strong>실행 엔진</strong> - 손과 발,</li>
+  <li><strong>핸들러(스토리지 엔진)</strong> - I/O</li>
+</ol>
+
+<h2 id="replication">replication</h2>
+
+<p>데이터베이스의 데이터가 대용량화 됨에 따라, 확장성을 위한 여러 기술 중 하나. 두 개 이상의 MySQL서버가 동일한 데이터를 담도록 실시간으로 동기화 하는 기술.</p>
+
+<h2 id="쿼리-캐시">쿼리 캐시</h2>
+
+<p>쿼리의 결과를 쿼리 캐시에 담아 두고, 동일한 쿼리 요청이 왔을때 캐시에서 그 결과를 돌려준다.</p>
+
+<ul>
+  <li>절차
+    <ol>
+      <li>요청된 쿼리 문장이 쿼리 캐시에 존재하는가(공백이나 개행문자 하나라도 같아야 한다)?</li>
+      <li>해당 사용자가 그 결과를 볼 수 있는 권한을 가지고 있는가?</li>
+      <li>트랜잭션 내에서 실행된 쿼리 인 경우, 그 결과가 가시 범위 내의 트랜잭션 내에서 만들어진 결과 인가(InnoDB의 경우)</li>
+      <li>쿼리에 사용된 기능(내장 함수나 저장 함수, 예를 들어 랜덤이나 현재 날짜 관련 )이 캐시 되어도 동일한 결과를 보장 할 수 있는가?</li>
+      <li>캐시가 만들어지고 난 이후ㅠ 해당 데이터가 다른 사용자에 의해 변경되지 않았는가?</li>
+      <li>쿼리에 의해 만들어진 결과가 캐시하기에 너무 크지 않은가?</li>
+      <li>그 밖에 쿼리 캐시를 사용하지 못하게 만드는 요소가 사용됐는가?
+등등등</li>
+    </ol>
+  </li>
+</ul>
+
+<h2 id="innodb-스토리지-엔진-아키텍쳐">InnoDB 스토리지 엔진 아키텍쳐</h2>
+
+<ul>
+  <li>InnoDB 특징
+    <ol>
+      <li>프라이머리 키에 의한 클러스터링</li>
+      <li>잠금이 필요없는 읽기</li>
+      <li>foreign key 지원</li>
+      <li>자동 데드락 감지</li>
+      <li>자동화 된 장애 복구</li>
+      <li>오라클 아키텍쳐 적용</li>
+    </ol>
+  </li>
+</ul>
+
+<h2 id="innodb-버퍼-풀">InnoDB 버퍼 풀</h2>
+
+<p>MySQL의 쓰기 작업(INSERT, DELETE등)은 파일의 이곳 저곳에 위치한 레코드를 변경하기 때문에 랜덤한 디스크 작업을 발생시킴. 버퍼풀이 이러한 변경된 데이터를 모아서 처리하게 되면 랜덤한 디스크 잡업의 횟수를 줄일 수 있다.</p>
+
+<p>InnoDB의 버퍼 풀은 데이터와 인덱스 모두 캐시하고 쓰기 버퍼링의 역할까지 모두 처리한다. 또한, 여러 백그라운드 작업의 기반이 되는 메모리 공간이다. 따라서 InnoDB의 버퍼 풀 크기를 충분하게 설정해야 한다.</p>
+
+<p>InnoDB 버퍼 풀은 아직 디스크에 기록되지 않은 변경된 데이터를 가지고 있다. <strong>이런 데이터를 가지고 있는 페이지를 더티 페이지라고 하는데</strong>, InnoDB에서는 이런 더티 페이지를 주기적으로 체크포인트 이벤트를 통해 Write Thread 가 필요한 만큼의 더티페이지를 디스크에 기록한다. 체크포인트가 발생한다고 해서 모든 더티페이지를 디스크에 기록하는 것은 아니다.</p>
+
+<h2 id="insert-buffer">Insert Buffer</h2>
+
+<p>INSERT나 UPDATE시 데이터 파일을 변경하는 작업 뿐 아니라 해당 테이블에 포함된 인덱스를 업데이트 해야하는 작업이 필요함. 이 작업은 랜덤한 디스크 읽기 이므로 오버헤드가 있음. 따라서, InnoDB에서는 변경해야 할 인덱스 페이지가 버퍼 풀에 있으면 바로 업데이트를 수행하고, 디스크로부터 읽어와서 업데이트를 해야 한다면 임시 공간에 저장 해 두고 결과를 사용자에게 반환한다. 이때 이 임시 공간을 Insert Buffer라고 한다</p>
+
+<h2 id="redo-로그-로그-버퍼">Redo 로그, 로그 버퍼</h2>
+
+<p>MySQL에서 변경된 데이터를 버퍼링 해 두기 위해 InnoDB 버퍼 풀 과 같은 장치가 마련되어 있음, 이것만으로 ACID를 보장하기 어려움. 변경된 내용을 순차적으로 디스크에 기록하는 로그 파일을 가지고 있음. 이 로그를 Redo log라고 함.</p>
+
+<p>데이터의 변경 작업이 매우 많은 DBMS서버의 경우에는 이 리두 로그의 기록 작업이 문제가 됨. 따라서 ACID를 보장하는 수준에서 버핑을 하고 이 버퍼링에 사용되는 공간이 로그버퍼임.</p>
+
+<h1 id="실행-계획">실행 계획</h1>
+
+<h2 id="쿼리-실행-절차">쿼리 실행 절차</h2>
+
+<ol>
+  <li>사용자로부터 요청된 SQL 문장을 잘개 쪼개서 MySQL 서버가 이해할 수 있는 수준으로 분리한다.</li>
+  <li>SQL Parse tree를 만들어, 어떤 테이블로부터 읽고, 어떤 인덱스를 사용하여 테이블을 읽을지 정한다.</li>
+  <li>2.로부터 결정된 방법을 통해 스토리지 엔진으로부터 데이터를 가져온다.</li>
+</ol>
+
+<p>1~2 단계는 MySQL 엔진에서 처리하며, 3단계는 MySQL엔진과 스토리지엔진 모두가 관여한다.</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=개발자와%20DBA를%20위한%20real%20mysql(work%20in%20progress)&amp;url=http://localhost:4000/research/mysql_01/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/mysql_01/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/mysql_01/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2018-02-20T10:00:00Z" itemprop="datePublished">February 20, 2018</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

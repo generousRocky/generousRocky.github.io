@@ -1,0 +1,1437 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-03-06T14:29:29+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">MySQL 소스코드 분석</title><link href="http://localhost:4000/research/mysql_02/" rel="alternate" type="text/html" title="MySQL 소스코드 분석" /><published>2018-03-01T19:00:00+09:00</published><updated>2018-03-01T19:00:00+09:00</updated><id>http://localhost:4000/research/mysql_02</id><content type="html" xml:base="http://localhost:4000/research/mysql_02/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#7가지-major-directories&quot; id=&quot;markdown-toc-7가지-major-directories&quot;&gt;7가지 Major Directories&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#path&quot; id=&quot;markdown-toc-path&quot;&gt;Path&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;7가지-major-directories&quot;&gt;7가지 Major Directories&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;BUILD&lt;/li&gt;
+  &lt;li&gt;client&lt;/li&gt;
+  &lt;li&gt;Docs&lt;/li&gt;
+  &lt;li&gt;myisam&lt;/li&gt;
+  &lt;li&gt;mysys - toolbox directory. e.g. sort, changing charactoer set…&lt;/li&gt;
+  &lt;li&gt;sql - parser, handler, statement… functions.&lt;/li&gt;
+  &lt;li&gt;vio - virtual I/O, vio routines are wrappers for the various network I/O calls that happen with different protocols.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;path&quot;&gt;Path&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;/sql/mysqld.cc&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;_cust_check_startup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thr_setconcurrency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;concurrency&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;init_ssl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;server_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;                             &lt;span class=&quot;c1&quot;&gt;// 'bind' + 'listen'
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;init_server_components&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;start_signal_handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;acl_init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;opt_noacl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;init_slave&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create_shutdown_thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;create_maintenance_thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;handle_connections_sockets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;             &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;DBUG_PRINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;quit&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Exiting main thread&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;main 함수 부분. mysql 시작&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;handle_connections_sockets&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;__attribute__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unused&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ip_sock&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INVALID_SOCKET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+       &lt;span class=&quot;n&quot;&gt;FD_SET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ip_sock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clientFDs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+       &lt;span class=&quot;n&quot;&gt;DBUG_PRINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;general&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Waiting for connections.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+       &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;abort_loop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;new_sock&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;my_reinterpret_cast&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockaddr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+           &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cAddr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;             &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sock&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unix_sock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;create_new_thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;         &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;main thread가 새로 들어오는 클라이언트의 리퀘스트를 항상 듣고있다. 새로운 리퀘스트를 받으면, 다른 클라이언트와 독립적으로 구분되는 자원을 할당 해 준다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create_new_thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pthread_mutex_lock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LOCK_thread_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pthread_create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;real_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connection_attrib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;handle_one_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;                        &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pthread_mutex_unlock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LOCK_thread_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;새로운 스레드 생성됨.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;/sql/sql_parse.cc&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;handle_one_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;init_sql_alloc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mem_root&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEM_ROOT_BLOCK_SIZE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MEM_ROOT_PREALLOC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vio&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;killed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;do_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;        &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;close_connection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;net&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;end_thread&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;do_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;net_new_transaction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;net&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;packet_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;my_net_read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;net&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// gets a packet from the client
+&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;net&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;enum_server_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;dispatch_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uint&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;패킷을 클라이언트로 받아온다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dispatch_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;enum&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;enum_server_command&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+       &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;uint&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;COM_INIT_DB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;          &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;COM_REGISTER_SLAVE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;COM_TABLE_DUMP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;       &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;COM_CHANGE_USER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;      &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;COM_EXECUTE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;mysql_stmt_execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;COM_LONG_DATA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;COM_PREPARE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+         &lt;span class=&quot;n&quot;&gt;mysql_stmt_prepare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;packet_length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// **
+&lt;/span&gt;    &lt;span class=&quot;cm&quot;&gt;/* and so on for 18 other cases */&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;default:&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;send_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ER_UNKNOWN_COM_ERROR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;** Prepare:&lt;/p&gt;
+
+&lt;p&gt;Allocate a new statement, keep it in ‘thd-&amp;gt;prepared statements’ pool
+Return to client the total number of parameters and result-set
+metadata information (if any)”&lt;/p&gt;
+
+&lt;p&gt;위 코드는 굉장히 긴 switch 문장의 일부분임. 여러 갈림길 중. mysql_stmt_execute path를 살펴본다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mysql_stmt_execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stmt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find_prepared_statement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stmt_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;execute&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;send_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;DBUG_VOID_RETURN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;init_stmt_execute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stmt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mysql_execute_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;           &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;excutes statate 관련.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mysql_execute_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql_command&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+       &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQLCOM_SELECT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+       &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQLCOM_SHOW_ERRORS&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+       &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQLCOM_CREATE_TABLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+       &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQLCOM_UPDATE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+       &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQLCOM_INSERT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;                   &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;       &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQLCOM_DELETE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+       &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQLCOM_DROP_TABLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+       &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;insert를 예로 들어보자.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SQLCOM_INSERT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;my_bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elements&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UPDATE_ACL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;ulong&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;privilege&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;duplicates&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DUP_REPLACE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;INSERT_ACL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DELETE_ACL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INSERT_ACL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;check_access&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;privilege&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;grant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;privilege&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;goto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;grant_option&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;check_grant&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;privilege&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;goto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;select_lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elements&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elements&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;send_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ER_WRONG_VALUE_COUNT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;DBUG_VOID_RETURN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;res&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mysql_insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;field_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;many_values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                     &lt;span class=&quot;n&quot;&gt;select_lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;item_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DUP_UPDATE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;duplicates&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;net&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;report_error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;insert시 해당 테이블에 적절한 권한이 있는지 등을 체크한다. 이것은 side path이고 mysql_insert를 따라 내려가 보면,&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mysql_insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;THD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TABLE_LIST&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Item&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;List_item&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enum_duplicates&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;duplic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;open_ltable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lock_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;check_insert_fields&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fields&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;setup_tables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;setup_fields&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;goto&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;abort&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fill_record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;field&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write_record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;                 &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;query_cache_invalidate3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transactional_table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ha_autocommit_or_rollback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;query_cache_invalidate3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table_list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mysql_unlock_tables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;thd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lock&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;테이블 오픈, insert fail 체크 등의 에러 체크, 레코드 버퍼 체우기, 레코드에 값 쓰기, 쿼리캐시 invalidate 시키기 등을 수행한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;write_record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;COPY_INFO&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write_row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;           &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;write_row함수는 handler에 따라 여러 곳에 정의되어 있음.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ha_myisam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write_row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;statistic_increment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ha_write_count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LOCK_status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+   &lt;span class=&quot;cm&quot;&gt;/* If we have a timestamp column, update it to the current time */&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time_stamp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;update_timestamp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time_stamp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+   &lt;span class=&quot;cm&quot;&gt;/*
+  If we have an auto_increment column and we are writing a changed row
+    or a new row, then update the auto_increment value in the record.
+  */&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;next_number_field&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;update_auto_increment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mi_write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;// next path
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;mi_write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MI_INFO&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;_mi_readinfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;F_WRLCK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;_mi_mark_file_changed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;cm&quot;&gt;/* Calculate and check all unique constraints */&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniques&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mi_check_unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniqueinfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;mi_unique_hash&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniqueinfo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;HA_OFFSET_ERROR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;continued&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;snippet&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;아직&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;여기까지는&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;테이블이나&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;파일&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;인덱스&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;키값에&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;대한&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;언급이&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;없다&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt; 
+
+&lt;span class=&quot;o&quot;&gt;~~~&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;continued&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;previous&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;snippet&lt;/span&gt;
+
+  &lt;span class=&quot;cm&quot;&gt;/* Write all keys to indextree */&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keyinfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ck_insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;_mi_make_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filepos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write_record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auto_key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;update_auto_increment&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;record&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;mi_write 함수의 후반부에 다른 명확한 주석이 표시되어 이것이 인덱싱 된 열에 대해 새로운 키가 만들어지는 곳이라는 것을 알 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;지금까지 Mysql Server Code의 Stack trace는 다음과 같다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mysqld&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;handle_connections_sockets&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mysqld&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;create_new_thread&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mysqld&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;handle_one_connection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql_parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;do_command&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql_parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;dispatch_command&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql_parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mysql_stmt_execute&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql_prepare&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mysql_execute_command&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql_parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mysql_insert&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mysql_insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;write_record&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mysql_insert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ha_myisam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write_row&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ha_myisam&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cc&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mi_write&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;myisam&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mi_write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">소스코드 구조 &amp; 쿼리 path 분석</summary></entry><entry><title type="html">개발자와 DBA를 위한 real mysql(work in progress)</title><link href="http://localhost:4000/research/mysql_01/" rel="alternate" type="text/html" title="개발자와 DBA를 위한 real mysql(work in progress)" /><published>2018-02-20T19:00:00+09:00</published><updated>2018-02-20T19:00:00+09:00</updated><id>http://localhost:4000/research/mysql_01</id><content type="html" xml:base="http://localhost:4000/research/mysql_01/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#architecture&quot; id=&quot;markdown-toc-architecture&quot;&gt;Architecture&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#path-overview&quot; id=&quot;markdown-toc-path-overview&quot;&gt;Path Overview&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#threading&quot; id=&quot;markdown-toc-threading&quot;&gt;Threading&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#메모리-할당-및-사용-구조&quot; id=&quot;markdown-toc-메모리-할당-및-사용-구조&quot;&gt;메모리 할당 및 사용 구조&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#플러그인-스토리지-엔진-모델&quot; id=&quot;markdown-toc-플러그인-스토리지-엔진-모델&quot;&gt;플러그인 스토리지 엔진 모델&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#쿼리-실행-구조&quot; id=&quot;markdown-toc-쿼리-실행-구조&quot;&gt;쿼리 실행 구조&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#replication&quot; id=&quot;markdown-toc-replication&quot;&gt;replication&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#쿼리-캐시&quot; id=&quot;markdown-toc-쿼리-캐시&quot;&gt;쿼리 캐시&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#innodb-스토리지-엔진-아키텍쳐&quot; id=&quot;markdown-toc-innodb-스토리지-엔진-아키텍쳐&quot;&gt;InnoDB 스토리지 엔진 아키텍쳐&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#innodb-버퍼-풀&quot; id=&quot;markdown-toc-innodb-버퍼-풀&quot;&gt;InnoDB 버퍼 풀&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#insert-buffer&quot; id=&quot;markdown-toc-insert-buffer&quot;&gt;Insert Buffer&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#redo-로그-로그-버퍼&quot; id=&quot;markdown-toc-redo-로그-로그-버퍼&quot;&gt;Redo 로그, 로그 버퍼&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#실행-계획&quot; id=&quot;markdown-toc-실행-계획&quot;&gt;실행 계획&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#쿼리-실행-절차&quot; id=&quot;markdown-toc-쿼리-실행-절차&quot;&gt;쿼리 실행 절차&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;architecture&quot;&gt;Architecture&lt;/h1&gt;
+
+&lt;h2 id=&quot;path-overview&quot;&gt;Path Overview&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Mysql 엔진
+클라이언트로부터 접속 및 sql 쿼리 요청을 받아 문장을 분석, 최적화한다. 데이터를 스토리지로부터 읽거나 써야 할 떄는 스토리지 엔진에게 요청한다. 이러한 요청을 Handler Request라고 한다. 여기에 사용되는 API는 Handler API라고 함.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;스토리지 엔진
+실제 데이터를 디바이스에 저장하거나 읽어오는 부분을 담당. MySQL서버에서 Mysql엔진은 하나이지만 스토리지 엔진은 여러 개 일 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;threading&quot;&gt;Threading&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;포그라운드 스레드(클라이언트 스레드)&lt;/strong&gt; - mysql 서버에 접속한 클라이언트 만큼 존재하며, 클라이언트가 요청하는 쿼리 문장을 처리한다. MySQL에서 사용자 스레드와 포그라운드 스레드는 같은의미로 사용됨. 클라이언트가 서버에 접속하게 되면 그 서버는 클라이언트의 요청을 처리해 줄 스레드를 클라이언트에게 할당 해 준다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;백그라운더 스레드&lt;/strong&gt; - InnoDB의 경우 여러가지 작업이 백그라운드로 처리된다. 예를 들어, insert Buffer를 병합, 로그를 디스크로 기록, InnoDB의 버퍼 풀의 데이터를 디스크에 기록, 데이터를 버퍼로 읽기, 모니터링 등이 있다. 읽기의 경우 클라이언트 스레드에서 처리되기 때문에, 읽기 스레드가 많을 필요가 없지만, 쓰기 스레드는 많은 작업들을 백그라운드로 처리하기 때문에, 충분하게 설정 해 주는 것이 좋다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;sql 처리에서 읽기는 지연이 없지만, 쓰기는 배치 프로세싱을 할 수 있음. InnoDB에서는 INSERT와 UPDATE 그리고 DELETE 쿼리로 데이터가 변경되는 경우, 데이터가 디스크의 데이터 파일로 완정히 저장될 때 까지 기다리지 않아도 된다. 하지만, MyISAM에서 일반적인 쿼리는 쓰기 버퍼링 기능을 사용할 수 없다.&lt;/p&gt;
+
+&lt;h2 id=&quot;메모리-할당-및-사용-구조&quot;&gt;메모리 할당 및 사용 구조&lt;/h2&gt;
+
+&lt;p&gt;MySQL에서 사용되는 메모리 공간은 크게 글로벌 메모리 영역과 로컬 메모리 영역으로 구분된다. 글로벌 메모리 영역의 모든 메모리 공간은 MySQL서버가 시작되면서 OS로부터 할당된다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;글로벌 메모리 영역&lt;/strong&gt; - 클라이언트 스레드의 수와 무관하게 하나의(일반적으로) 메모리 공간으로 할당 된다. 모든 스레드에 의해 공유된다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;로컬 메모리 영역&lt;/strong&gt; - 세션 메모리 영역이라고도 표현하며, MySQL 서버상에 존재하는 클라이언트 스레드가 쿼리를 처리하는데 사용하는 메모리 영역,  클라이언트 메모리 영역, 또는 세션 메모리 영역이라고도 한다.
+로컬 메모리 영역은 각 클라이언트 스레드 별로 독립적으로 할당되며, 절대 공유되어 사용되지 않는다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;플러그인-스토리지-엔진-모델&quot;&gt;플러그인 스토리지 엔진 모델&lt;/h2&gt;
+
+&lt;p&gt;대부분의 MySQL기능은 MySQL엔진에서 처리된다. I/O 작업만 스토리지 엔진에서 처리됨, 따라서 플러그인 처럼 서로다른 스토리지 엔진을 사용할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;MySQL 엔진이 스토리지 엔진을 조정하기 위해 핸들러라는 것을 사용하게 된다. MySQL엔진이 각 스토리지 엔진에게 데이터를 읽어오거나 저장하도록 명령하려면 핸들러를 반드시 통해야 한다.&lt;/p&gt;
+
+&lt;h2 id=&quot;쿼리-실행-구조&quot;&gt;쿼리 실행 구조&lt;/h2&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+		&lt;img src=&quot;http://localhost:4000/images/mysql_01_01.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://rrhh234cm.tistory.com/140&quot;&gt;http://rrhh234cm.tistory.com/140&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;파서&lt;/strong&gt; - 문법 체크, 토큰분리&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;전처리기&lt;/strong&gt; - 객체의 존재 유무, 접근 권한 확인 등.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;옵티마이저&lt;/strong&gt; - 두뇌, 가장 중요&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;실행 엔진&lt;/strong&gt; - 손과 발,&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;핸들러(스토리지 엔진)&lt;/strong&gt; - I/O&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;replication&quot;&gt;replication&lt;/h2&gt;
+
+&lt;p&gt;데이터베이스의 데이터가 대용량화 됨에 따라, 확장성을 위한 여러 기술 중 하나. 두 개 이상의 MySQL서버가 동일한 데이터를 담도록 실시간으로 동기화 하는 기술.&lt;/p&gt;
+
+&lt;h2 id=&quot;쿼리-캐시&quot;&gt;쿼리 캐시&lt;/h2&gt;
+
+&lt;p&gt;쿼리의 결과를 쿼리 캐시에 담아 두고, 동일한 쿼리 요청이 왔을때 캐시에서 그 결과를 돌려준다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;절차
+    &lt;ol&gt;
+      &lt;li&gt;요청된 쿼리 문장이 쿼리 캐시에 존재하는가(공백이나 개행문자 하나라도 같아야 한다)?&lt;/li&gt;
+      &lt;li&gt;해당 사용자가 그 결과를 볼 수 있는 권한을 가지고 있는가?&lt;/li&gt;
+      &lt;li&gt;트랜잭션 내에서 실행된 쿼리 인 경우, 그 결과가 가시 범위 내의 트랜잭션 내에서 만들어진 결과 인가(InnoDB의 경우)&lt;/li&gt;
+      &lt;li&gt;쿼리에 사용된 기능(내장 함수나 저장 함수, 예를 들어 랜덤이나 현재 날짜 관련 )이 캐시 되어도 동일한 결과를 보장 할 수 있는가?&lt;/li&gt;
+      &lt;li&gt;캐시가 만들어지고 난 이후ㅠ 해당 데이터가 다른 사용자에 의해 변경되지 않았는가?&lt;/li&gt;
+      &lt;li&gt;쿼리에 의해 만들어진 결과가 캐시하기에 너무 크지 않은가?&lt;/li&gt;
+      &lt;li&gt;그 밖에 쿼리 캐시를 사용하지 못하게 만드는 요소가 사용됐는가?
+등등등&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;innodb-스토리지-엔진-아키텍쳐&quot;&gt;InnoDB 스토리지 엔진 아키텍쳐&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;InnoDB 특징
+    &lt;ol&gt;
+      &lt;li&gt;프라이머리 키에 의한 클러스터링&lt;/li&gt;
+      &lt;li&gt;잠금이 필요없는 읽기&lt;/li&gt;
+      &lt;li&gt;foreign key 지원&lt;/li&gt;
+      &lt;li&gt;자동 데드락 감지&lt;/li&gt;
+      &lt;li&gt;자동화 된 장애 복구&lt;/li&gt;
+      &lt;li&gt;오라클 아키텍쳐 적용&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;innodb-버퍼-풀&quot;&gt;InnoDB 버퍼 풀&lt;/h2&gt;
+
+&lt;p&gt;MySQL의 쓰기 작업(INSERT, DELETE등)은 파일의 이곳 저곳에 위치한 레코드를 변경하기 때문에 랜덤한 디스크 작업을 발생시킴. 버퍼풀이 이러한 변경된 데이터를 모아서 처리하게 되면 랜덤한 디스크 잡업의 횟수를 줄일 수 있다.&lt;/p&gt;
+
+&lt;p&gt;InnoDB의 버퍼 풀은 데이터와 인덱스 모두 캐시하고 쓰기 버퍼링의 역할까지 모두 처리한다. 또한, 여러 백그라운드 작업의 기반이 되는 메모리 공간이다. 따라서 InnoDB의 버퍼 풀 크기를 충분하게 설정해야 한다.&lt;/p&gt;
+
+&lt;p&gt;InnoDB 버퍼 풀은 아직 디스크에 기록되지 않은 변경된 데이터를 가지고 있다. &lt;strong&gt;이런 데이터를 가지고 있는 페이지를 더티 페이지라고 하는데&lt;/strong&gt;, InnoDB에서는 이런 더티 페이지를 주기적으로 체크포인트 이벤트를 통해 Write Thread 가 필요한 만큼의 더티페이지를 디스크에 기록한다. 체크포인트가 발생한다고 해서 모든 더티페이지를 디스크에 기록하는 것은 아니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;insert-buffer&quot;&gt;Insert Buffer&lt;/h2&gt;
+
+&lt;p&gt;INSERT나 UPDATE시 데이터 파일을 변경하는 작업 뿐 아니라 해당 테이블에 포함된 인덱스를 업데이트 해야하는 작업이 필요함. 이 작업은 랜덤한 디스크 읽기 이므로 오버헤드가 있음. 따라서, InnoDB에서는 변경해야 할 인덱스 페이지가 버퍼 풀에 있으면 바로 업데이트를 수행하고, 디스크로부터 읽어와서 업데이트를 해야 한다면 임시 공간에 저장 해 두고 결과를 사용자에게 반환한다. 이때 이 임시 공간을 Insert Buffer라고 한다&lt;/p&gt;
+
+&lt;h2 id=&quot;redo-로그-로그-버퍼&quot;&gt;Redo 로그, 로그 버퍼&lt;/h2&gt;
+
+&lt;p&gt;MySQL에서 변경된 데이터를 버퍼링 해 두기 위해 InnoDB 버퍼 풀 과 같은 장치가 마련되어 있음, 이것만으로 ACID를 보장하기 어려움. 변경된 내용을 순차적으로 디스크에 기록하는 로그 파일을 가지고 있음. 이 로그를 Redo log라고 함.&lt;/p&gt;
+
+&lt;p&gt;데이터의 변경 작업이 매우 많은 DBMS서버의 경우에는 이 리두 로그의 기록 작업이 문제가 됨. 따라서 ACID를 보장하는 수준에서 버핑을 하고 이 버퍼링에 사용되는 공간이 로그버퍼임.&lt;/p&gt;
+
+&lt;h1 id=&quot;실행-계획&quot;&gt;실행 계획&lt;/h1&gt;
+
+&lt;h2 id=&quot;쿼리-실행-절차&quot;&gt;쿼리 실행 절차&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;사용자로부터 요청된 SQL 문장을 잘개 쪼개서 MySQL 서버가 이해할 수 있는 수준으로 분리한다.&lt;/li&gt;
+  &lt;li&gt;SQL Parse tree를 만들어, 어떤 테이블로부터 읽고, 어떤 인덱스를 사용하여 테이블을 읽을지 정한다.&lt;/li&gt;
+  &lt;li&gt;2.로부터 결정된 방법을 통해 스토리지 엔진으로부터 데이터를 가져온다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;1~2 단계는 MySQL 엔진에서 처리하며, 3단계는 MySQL엔진과 스토리지엔진 모두가 관여한다.&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">mysql architecture</summary></entry><entry><title type="html">liblightnvm(work in progress)</title><link href="http://localhost:4000/research/openChannelSSD_liblightnvm/" rel="alternate" type="text/html" title="liblightnvm(work in progress)" /><published>2018-02-20T19:00:00+09:00</published><updated>2018-02-20T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_liblightnvm</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_liblightnvm/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#obtaining-device-information&quot; id=&quot;markdown-toc-obtaining-device-information&quot;&gt;Obtaining device information&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#physical-addressing&quot; id=&quot;markdown-toc-physical-addressing&quot;&gt;Physical Addressing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#vectorized-io&quot; id=&quot;markdown-toc-vectorized-io&quot;&gt;vectorized IO&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#write-constraint&quot; id=&quot;markdown-toc-write-constraint&quot;&gt;write constraint&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#read-constraint&quot; id=&quot;markdown-toc-read-constraint&quot;&gt;read constraint&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#virtual-block&quot; id=&quot;markdown-toc-virtual-block&quot;&gt;virtual block&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#block-line&quot; id=&quot;markdown-toc-block-line&quot;&gt;Block Line&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;obtaining-device-information&quot;&gt;Obtaining device information&lt;/h1&gt;
+
+&lt;p&gt;다음과 같은 명령어를 통해서 Open Channel SSD의 physical geometry를 알 수 있다. 즉, 디바이스의 정보를 얻을 수 있음.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvm_dev info /dev/nvme0n1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Device information -- nvm_dev_pr&lt;/span&gt;
+dev:
+  verid: 0x02
+  be_id: 0x02
+  name: &lt;span class=&quot;s1&quot;&gt;'nvme0n1'&lt;/span&gt;
+  path: &lt;span class=&quot;s1&quot;&gt;'/dev/nvme0n1'&lt;/span&gt;
+  fd: 3
+  ssw: 12
+  pmode: &lt;span class=&quot;s1&quot;&gt;'DUAL'&lt;/span&gt;
+  erase_naddrs_max: 64
+  read_naddrs_max: 64
+  write_naddrs_max: 64
+  meta_mode: 0
+  bbts_cached: 0
+dev_geo:
+  nchannels: 16
+  nluns: 8
+  nplanes: 2
+  nblocks: 1020
+  npages: 512
+  nsectors: 4
+  page_nbytes: 16384
+  sector_nbytes: 4096
+  meta_nbytes: 16
+  tbytes: 2190433320960
+  tmbytes: 2088960
+dev_ppaf:
+  ch_off: 25
+  ch_len: 04
+  lun_off: 22
+  lun_len: 03
+  pl_off: 02
+  pl_len: 01
+  blk_off: 12
+  blk_len: 10
+  pg_off: 03
+  pg_len: 09
+  sec_off: 00
+  sec_len: 02
+dev_ppaf_mask:
+  ch:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000011110000000000000000000000000'&lt;/span&gt;
+  lun: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000001110000000000000000000000'&lt;/span&gt;
+  pl:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000000000000100'&lt;/span&gt;
+  blk: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000001111111111000000000000'&lt;/span&gt;
+  pg:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000111111111000'&lt;/span&gt;
+  sec: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000000000000011'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;physical-addressing&quot;&gt;Physical Addressing&lt;/h1&gt;
+
+&lt;p&gt;struct nvm_addr 라는 자료구조로 물리 페이지 주소가 표현된다.&lt;/p&gt;
+
+&lt;p&gt;Construct an address for sector 3 within page 11 in block 200 on plane 0 of LUN 1 in channel 4:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvm_addr from_geo /dev/nvme0n1 4 1 0 200 10 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Yielding:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0x04010003000a00c8: {ch: 04, lun: 01, pl: 0, blk: 0200, pg: 010, sec: 3}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;플래시 메모리에 I/O 할 수 있도록 해주는  유저스페이스 라이브러리, I/O 인텐시브한 어플리케이션이 어플리케이션에서 FTL을 구현할 수 있도록 도와줄 수 있다.&lt;/p&gt;
+
+&lt;p&gt;liblightnvm is a user space library that manages provisioning of and I/O submission to physical flash. The motivation is to enable I/O-intensive applications to implement their own Flash Translation Layer (FTLs) using the internal application data structures. The design is based on the principle that high-performance I/O applications often use structures that assimilates structures found within a Flash translation layer. This include log-structured data structures that provides their own mechanisms for data placement, garbage collection, and I/O scheduling strategies.&lt;/p&gt;
+
+&lt;p&gt;For example, popular key-value stores often use a form of Log Structured Merge Trees (LSMs) as their base data structure (including RocksDB, MongoDB, Apache Cassandra). The LSM is in itself a form of FTL, which manages data placement and garbage collection. This class of applications can benefit from a direct path to physical flash to take full advantage of the optimizations they do and spend host resources on, instead of missing them through the several levels of indirection that the traditional I/O stack imposes to enable genericity: page cache, VFS, file system, and device physical - logical translation table. liblightnvm exposes append-only primitives using direct physical flash to support this class of applications.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/OpenChannelSSD/liblightnvm&quot;&gt;https://github.com/OpenChannelSSD/liblightnvm&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;vectorized-io&quot;&gt;vectorized IO&lt;/h1&gt;
+
+&lt;h2 id=&quot;write-constraint&quot;&gt;write constraint&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Erase before write&lt;/li&gt;
+  &lt;li&gt;they must be at the granularity of a full flash page&lt;/li&gt;
+  &lt;li&gt;they must be contiguous within a block&lt;/li&gt;
+  &lt;li&gt;writes must be performed to the block accross all planes(minimum write)
+  한 die에 plane이 두 개 있을때, 쓰기는 이 plane에 모두 이루어져야 한다. 따라서, 이 조건을 만족하도록 쓰기를 하거나 &lt;em&gt;plane-mode&lt;/em&gt;를 꺼 주는 옵션을 써야 한다.&lt;/li&gt;
+  &lt;li&gt;we can construct a command with 64 addresses.(maximum write)
+  한 nvme command에 64개의 ppa를 지정 해 줄 수 있다. 따라서, 4k X 64크기 만큼의 데이터 쓰기를 한 커멘드를 통해 요청할 수 있다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;read-constraint&quot;&gt;read constraint&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The granularity of a read is a single sector (the smallest addressable unit) and can be performed non-contiguously.&lt;/li&gt;
+  &lt;li&gt;The primary constraint for a read to adhere to is that the block which is read from must be closed. That is, all pages within the block must have been written
+  읽기 전에 해당 블록은 모든 페이지가 다 쓰여져 있는 상태 이어야 한다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;virtual-block&quot;&gt;virtual block&lt;/h1&gt;
+&lt;p&gt;liblightnvm, therefore, introduces a pure software abstraction, a virtual block, to reduce the cognitive load for application developers.&lt;/p&gt;
+
+&lt;p&gt;A virtual block behaves as a physical, that is, the constraints of working with NAND media also apply to a virtual block. However, the abstraction encapsulates the command and address construction of parallel vectorized IO and exposes a flat address space which is read/written in a manner equivalent to the read/write primitives offered by libc.&lt;/p&gt;
+
+&lt;h1 id=&quot;block-line&quot;&gt;Block Line&lt;/h1&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">유저스페이스에서 Open Channel SSD 컨트롤 하기</summary></entry><entry><title type="html">Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms</title><link href="http://localhost:4000/research/openChannelSSD_ksc/" rel="alternate" type="text/html" title="Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms" /><published>2018-02-01T19:00:00+09:00</published><updated>2018-02-01T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_ksc</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_ksc/">&lt;!--
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/openChannelSSD.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot;/&gt;
+&lt;/p&gt;
+
+--&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#abstraction&quot; id=&quot;markdown-toc-abstraction&quot;&gt;Abstraction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot; id=&quot;markdown-toc-introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#experimental-setup-and-evaluation&quot; id=&quot;markdown-toc-experimental-setup-and-evaluation&quot;&gt;Experimental setup and evaluation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot; id=&quot;markdown-toc-conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#reference&quot; id=&quot;markdown-toc-reference&quot;&gt;Reference&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;abstraction&quot;&gt;Abstraction&lt;/h1&gt;
+&lt;p&gt;Open Channel SSD는 스토리지 디바이스에 FTL(Flash Translation Layer)을 구현하지 않고, 운영체제에 게 SSD(Solid-State Drive)의 관리를 맡기는 SSD이다. 따라서 리눅스에서는 LightNVM과 같은 추상화 계 층을 제공한다. pblk(The Physical Block Device)은 LightNVM Layer에 위치하는 커널 모듈로서 기존의 SSD의 FTL에서 수행하는 기능들을 호스트에서 수행한다. 본 논문에서는 Open Channel SSD에서 쓰기 요청의 처리 과정을 보이고, pblk에 구현되어 있는 소프트웨어 버퍼인 쓰기 버퍼(Write Buffer) 및 입출력 요청의 스레드 구성에 따른 성능 분석 결과를 보인다.&lt;/p&gt;
+
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+&lt;p&gt;향후 수년 내에 Solid-State Drive(SSD)는 지배적인 보조기억장치가 될 것으로 예상된다. SSD는 기존의 전통적인 Hard Disk Drive(HDD)에 비해서 우수한 성능을 보이지만, 스토리지 디바이스에 최적화 부족으로 인한 자원의 비효율 적인 이용 문제[4], long taillatency, unpredictable I/O latency와 같은 단점들을 갖는다 [1, 2, 3]. 이러한 문제점들은 대부분 Hard Disk Drive에 최적화 된 Block I/O 인터페이스 때문이다 [5].&lt;/p&gt;
+
+&lt;p&gt;Open Channel SSD는 위와 같은 문제점들을 해결할 수 있는 새로운 형태의 SSD 플랫폼이다. Open Channel SSD는 그 내부 Geometry를 호스트 운영체제에 드러내고, 호스트가 스토리지 디바이스 내부의 물리적인 데이터 배치나 I/O 스케줄링을 관리할 수 있게 한다. 이렇게 함으로서, 호스트와 SSD 컨트롤러는 SSD 디바이스 작동과 관련된 기능을 나누어 수행한다 [3]. 기존의 SSD의 FTL Layer에서 수행하던 address translation, garbage collection, error handling 과 같은 기능들이 호스트에서 수행될 수 있다. 따라서 시스템에 따라 스토리지 소프트웨어 스택을 Open Channel SSD를 사용하는 응용 프로그램에 알맞게 재 구성할 수 있다. 리눅스 커널 4.4 이후부터 호스트 기반의 SSD 관리 서브시스템인 LightNVM 계층이 사용되었고, 리눅스 커널 4.12 이후부터는 호스트에서 FLT(Flash Translation Layer)의 기능을 담당하는 pblk이 커널에 포함되었다. 이와 같은 시스템 상에서, Channel SSD는 하나의 물리적인 블록 디바이스로서 호스트에게 노출되어 보여지고, 사용자는 SSD를 특정 워크로드 패턴에 맞게 최적화 할 수 있다&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/2018-02-01-openChannelSSD_ksc01.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&quot;experimental-setup-and-evaluation&quot;&gt;Experimental setup and evaluation&lt;/h1&gt;
+
+&lt;p&gt;본 논문에서 보이는 실험의 목적은 두 가지 이다. 첫 번째로, LightNVM 스택의 pblk모듈에 구현된 쓰기 버퍼의 크기에 따른 입, 출력의 성능을 분석하는 것이다. 두 번째로, 병렬적인 입, 출력의 정도에 따른 성능 변화를 분석한다. 즉 여러 다중 코어, 다중 스레드 환경에서의 Open Channel SSD의 성능을 분석하는 것이다.&lt;/p&gt;
+
+&lt;p&gt;본 실험을 위해 72코어의 Intel Xeon E7-8870 프로세서 서버를 사용하였으며, 16Gib DRAM, PIC 3.0 인터페이스 및 CNEX Labs Westlake SDK(2TB NAND MLC Flash) Open Channel SSD를 사용하였다. Open Channel SSD의 상세한 특징은 &amp;lt;표 1&amp;gt;에 나타내었다. 호스트는 Ubuntu 16.04.3 LTS server를 사용하였고, pblk 모듈을 사용한 리눅스 커널 4.14.0-rc2 버전을 사용하였다. 디바이스의 입출력 성능 실험을 위해 fio[6]를 사용하였다. 실험은 파일시스템을 거치지 않고 디바이스에 직접 입출력 요청을 하도록 설정하였고, 동일한 실험 환경에서 3번의 실험을 진행한 뒤 평균값을 결과로 사용하였다. 입출력 스레드 수와 동일한 코어의 수만 활성화 시켜 실험을 진행하였으며, 쓰기 버퍼의 크기는 버퍼를 구성하는 엔트리의 개수를 조정하는 방식으로 시스템을 구현하였다.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/2018-02-01-openChannelSSD_ksc02.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/2018-02-01-openChannelSSD_ksc03.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;실험 결과에 따르면 Open Channel SSD 읽기 요청 처리 성능은 스레드 수에 비례하여 점점 증가하다 어느 정도 병렬성의 정도가 증가하면 성능의 증가율이 감소하는 모습을 보인다. 특히, 읽기 요청 스레드가 54개에서 72개로 증가할 땐 성능의 변화가 거의 없었다.&lt;/p&gt;
+
+&lt;p&gt;쓰기 버퍼의 크기에 따른 성능은 스레드 개수에 상관 없이 모두 일정한 증가 비율을 나타냈는데, 이는 쓰기 버퍼의 크기가 증가함에 따라, 읽기 요청 시 버퍼 캐시 히트 비율이 증가했기 때문이다.&lt;/p&gt;
+
+&lt;p&gt;64MB이상의 버퍼 크기에서 진행한 쓰기 요청에 대한 성능 실험결과는 스레드가 2개에서 4개로 증가할 때, 약간의 증가율을 보이지만 나머지 구간에서는 큰 증가율을 보이지 않는다. 쓰기 버퍼의 크기가 32MB일 때에는 임의 쓰기 요청(random write request)시 스레드의 수에 따라 18개 스레드 수 까지는 비교적 큰 비율로 쓰기 성능이 증가한다.&lt;/p&gt;
+
+&lt;p&gt;쓰기 버퍼의 크기가 32MB일 때, 일반 쓰기와 임의쓰기 모두 18쓰레드 이후 쓰기 성능이 18개의 스레드 일 때와 비교하여 큰 폭으로 감소함을 보인다. 이는 작은 크기의 버퍼에 비해 많은 쓰기 스레드가 쓰기 요청을 하여, 항상 버퍼가 가득 차있는 상황을 나타내고, 더 이상 성능의 증가가 나타나지 않음을 나타내는 것으로 예상된다.&lt;/p&gt;
+
+&lt;p&gt;실험 결과를 통해 쓰기 버퍼의 크기 및 스레드 구성에 따른 입출력 요청의 성능 양상을 확인할 수 있었다. 특히 읽기 요청에 비해 쓰기 요청은 스레드 수 및 쓰기 버퍼가 증가해도 성능의 향상이 크지 않음을 확인하였다. 차후 진행될 연구에서는 이러한 쓰기 요청에서의 성능 증가를 막는 원인을 파악하고, 병렬성을 높이는 것을 포함한다.&lt;/p&gt;
+
+&lt;h1 id=&quot;reference&quot;&gt;Reference&lt;/h1&gt;
+
+&lt;p&gt;[1] Hao, M., Soundararajan, G., Kencham mana Hosekote, D. R., Chien, A. A., &amp;amp; Gunawi, H. S. (2016, February). The Tail at Store: A Revelation from Millions of Hours of Disk and SSD Deployments. In FAST (pp. 263-276).&lt;/p&gt;
+
+&lt;p&gt;[2] Chen, F., Luo, T., &amp;amp; Zhang, X. (2011, February). CAFTL: A Content-Aware Flash Translation Layer Enhancing the Lifespan of Flash Memory based Solid State Drives. In FAST (Vol. 11, pp. 77-90).&lt;/p&gt;
+
+&lt;p&gt;[3] Bjørling, M., González, J., &amp;amp; Bonnet, P. (2017, February). LightNVM: The Linux OpenChannel SSD Subsystem. In FAST (pp. 359374).&lt;/p&gt;
+
+&lt;p&gt;[4] Agrawal, N., Prabhakaran, V., Wobber, T., Davis, J. D., Manasse, M. S., &amp;amp; Panigrahy, R. (2008, June). Design Tradeoffs for SSD Performance. In USENIX Annual Technical Conference (Vol. 8, pp. 57-70).&lt;/p&gt;
+
+&lt;p&gt;[5] Swanson, S., &amp;amp; Caulfield, A. M. (2013). Refactor, reduce, recycle: Restructuring the i/o stack for the future of storage. Computer, 46(8), 52-59.&lt;/p&gt;
+
+&lt;p&gt;[6] AXBOE, J. Fio - Flexible I/O tester. URL http://freecode.com/projects/fio (2014).&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/2018-02-01-openChannelSSD_ksc01.png" /></entry><entry><title type="html">How Computers Work [09]</title><link href="http://localhost:4000/book/hcw09/" rel="alternate" type="text/html" title="How Computers Work [09]" /><published>2017-11-10T21:00:00+09:00</published><updated>2017-11-10T21:00:00+09:00</updated><id>http://localhost:4000/book/hcw09</id><content type="html" xml:base="http://localhost:4000/book/hcw09/">&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-email-outtraces-snail-mail&quot; id=&quot;markdown-toc-how-email-outtraces-snail-mail&quot;&gt;How Email outtraces snail mail&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-internet-file-sharing-wroks&quot; id=&quot;markdown-toc-how-internet-file-sharing-wroks&quot;&gt;How Internet File Sharing Wroks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-clouds-encompass-us-all&quot; id=&quot;markdown-toc-how-clouds-encompass-us-all&quot;&gt;HOW CLOUDS ENCOMPASS US ALL&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;how-email-outtraces-snail-mail&quot;&gt;How Email outtraces snail mail&lt;/h1&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw09_1.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Using an email client, Jane creates a message to go to Bob. She also attaches a photo of herself for the company website, which is encoded using a standard algorithm, such as MIME, uuencode, or BINHEX. Just as easily, Jane could enclose a word processing document, spreadsheet, or program.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The encoding turns the data making up the photograph into ASCII text, which computers commonly use for unformatted, simple text. The email software might also compress the enclosure before attaching it to the message so it takes less time to send.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The client software contacts the Internet service provider’s computer server over a modem or network connection. The client software connects to a piece of software called an &lt;strong&gt;SMTP&lt;/strong&gt; server, short for &lt;strong&gt;Simple Mail Transfer Protocol&lt;/strong&gt;. The server acknowledges that it has been contacted, and the client tells the server it has a message to be sent to a certain address. The SMTP replies with a message saying either, “Send it now,” or “Too busy; send later.”&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;프로토콜(Protocol) - 응용프로그램 간(즉, 클라이언트와 데이터베이스 서버 간)의 데이터 전송 방식을 제어하는 규칙들의 집합을 네트워크 프로토콜이라고 한다. 네트워크 프로토콜은 네트워크를 통해 데이터를 전송할 때 사용하는 유형을 지정함. 네트워크 프로토콜의 예로는 TCP/IP, SMTP가 있다.&lt;/p&gt;
+
+&lt;p&gt;프로토콜은 두 가지로 이루어져 있으며 물리적 측면과 논리적 측면으로 나뉜다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;물리적 측면: 자료 전송에 쓰이는 전송 매체, 접속용 단자 및 전송 신호, 회선 규격 등.&lt;/li&gt;
+  &lt;li&gt;논리적 측면: 프레임(Frame, 자료의 표현 형식 단위) 구성, 프레임 안에 있는 각 항목의 뜻과 기능, 자료 전송의 절차 등.
+      1. 폐쇄적인 프로토콜: 자사 장치들끼리 통신하기 위한 독자적인 통신 규약이며, 자세한 규격이 공개되어 있지 않아서 크래킹 위협에 상대적으로 안전하다. (보기: IBM의 SNA, SDLC 프로토콜)
+      2. 공개된 범용 프로토콜: 여러 장치들에 쓰이는 널리 알려진 규격이며, 규격이 널리 공개되어 있기 때문에 컴퓨터와 네트워크 크래킹에 취약한 편이다. (보기: 인터넷의 TCP/IP)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;The client sends the message to the SMTP server and asks for confirmation. The server confirms that it has received the message.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The SMTP server asks another piece of software, a domain name server, how to route the message through the Internet. The &lt;strong&gt;domain name server&lt;/strong&gt; looks up the domain name—the part of the address after the @ character—to locate the recipient’s email server. The domain name server tells the SMTP the best path for the message.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;’@’ 문자 뒤에 주소의 일부인 도메인 이름을 조회하여받는 사람의 전자 메일 서버를 찾습니다. 도메인 이름 서버는 SMTP에 메시지의 가장 적합한 경로를 알려줌.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;After the &lt;strong&gt;SMTP&lt;/strong&gt; sends the message, the email travels through various Internet routers. Routers decide which electronic pathway to send the email along based on how busy the routes are. The message might also pass through one or more &lt;strong&gt;gateways&lt;/strong&gt;, which translate the data from one type of computer system—such as Windows, Unix, and Macintosh—to the type of computer system that’s the next pass-through point on the route.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;라우터는 경로가 얼마나 바쁜지에 따라 전자 메일을 보낼 전자 경로를 결정&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;When the email arrives at Bob’s SMTP server, the server transfers the message to another server, usually of the &lt;strong&gt;POP (Post Office Protocol) or IMAP (Internet Message Access Protocol)&lt;/strong&gt; variety. The email server holds the message until Bob asks for it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;POP, IMAP도 서버에서 돌아가고 있는 프로그램으로 생각해도 된다. 네이버 메일의 경우, 네이버 회사 데이터센터에서 운용되고 있는 서버에 구현되어 있을 것 같음(예상)&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Using his email client, Bob logs on to the email server with a username and password and then asks the server to check for mail.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The email server retrieves Jane’s stored message and transmits it to Bob’s email client. Some email software decodes and decompresses any enclosures. Others make Bob use a utility program to expand and decode the attachment. Either way, Bob can now read Jane’s message and any attachments.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;how-internet-file-sharing-wroks&quot;&gt;How Internet File Sharing Wroks&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;네트워크 프로그래밍 위해서,&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw09_2.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;A file-sharing program user logs on to one of several file-sharing servers (although many file-sharing programs have no central servers, in which case, consider the “server” shown here to be a virtual server that connects multiple user computers). The client software sends the server a list of files in the user’s library that other users can then search for and download—these files can be anything from MP3 songs to Microsoft Word documents or program files.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The host posts the list in a database where other users can search it. The server lists the libraries for hundreds of users, but all files found in those libraries remain on the computers of the other users.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;데이터베이스?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Another client enters a search term. This can be file metadata, such as a band name or movie director, or any other phrase you would expect to be associated with the file.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;메타데이터?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The client looks at all the library records on the server and displays any titles that match at least some of the search criteria. The results include the names of the files, the type of Internet connection, &lt;strong&gt;Internet protocol (IP)&lt;/strong&gt; addresses of other clients making those files available, and other assorted trivia.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;인터넷 프로토콜(IP) -  IP 주소에 따라 다른 네트워크 간 패킷의 전송, 즉 경로 제어를 위한 규약으로 다른 네트워크 간의 데이터 전송을 가능하게 한다. 그러나 패킷이 발신된 순서대로 도착하는 것은 보증하지 않는다. 전송 제어 프로토콜(TCP) 또는 사용자 데이터그램 프로토콜(UDP)과 함께 사용한다.
+[네이버 지식백과] 인터넷 프로토콜 [Internet Protocol] (IT용어사전, 한국정보통신기술협회)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;The user selects one or more of the files for transfer. His client software sends a message to the other client using its IP address. The message asks permission to download the song, and the remote client obliges by becoming a server and sending the file to the computer that asked for it.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;At the same time someone is downloading a file, other users are finding songs on that person’s hard drive and are downloading them. Several uploads/downloads can run simultaneously by taking turns sharing the Internet connections.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;how-clouds-encompass-us-all&quot;&gt;HOW CLOUDS ENCOMPASS US ALL&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Cloud&lt;/strong&gt; storage has two parts. The first—the &lt;strong&gt;front end&lt;/strong&gt;—is you or other computer users, all called clients, working at their PCs. Every time a client saves or opens a file, the request is passed to the &lt;strong&gt;back end&lt;/strong&gt;—an elaborate system that makes up the electronic clouds. Because the client’s files are saved in a cloud, the client does not have to be at an office or personal computer to retrieve them. With correct usernames and passwords, clients may retrieve their files on other computers, tablets, and smartphones to share them with others through a service such as Dropbox, Google Drive, or OneDrive.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;front end - client&lt;/li&gt;
+  &lt;li&gt;back end - server&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;구글드라이브를 통해 파일을 클라우드에 저장 해 두면, server를 통해 물리적인 기기에 제한 없이 자신의 파일에 접근 할 수 있다.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The client’s request first goes to a &lt;strong&gt;central server&lt;/strong&gt;, a computer responsible for managing all the traffic coming from hundreds or thousands of clients. To make sure all client requests are handled properly, the central server follows a set of rules, called &lt;strong&gt;protocols&lt;/strong&gt;, written to ensure there are no gaps, contradictions, or impossibilities embedded in the client request.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;다수의 클라이언트 - 하나의 서버(사실, 여러 개 일 수도)&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;After the request passes the central server’s inspection, the server uses middleware software, so called because its digital turf lies between the clients and the legions of file servers whose purpose is to be repositories of whatever a client creates. With the demand for storage space so large and so immediate, a dedicated server for each client is impractical and, as we’ll see, not a good idea. But the middleware lets the storage system act as if the client does have a direct path to a dedicated, single-client server.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;이후는 그냥 읽어보자, 아~ 이런게 있구나~&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;At the same time the middleware pulls a trick on the numerous high-powered computers that make up the cloud—also called server farms—where the stored file resides. Because most of the servers are not running at full capacity, the central server uses empty storage space and otherwise idle processor time to create virtual computers. Each virtual computer operates as though it were the only computer on the farm. A neat juggling act of timing lets each virtual computer have its opportunity to send and receive information and get access to the server’s hard drives in the times when the other virtual servers are at rest.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When the central server receives a request from a client to save a file, it may first encrypt the file to deter hackers who would break into the server’s farm to steal sensitive information. Then the central server consults a record of traffic and storage use among the hundreds of servers at more than one farm location. (Google is estimated to have 1 million servers.) A reputable cloud has twice the number of servers needed to store all of its clients’ file. In case of server malfunction, the cloud stores all of its data in more than one place and in more than one physical location. Doubling the number of servers and keeping copies—and sometimes copies of previous versions of a file—is referred to as &lt;strong&gt;redundancy&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;같은 파일을 저장하는 동일한 서버가 두 개 이상 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;In case of a major catastrophe, parts of the file may be distributed among several servers, making it more difficult for a file to be totally eradicated. Such a strategy was part of the original impetus for the Internet among the U.S. military, which wanted a redundant system of information in case some computer centers were taken out in a nuclear war. The system has also been cited as a way to ensure the distribution of information among insurgents otherwise censored by a repressive government.&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter20 - How we keep in touch the Internet way</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw09_0.png" /></entry><entry><title type="html">How Computers Work [08]</title><link href="http://localhost:4000/book/hcw08/" rel="alternate" type="text/html" title="How Computers Work [08]" /><published>2017-11-04T21:00:00+09:00</published><updated>2017-11-04T21:00:00+09:00</updated><id>http://localhost:4000/book/hcw08</id><content type="html" xml:base="http://localhost:4000/book/hcw08/">&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-a-browser-opens-pages&quot; id=&quot;markdown-toc-how-a-browser-opens-pages&quot;&gt;How a browser opens pages&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#dnsdomain-name-serversystem&quot; id=&quot;markdown-toc-dnsdomain-name-serversystem&quot;&gt;DNS(Domain Name Server(System))?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#how-dns-works&quot; id=&quot;markdown-toc-how-dns-works&quot;&gt;How DNS Works?&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-a-browser-displays-web-pages&quot; id=&quot;markdown-toc-how-a-browser-displays-web-pages&quot;&gt;How a browser displays web pages&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;how-a-browser-opens-pages&quot;&gt;How a browser opens pages&lt;/h1&gt;
+
+&lt;p&gt;“A website is a collection of files, text, and media that someone has made generally available to others through the Internet. “&lt;/p&gt;
+
+&lt;p&gt;웹페이지 간의 이동은&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;텍스트, 또는 이미지 등과 같은 하이퍼링크(Hyperlink)를 통해서&lt;/li&gt;
+  &lt;li&gt;URL(Universal Resouce Locator)를 브라우저의 address창에 입력하는 것.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;위 두 가지를 통해 가능하다.&lt;/p&gt;
+
+&lt;p&gt;브라우저에서 하이퍼 링크를 클릭하거나 특정 address를 입력한다면, 브라우저 프로그램은 해당하는 address를 네트워크를 통해 DNS(Domain Name Server)에 보낸다.&lt;/p&gt;
+
+&lt;h2 id=&quot;dnsdomain-name-serversystem&quot;&gt;DNS(Domain Name Server(System))?&lt;/h2&gt;
+&lt;p&gt;호스트의 도메인 이름(human readable)을 호스트의 네트워크 주소(computer readable)로 바꾸어 주거나 그 반대의 변환을 수행할 수 있도록 해 주는 서버 또는 시스템.
+특정 컴퓨터(또는 네트워크로 연결된 임의의 장치)의 주소를 찾기위해, 사람이 이해하기 쉬운 도메인 이름을 숫자로 된 식별 변호(IP 주소)로 변환 해 준다. 예를 들어, www.dcslab.snu.ac.kr 와 같은 컴퓨터 도메인 이름을 192.108.1.4와 같은 주소로 변환하고, 라우팅 정보를 제공하는 데이터베이스 시스템&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw08_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;how-dns-works&quot;&gt;How DNS Works?&lt;/h2&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw08_2.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;web browser에 주소를 입력한다.&lt;/li&gt;
+  &lt;li&gt;만약 www.micosoft.com을 입력한다면, 입력 값이 위와 같이 이동한다.
+    &lt;ol&gt;
+      &lt;li&gt;DNS 서버&lt;/li&gt;
+      &lt;li&gt;루트 DNS서버&lt;/li&gt;
+      &lt;li&gt;.com DNS서버&lt;/li&gt;
+      &lt;li&gt;Microsoft.com DNS서버&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;각각의 DNS서버를 차례대로 이동하며 해당 웹 사이트의 ip주소를 찾는다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;DNS Server: 웹 서버 주소에 해당하는 ip주소 테이블을 저장하고 있는 컴퓨터&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw08_3.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;위에서 설정하는 DNS서버 주소는 Local DNS 서버 주소 라고 생각하면 된다.&lt;/p&gt;
+
+&lt;h1 id=&quot;how-a-browser-displays-web-pages&quot;&gt;How a browser displays web pages&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Stored on the server, the web page itself consists of an HTML text file. HTML is a collection of codes enclosed in angle brackets—&amp;lt;&amp;gt;—that control the formatting of text in the file.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;HTML Code는 텍스트 뿐 아니라 이미지나 영상, 음성 파일등 서버에서 저장할 수 있는 대부분의 파일들을 포함 할 수 있다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;특정 웹페이지를 보기 위해서 Client가 원하는 웹페이지의 주소를 해당 서버로 보내면 해당 서버는 HTML Code를 return 한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;동시에 서버는 HTML 코드에 있는 이미지, 영상 등의 파일을 Client로 보내도록 명령한다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;클라이언트는 HTML 코드와 이미지, 영상과 같은 파일을 RAM에 캐싱한다.(크롬 브라우저가 메모리를 많이 사용하는 대신 빠른 이유) 나중에 브라우저가 전에 보았던 웹 페이지나 이미지, 영상을 다시 볼때는 서버에 다시 요청하는 것이 아니라 RAM에 캐싱되어 있던 부분에서 가져온다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;브라우저는 서버로 부터 받은 HTML, 텍스트, 이미지, 영상들을 합하여 웹 페이지를 재 구성하여 화면에 배치할 위치를 결정한다(HTML코드를 따라서). 웹페이지의 모든 구성요소가 동시에 Client로 도착하는 것은 아니기 때문에 가장 간단한 요소인 텍스트가 일반적으로 가장 먼저 표시되고 그 이후에 이미지나 영상이 보여진다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw08_4.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter19 - How the Web Puts It All at Your Fingertips</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw08_0.png" /></entry><entry><title type="html">How Computers Work [07]</title><link href="http://localhost:4000/book/hcw07/" rel="alternate" type="text/html" title="How Computers Work [07]" /><published>2017-11-04T19:00:00+09:00</published><updated>2017-11-04T19:00:00+09:00</updated><id>http://localhost:4000/book/hcw07</id><content type="html" xml:base="http://localhost:4000/book/hcw07/">&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-what-is-broadband&quot; id=&quot;markdown-toc-1-what-is-broadband&quot;&gt;1. What is BroadBand?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2네트워크-속도에-영향을-미치는-요소들&quot; id=&quot;markdown-toc-2네트워크-속도에-영향을-미치는-요소들&quot;&gt;2.네트워크 속도에 영향을 미치는 요소들&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#reason-1-latency&quot; id=&quot;markdown-toc-reason-1-latency&quot;&gt;REASON 1: Latency.&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#reason-2-use-of-wireless&quot; id=&quot;markdown-toc-reason-2-use-of-wireless&quot;&gt;REASON 2: Use of wireless.&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#reason-3-malware&quot; id=&quot;markdown-toc-reason-3-malware&quot;&gt;REASON 3: Malware.&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#reason-4-application-overload&quot; id=&quot;markdown-toc-reason-4-application-overload&quot;&gt;REASON 4: Application overload.&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#reason-5-overloaded-router-or-modem&quot; id=&quot;markdown-toc-reason-5-overloaded-router-or-modem&quot;&gt;REASON 5: Overloaded router or modem.&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#reason-6-weather-and-wireless-interference&quot; id=&quot;markdown-toc-reason-6-weather-and-wireless-interference&quot;&gt;REASON 6: Weather and wireless interference.&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#reason-7-traffic-load&quot; id=&quot;markdown-toc-reason-7-traffic-load&quot;&gt;REASON 7: Traffic load:&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#latency-vs-bandwidth&quot; id=&quot;markdown-toc-latency-vs-bandwidth&quot;&gt;Latency VS Bandwidth&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;1-what-is-broadband&quot;&gt;1. What is BroadBand?&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;“광대역 네트워크”&lt;/strong&gt; broad band를 바라보는 입장에 따라 여러가지 의미로 해석 될 수 있지만, 일반 사용자에게 broad band network란 2000년도 경 이후 초고속 인터넷을 말함&lt;/p&gt;
+
+&lt;p&gt;조금 더 자세히 알아보면,  베이스 밴드와의 비교가 필요함.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;베이스 밴드&lt;/strong&gt;: 데이터를 전송할 때, 디지털 신호를 따로 추가적인 처리하지 않고 그대로 보낸다. 즉, 디지털 신호를 전송 매체에 그대로 실어 전송하는 방식.
+EX) 유선 Local Network&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;브로드밴드&lt;/strong&gt;: 하나의 단일 링크(여기서 링크는 node to node)를 통해 복수의 전송 채널을 사용할 수 있다. 각 채널은 서로 다른 주파수에서 이루어지기 때문에 서로 방해하지 않는다. &lt;em&gt;하나의 전송 매체로 음성, 데이터, 영상 등을 포함한 멀티미디어 서비스를 제공할 수 있다&lt;/em&gt;
+EX) VoIP(인터넷을 통해 전화할 수 있는 기술), IPTV(인터넷 망을 이용한 양방향 TV 서비스)&lt;/p&gt;
+
+&lt;h1 id=&quot;2네트워크-속도에-영향을-미치는-요소들&quot;&gt;2.네트워크 속도에 영향을 미치는 요소들&lt;/h1&gt;
+
+&lt;h2 id=&quot;reason-1-latency&quot;&gt;REASON 1: Latency.&lt;/h2&gt;
+
+&lt;p&gt;(좋은 설명)Latency is idling time. Your car may be able to go 200 mph on a straightaway, but that doesn’t mean you’ll drive the 200 miles from Houston to San Antonio in an hour. You’ll have to sit still, engine idling, at stop signs, yields, train crossings, red lights, and school crossings. At best, legally, you’ll be able to drive 70 mph because of a roadway latency called a speed limit.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;얼마나 빨라질 수 있을까?&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Light in empty space requires roughly 5 ms to travel 1,000 miles&lt;/li&gt;
+  &lt;li&gt;it takes 7.5ms data to travel 1,000 miles in fiber optic to = 광섬유 내에서의 굴절 때문에 더 길어짐&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;reason-2-use-of-wireless&quot;&gt;REASON 2: Use of wireless.&lt;/h2&gt;
+&lt;p&gt;Wi-Fi has more latency and is more susceptible to radio interference than a wired Ethernet connection.&lt;/p&gt;
+
+&lt;h2 id=&quot;reason-3-malware&quot;&gt;REASON 3: Malware.&lt;/h2&gt;
+&lt;p&gt;A network worm or virus that interferes with a computer’s network interface steals performance time, if nothing else&lt;/p&gt;
+
+&lt;p&gt;DDos(Distributed Denial of Service) - 가장 대표적이고 강력한 사이버 공격, 매우 간단하다. - 여러 대의 컴퓨터에서 한 웹 서버에 비정상적인 트래픽을 흘려보내 웹 서버가 과도한 트래픽 소모 및 프로세스 진행, 과도한 입출력등을 통해 서버가 먹통이 되게 만드는 기본적인 서버 공격방법.&lt;/p&gt;
+
+&lt;p&gt;F5버튼만 누르는 행위도  일종의 DDos공격. 물론 혼자서 해서는 여러 대의 컴퓨터라는 정의에 맞지 않기 때문에 단순 DoS 공격일 뿐이고 조직적으로 어떤 시간대에 동시에 F5키를 연타하면 DDoS라고 부르는 것이 가능하다&lt;/p&gt;
+
+&lt;p&gt;대부분 좀비 pc를 활용하여 공격하는 방식으로 이루어진다.&lt;/p&gt;
+
+&lt;h2 id=&quot;reason-4-application-overload&quot;&gt;REASON 4: Application overload.&lt;/h2&gt;
+&lt;p&gt;Running other applications while you’re surfing slows transmission times by competing with your browser for the CPU’s attention.&lt;/p&gt;
+
+&lt;p&gt;브라우저를 통해서 네트워크에 접속하는 경우)
+브라우저 역시 응용프로그램 중 하나이다 -&amp;gt; series of instructions
+여러 프로그램을 동시에 실행하는 경우 instruction의 총 개수는 많아지지만 cpu가 시간당 처리할 수 있는  instruction의 양은 정해져있다.
+결국 인터넷 창을 많이 키거나 동시에 여러 프로그램을 실행시키면 느려진다.&lt;/p&gt;
+
+&lt;h2 id=&quot;reason-5-overloaded-router-or-modem&quot;&gt;REASON 5: Overloaded router or modem.&lt;/h2&gt;
+&lt;p&gt;If you’re not the only one in your household connected to the Internet, your communications may take twice as long—or longer—as you wait others’ requests to be processed.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw07_1.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;reason-6-weather-and-wireless-interference&quot;&gt;REASON 6: Weather and wireless interference.&lt;/h2&gt;
+&lt;p&gt;After your signals leave your location, they still have to fight their way through corruption caused by weather and electrical noise, forcing computers on either end of a connection to ask that damaged packets be re-sent.&lt;/p&gt;
+
+&lt;p&gt;비오는날 인터넷이 느려진다? 미신이 아니라 사실
+노후화된 선로나 전선의 피복이 벗겨져 외부 환경에 노출된 케이블의 경우 수분 또는 습기가 선 내부로 침투하게 되어 노이즈를 발생시킨다. 발생된 노이즈로 인해 느려질 수 있다.&lt;/p&gt;
+
+&lt;p&gt;노이즈가 왜 네트워크를 느리게 할 까? Hind = ECC&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://blog.naver.com/PostView.nhn?blogId=tomogirl4507&amp;amp;logNo=120122888315&quot;&gt;http://blog.naver.com/PostView.nhn?blogId=tomogirl4507&amp;amp;logNo=120122888315&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;reason-7-traffic-load&quot;&gt;REASON 7: Traffic load:&lt;/h2&gt;
+&lt;p&gt;During parts of the day when more people are on the Internet, they create a usage spike that feeds a data traffic jam. If you are connected to heavily used sites, such as a multiplayer online game or popular websites, expect some lag.&lt;/p&gt;
+
+&lt;h1 id=&quot;latency-vs-bandwidth&quot;&gt;Latency VS Bandwidth&lt;/h1&gt;
+
+&lt;p&gt;한 쪽에서 반대쪽으로 데이터를 얼마나 많이 옮길수 있는가에 대한 개념이 Bandwidth이다. 네트워크 속도와 매우 밀접한 관련이 있음.&lt;/p&gt;
+
+&lt;p&gt;For example, imagine two ships traveling from San Francisco to Japan:&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw07_2.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ship A carries 3,000 tons traveling at a steady 40 knots.&lt;/li&gt;
+  &lt;li&gt;Ship B is half as fast, traveling at 20 knots&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;However, Ship B carries 15,000 tons, so it has the greater bandwidth. If each of the ships had to transport 100,000 tons, it would take Ship A 366 days to move all the material. Ship B would finish the job sooner, in 150 days, not because Ship B is faster—it’s not—but because it has a broader bandwidth (it carries more).&lt;/p&gt;
+
+&lt;p&gt;하지만 Ship B는 15000tons를 한 번에 운반한다. 그렇기 때문에 더 큰 bandwidth를 갖는다. 만약 두 배가 100,000tons의 화물을 운반해야 한다면, ship A는 366일 정도가 걸릴 것이고, ship B 는 150일 정도면 화물을 다 옮길 수 있을 것이다.&lt;/p&gt;
+
+&lt;p&gt;ship B의 더 속도가 빠른 것 때문에 아니라 bandwidth가 더 크기 때문에, 전체 처리하는 일의 양이 더 크다고 볼 수 있다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;네트워크 뿐 아니라 PC안에서도 processor, Disk, System Bus, Video Card등은 모두 bandwidth를 갖고있다.&lt;/p&gt;
+
+&lt;hr /&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter 18 - How the Internet Bring us the Internet</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw07_0.png" /></entry><entry><title type="html">How Computers Work [06]</title><link href="http://localhost:4000/book/hcw06/" rel="alternate" type="text/html" title="How Computers Work [06]" /><published>2017-09-28T19:00:00+09:00</published><updated>2017-09-28T19:00:00+09:00</updated><id>http://localhost:4000/book/hcw06</id><content type="html" xml:base="http://localhost:4000/book/hcw06/">&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#chapter-11&quot; id=&quot;markdown-toc-chapter-11&quot;&gt;Chapter 11&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#lanlocal-area-network&quot; id=&quot;markdown-toc-lanlocal-area-network&quot;&gt;LAN(Local Area Network)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#wwwworld-wide-web&quot; id=&quot;markdown-toc-wwwworld-wide-web&quot;&gt;WWW(world wide web)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#packer-and-network&quot; id=&quot;markdown-toc-packer-and-network&quot;&gt;packer and network&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+&lt;p&gt;i&lt;/p&gt;
+&lt;h1 id=&quot;chapter-11&quot;&gt;Chapter 11&lt;/h1&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw06_1.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;lanlocal-area-network&quot;&gt;LAN(Local Area Network)&lt;/h2&gt;
+&lt;p&gt;개념적 의미는 물리적으로 연결되어 있는 여러대의 pc, server등을 말함. node끼리의 물리적 연결은 cable, 광섬유, 구리선, 라디오 시그널이나 적외선 또한 포함한다.&lt;/p&gt;
+
+&lt;p&gt;LAN에서 어떤 기술을 사용하던 간에, 궁극적인 목표는 data을 한 node에서 다른 node로 전송하기 위함(+빠르고, 안정적이고, 싼 값에). 여기서 data는 단순한 정보 일 수도 있고, &lt;strong&gt;데이터에 대한 요청(request), 그에 대한 reply&lt;/strong&gt;일 수 있다. 또한 네트워크 상으로 연결된 어떤 프로그램에 대한 instruction 일 수도 있다.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw06_2.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;대부분의 네트크 상의node들은 client server 관계로 연결되어 있다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;client&lt;/strong&gt; - server에 request를 보내는 node(pc, 또다른 server가 될 수도 있음)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;file server&lt;/strong&gt; - which is a specialized computer with multiple large hard drives that are not used exclusively by any individual on the network.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;internet server&lt;/strong&gt; - WWW(world wide web)에 LAN에 속해 있는 node들이 접속할 수 있도록 도와주는 server. ISP(Internet Service Provider, 우리나라는 KT, 하나로통신 등이 있음)에서 이 서버를 운영하고 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw06_3.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;peer-to-peer network(p2p, p to p)&lt;/strong&gt; - client-server 네트워크 모델과는 다른 네트워크 연결 방식, 각 node는 client를 거치지 않고 직접 연결되어 있으며, 토렌트, 웹하드, 등이 있다. 최근 모바일 기기, iot기기가 많이 등장하면서 일상생활 곳곳에 사용되는 네트워크 연결 방식. &lt;strong&gt;직접 연결된 peer사이에는 다시 client-server 모델이 적용된다.&lt;/strong&gt; ex) 맥-iphone,&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;wwwworld-wide-web&quot;&gt;WWW(world wide web)&lt;/h2&gt;
+
+&lt;p&gt;월드 와이드 웹(World Wide Web, WWW, W3)은 인터넷에 연결된 컴퓨터들을 통해 사람들이 정보를 공유할 수 있는 전 세계적인 정보 공간을 말한다. 간단히 웹(Web)이라 부르는 경우가 많다. 이 용어는 인터넷과 동의어로 쓰이는 경우가 많으나 엄격히 말해 서로 다른 개념이다. 웹은 전자 메일과 같이 인터넷 상에서 동작하는 하나의 서비스일 뿐이다&lt;/p&gt;
+
+&lt;p&gt;인터넷상의 정보를 하이퍼텍스트 방식과 멀티미디어 환경에서 검색할 수 있게 해주는 정보검색 시스템이다. 하이퍼텍스트 형식으로 표현된 인터넷상의 다양한 정보를 효과적으로 검색하는 시스템으로 전 세계적으로 가장 널리 보급되어 있다&lt;/p&gt;
+
+&lt;p&gt;하이퍼텍스트는 웹 브라우저라 불리는 프로그램을 통해 웹 서버에서 “문서”나 웹 페이지등의 정보 조각을 읽어들여 컴퓨터 모니터에 출력하는 형태로 보이게 된다. 그러고 나서 사용자는 각 페이지에 있는 하이퍼링크를 따라 다른 문서로 이동하거나, 그 페이지를 서비스하고 있는 서버로 일련의 정보를 보낼 수도 있다. 하이퍼링크를 따라 이동하는 행위를 흔히 웹 서핑(web surfing, 문화어: 망유람[2]) 또는 웹 브라우징이라 한다. 그리고 관련된 내용들이 모여있는 웹 페이지들의 집합을 웹 사이트라 한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://ko.wikipedia.org/wiki/월드_와이드_웹&quot;&gt;https://ko.wikipedia.org/wiki/월드_와이드_웹&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;packer-and-network&quot;&gt;packer and network&lt;/h2&gt;
+
+&lt;p&gt;네트워크를 통해 각 node는 다른 node에게 &lt;strong&gt;packet&lt;/strong&gt;의 형태로 데이터를 전송한다. packet의 구성은 다음과 같이 &lt;strong&gt;매우 간단하게&lt;/strong&gt; 나누어 볼 수 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Preamble - Synchronizes the network nodes
+““나 지금부터 packet 보낼거야~””, &lt;strong&gt;101010101 또는 010101010&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Destination Address—A single PC or all PCs on a network&lt;/li&gt;
+  &lt;li&gt;Source Address—The address of the computer from which the packet originated&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;network address란?&lt;br /&gt;
+인터넷 상에 존재하는 호스트 들을 구분하기 위한 32비트 주소 체계. 일반적으로 다음고 같이 점이 찍혀진 10진수를 사용하여 표현한다.&lt;br /&gt;
+&lt;strong&gt;192.168.0.12&lt;/strong&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Type—Defines the format used for the data&lt;/li&gt;
+  &lt;li&gt;Data—The actual information&lt;/li&gt;
+  &lt;li&gt;CRC—Cyclical Redundancy Check, which is used to spot transmission errors&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;어떻게-주소로-길을-찾아가지&quot;&gt;어떻게 주소로 길을 찾아가지?&lt;/h3&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw06_4.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/hcw06_5.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;라우터 - 라우터(router[a], 문화어: 경로기) 혹은 라우팅 기능을 갖는 공유기는 패킷의 위치를 추출하여, 그 위치에 대한 최적의 경로를 지정하며, 이 경로를 따라 데이터 패킷을 다음 장치로 전향시키는 장치이다. 이때 최적의 경로는 일반적으로는 가장 빠르게 통신이 가능한 경로이므로, 이것이 최단 거리 일수도 있지만, 돌아가는 경로라도 고속의 전송로를 통하여 전달이 되는 경로가 될 수 있다. 간단히 말해 서로 다른 내트워크 간에 중계 역할을 해준다.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;스위치(switch) -  작은 라우터, 기능은 같음.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;hub - 병목현상(bottle neck)을 해결하기 위함, 메모리 버퍼를 가지고 있다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter 17 - How Network Tie Computer Togethe</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw06_0.png" /></entry><entry><title type="html">세상의 모든 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc.</title><link href="http://localhost:4000/whatever/devEnvTip/" rel="alternate" type="text/html" title="세상의 모든 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc." /><published>2017-09-20T19:00:00+09:00</published><updated>2017-09-20T19:00:00+09:00</updated><id>http://localhost:4000/whatever/devEnvTip</id><content type="html" xml:base="http://localhost:4000/whatever/devEnvTip/">&lt;p style=&quot;text-align: center;&quot;&gt;
+  &lt;img src=&quot;http://localhost:4000/images/devEnvTip_01.png &quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#vim&quot; id=&quot;markdown-toc-vim&quot;&gt;vim&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#기본-단축키&quot; id=&quot;markdown-toc-기본-단축키&quot;&gt;기본 단축키&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#창-생성&quot; id=&quot;markdown-toc-창-생성&quot;&gt;창 생성&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#창삭제&quot; id=&quot;markdown-toc-창삭제&quot;&gt;창삭제&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#창이동&quot; id=&quot;markdown-toc-창이동&quot;&gt;창이동&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#창이동-1&quot; id=&quot;markdown-toc-창이동-1&quot;&gt;창이동&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#창-크기-조정&quot; id=&quot;markdown-toc-창-크기-조정&quot;&gt;창 크기 조정&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#실행-취소&quot; id=&quot;markdown-toc-실행-취소&quot;&gt;실행 취소&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#탭생성-이동&quot; id=&quot;markdown-toc-탭생성-이동&quot;&gt;탭생성, 이동&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#tips&quot; id=&quot;markdown-toc-tips&quot;&gt;Tips&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#헤더-파일-바로-읽어-오기&quot; id=&quot;markdown-toc-헤더-파일-바로-읽어-오기&quot;&gt;헤더 파일 바로 읽어 오기&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#찾고-싶은-글자-찾기&quot; id=&quot;markdown-toc-찾고-싶은-글자-찾기&quot;&gt;[찾고 싶은 글자 찾기]&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ctags&quot; id=&quot;markdown-toc-ctags&quot;&gt;ctags&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#설치&quot; id=&quot;markdown-toc-설치&quot;&gt;설치&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#시작&quot; id=&quot;markdown-toc-시작&quot;&gt;시작&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#단축키&quot; id=&quot;markdown-toc-단축키&quot;&gt;단축키&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#cscope&quot; id=&quot;markdown-toc-cscope&quot;&gt;cscope&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#설치-및-편한-사용&quot; id=&quot;markdown-toc-설치-및-편한-사용&quot;&gt;설치 및 편한 사용&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#cscope-with-vim&quot; id=&quot;markdown-toc-cscope-with-vim&quot;&gt;cscope with vim&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#명령어&quot; id=&quot;markdown-toc-명령어&quot;&gt;명령어&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#tmux&quot; id=&quot;markdown-toc-tmux&quot;&gt;tmux&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#tmux-구성&quot; id=&quot;markdown-toc-tmux-구성&quot;&gt;tmux 구성&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#명령어-1&quot; id=&quot;markdown-toc-명령어-1&quot;&gt;명령어&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;p&gt;본 포스팅에서는 개발환경 자체에 대한 설치 및 세팅 과정은 다루지 않고, 효과적인 활용법에 대해서만 정리 했습니다.&lt;/p&gt;
+
+&lt;h1 id=&quot;vim&quot;&gt;vim&lt;/h1&gt;
+&lt;h2 id=&quot;기본-단축키&quot;&gt;기본 단축키&lt;/h2&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;
+  &lt;img src=&quot;http://localhost:4000/images/devEnvTip_02.png &quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://kldp.org/node/102947&quot;&gt;https://kldp.org/node/102947&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;창-생성&quot;&gt;창 생성&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;CTRL-W s
+:[N]sp[plit]
+현재 파일을 두 개의 수평 창으로 나눔&lt;/li&gt;
+  &lt;li&gt;CTRL-W v
+:[N]vs[plit]
+현재 파일을 두 개의 수직 창으로 나눔&lt;/li&gt;
+  &lt;li&gt;CTRL-W n
+:new
+새로운 수평 창 생성&lt;/li&gt;
+  &lt;li&gt;CTRL-W ^ 또는 CTRL-W CTRL-^ 수평 창으로 나누고 이전 파일의 오픈&lt;/li&gt;
+  &lt;li&gt;CTRL-W f 창을 수평으로 나누고 커서 위치의 파일 오픈&lt;/li&gt;
+  &lt;li&gt;CTRL-W i 커서 위치의 단어가 정의된 파일을 오픈&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;창삭제&quot;&gt;창삭제&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;CTRL-W q :q[uit]! 현재 커서의 창을 종료&lt;/li&gt;
+  &lt;li&gt;CTRL-W c :close 현재 커서의 창 닫기&lt;/li&gt;
+  &lt;li&gt;CTRL-W o :on[ly] 현재 커서의 창만 남기고 모든 창 삭제&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;창이동&quot;&gt;창이동&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;CTRL-W h 왼쪽 창으로 커서 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W j 아래쪽 창으로 커서 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W k 위쪽 창으로 커서 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W l 오른쪽 창으로 커서 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W w 창을 순차적으로 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W p 가장 최근에 이동한 방향으로 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W t 최상위 창으로 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W b 최하위 창으로 이동&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;창이동-1&quot;&gt;창이동&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;CTRL-W r 순착으로 창의 위치를 순환&lt;/li&gt;
+  &lt;li&gt;CTRL-W x 이전 창과 위치를 바꿈&lt;/li&gt;
+  &lt;li&gt;CTRL-W H 현재창을 왼쪽 큰화면으로 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W J 현재창을 아래쪽 큰화면으로 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W K 현재창을 위쪽 큰화면으로 이동&lt;/li&gt;
+  &lt;li&gt;CTRL-W L 현재창을 오른쪽 큰화면으로 이동&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;창-크기-조정&quot;&gt;창 크기 조정&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;CTRL-W + 창의 크기를 모두 균등하게 함&lt;/li&gt;
+  &lt;li&gt;CTRL-W _ 수평 분할에서 창의 크기를 최대화&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;CTRL-W&lt;/td&gt;
+          &lt;td&gt;수직 분할에서 창의 크기를 최대화&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CTRL-W [N]+
+창의 크기를 N행 만큼 증가&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CTRL-W [N]-
+창의 크기를 N행 만큼 감소&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;CTRL-W [N]&amp;gt;
+창의 크기를 오른쪽으로 N칸 만큼 증가&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;CTRL-W [N]&amp;lt;
+창의 크기를 오른쪽으로 N칸 만큼 감소&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;실행-취소&quot;&gt;실행 취소&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;u 실행 취소&lt;/li&gt;
+  &lt;li&gt;ctrl-r 재실행(실행취소의 취소)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;탭생성-이동&quot;&gt;탭생성, 이동&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:tabnew [file path]&lt;/code&gt; 탭생성&lt;/li&gt;
+  &lt;li&gt;gt, gT 탭 간 이동&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;tips&quot;&gt;Tips&lt;/h1&gt;
+
+&lt;h2 id=&quot;헤더-파일-바로-읽어-오기&quot;&gt;헤더 파일 바로 읽어 오기&lt;/h2&gt;
+&lt;p&gt;#include &amp;lt;linux/kernel.h&amp;gt; &amp;lt;- 헤더파일 이름에 커서를 위치 한후  &lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl + wf&lt;/code&gt;를 누르면 창이 수평 분할되어 헤더파일이 열립니다&lt;/p&gt;
+
+&lt;h2 id=&quot;찾고-싶은-글자-찾기&quot;&gt;[찾고 싶은 글자 찾기]&lt;/h2&gt;
+&lt;p&gt;찾으려는 문자열에 커서를 두고 #을 누른다. 검색 결과를 왔다갔다 하려면, n또는 N으로 이동 할 수 있다.&lt;/p&gt;
+
+&lt;h1 id=&quot;ctags&quot;&gt;ctags&lt;/h1&gt;
+
+&lt;h2 id=&quot;설치&quot;&gt;설치&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install ctags
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;시작&quot;&gt;시작&lt;/h2&gt;
+&lt;p&gt;분석하려는 소스코드 최상위 디렉토리에서&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ctags -R .
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;단축키&quot;&gt;단축키&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl + ]&lt;/code&gt; : 해당 함수나 변수의 정의 된 부분으로 이동&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl + t&lt;/code&gt; : 이동하기 전으로 이동&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:tags&lt;/code&gt; : 명령어 모드에서 “tags”를 입력하면 현재 tags의 stack구조를 볼 수 있다.&lt;/li&gt;
+  &lt;li&gt;ctag는 앞의 두 단축키를 통해 c코드들의 호출 구조 또는 정의 구조를 따라 코드를 surfing할 수 있으며, 각각의 이동은 stack에 push, pop하는 구조로 구현되어 있다.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:tj&lt;/code&gt; :  심볼 이름(함수, 변수명 등) 입력하면 찾고자하는 정보들이 나타난다.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:sts&lt;/code&gt; : tj와 흡사하나, 새창에 관련 정보들이 나타난다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;cscope&quot;&gt;cscope&lt;/h1&gt;
+
+&lt;h2 id=&quot;설치-및-편한-사용&quot;&gt;설치 및 편한 사용&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo apt-get install cscope&lt;/code&gt; command를 통해 설치가 가능하다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mycscope.sh&lt;/code&gt;와 같은 쉘 스크립트를 만들고 /usr/bin과 같은 디렉토리(맥의 경우 local/bin 이었던 것 같음.)에 복사 해 두면 편하게 사용 가능하다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mycscope.sh&lt;/code&gt;의 내용은 다음과 같음.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+rm -rf cscope.files cscope.files
+find . &lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt; -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.c’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.cpp’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.cc’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.h’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.s’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.S’ &lt;span class=&quot;se&quot;&gt;\)&lt;/span&gt; -print&amp;gt;cscope.files
+cscope -i cscope.files
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;cscope-with-vim&quot;&gt;cscope with vim&lt;/h2&gt;
+
+&lt;p&gt;vim에서 편리하게 cscope를 사용하기 위해 .vimrc 파일에 다음과 같은 내용을 추가한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;csprg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/bin/cscope
+
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;csto&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0 “&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;숫자 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;cst
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;nocsverb
+
+&lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;filereadable&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“./cscope.out”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+cs add cscope.out
+&lt;span class=&quot;k&quot;&gt;else
+&lt;/span&gt;cs add /usr/src/linux/cscope.out
+endif
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;csverb
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;명령어&quot;&gt;명령어&lt;/h2&gt;
+
+&lt;p&gt;vim에서 cscope를 사용하기 위해 명령어 모드(:)에서 다음과 같은 명령어를 통해 사용이 가능하다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:cs find &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;질의종류&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;symbol_name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+ex&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; cs find s main
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;0 or s&lt;/code&gt; : symbol_name 중 검색 (Cntl-‘’ + s)&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;1 or g&lt;/code&gt; : symbol_name의 정의를 검색 (Cntl-‘’ + g)&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2 or d&lt;/code&gt; : symbol_name에 해당하는 함수에서 호출된 함수를 검색 (Cntl-‘’ + d)&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;3 or c&lt;/code&gt; : symbol_name에 해당하는 함수를 호출하는 함수를 검색 (Cntl-‘’ + c)&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;4 or t&lt;/code&gt; : symbol_name에 해당하는 text문자열을 검색 (Cntl-‘’ + t)&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;6 or e&lt;/code&gt; : 확장 정규식을 사용하여 symbol_name을 검색 (Cntl-‘’ + e)&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;7 or f&lt;/code&gt; : 파일 이름중에서 symbol_name을 검색 (Cntl-‘’ + f)&lt;br /&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;8 or i&lt;/code&gt; : symbol_name을 include하는 파일을 검색 (Cntl-‘’ + i)&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;참고 - &lt;a href=&quot;http://hochulshin.com/tool-vi-ctags-cscope-on-osx/&quot;&gt;http://hochulshin.com/tool-vi-ctags-cscope-on-osx/&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;tmux&quot;&gt;tmux&lt;/h1&gt;
+
+&lt;p&gt;ssh원격 접속시 세션이 끊기면 사용하던 job들도 종료가 되는 것을 방지함 = 개꿀&lt;/p&gt;
+
+&lt;h2 id=&quot;tmux-구성&quot;&gt;tmux 구성&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;session : tmux 실행 단위. 여러개의 window로 구성.&lt;/li&gt;
+  &lt;li&gt;window : 터미널 화면. 세션 내에서 탭처럼 사용할 수 있음.&lt;/li&gt;
+  &lt;li&gt;pane : 하나의 window 내에서 화면 분할.&lt;/li&gt;
+  &lt;li&gt;status bar : 화면 아래 표시되는 상태 막대.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;명령어-1&quot;&gt;명령어&lt;/h2&gt;
+
+&lt;p&gt;tmux는 prefix 키인 &lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+b&lt;/code&gt;를 누른 후 다음 명령 키를 눌러야 동작할 수 있다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;#####work in progress…&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Collection of all tips I've read and found</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/devEnvTip_01.png" /></entry><entry><title type="html">code.org 중요 문제, 개념</title><link href="http://localhost:4000/code_org/" rel="alternate" type="text/html" title="code.org 중요 문제, 개념" /><published>2017-09-20T19:00:00+09:00</published><updated>2017-09-20T19:00:00+09:00</updated><id>http://localhost:4000/code_org</id><content type="html" xml:base="http://localhost:4000/code_org/">&lt;h1 id=&quot;chapter-2-문제&quot;&gt;chapter 2 문제&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;lesson6 -6, 7, 9, 11: 초급 반복, 중첩 반복&lt;/li&gt;
+  &lt;li&gt;lesson7 -1, 8, 10, 12: 초급 반복, 중첩 반복&lt;/li&gt;
+  &lt;li&gt;lesson10 - 9, 10: 디버깅&lt;/li&gt;
+  &lt;li&gt;lesson11 - 9, 10: 디버깅&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;lesson13 -3, 5, 8, 9, 11, 12: 조건, 반복&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;파이썬 구구단 예제1 -nested loop&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;chapter-3-문제&quot;&gt;chapter 3 문제&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;lesson5 - 1, 2, 3, 4, 5, 6&lt;/li&gt;
+  &lt;li&gt;lesson6 - 2, 4, 5, 6, 8, 9&lt;/li&gt;
+  &lt;li&gt;lesson7 - 2, 4, 5, 6, 7, 8, 9 : 조건, &lt;strong&gt;함수&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;점프-투-파이썬&quot;&gt;점프 투 파이썬&lt;/h1&gt;
+&lt;h2 id=&quot;01-5-파이썬-둘러보기&quot;&gt;01-5 파이썬 둘러보기&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;data structure(자료구조, 자료형): 프로그래밍을 할 때 쓰이는 숫자, 문자열 등 자료 형태로 사용하는 모든 것을 뜻한다. 프로그램의 기본이자 핵심 단위가 바로 자료형&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;variable&lt;/li&gt;
+  &lt;li&gt;operation 
+‘=’연산사, 사칙연산자, %연산자, //연산자, . . .
+     * 숫자 연산
+     * 문자열 연산&lt;/li&gt;
+  &lt;li&gt;condition&lt;/li&gt;
+  &lt;li&gt;loop
+     * for loop
+     * while loop&lt;/li&gt;
+  &lt;li&gt;function&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;recommeded editor: pycharm, sublime text&lt;/p&gt;
+
+&lt;h2 id=&quot;02-1-숫자형-자료구조&quot;&gt;02-1 숫자형 자료구조&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	1. 생성
+	2. 숫자형 연산자 - 대부분 직관적, &quot;/&quot;연산자는 python 버전에 따라 다름
+	3. 직관적이지 않은 연산자
+			* **
+			* % 나머지, 많이 쓰임
+			* // 몫
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;02-2-문자형-자료구조&quot;&gt;02-2 문자형 자료구조&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	1. 문자열 생성의 여러가지 방법-&amp;gt; 왜 있는가?
+	2. 문자열 변수
+	3. 이스케이프 코드(특히 개행문자)
+	print 함수에는 개행문자가 이미 포함되어 있다.
+	4. 문자열 연산
+	**5. 문자열 인덱스, 슬라이싱**
+	**6. 문자열 포멧팅** - 간단한 포멧팅은 str()함수를 쓰는게 더 직관적이고 쉽다.
+	7. 문자열 함수: 함수을 외울수는 **절대** 없다.(필요도 없음), 이런게 있었지~ 또는 이런게 있을까? 라는 생각만 가지고 있으면, 파이썬 레퍼런스를 참조해서 프로그래밍하는 것
+	자주 쓰는 것은 저절로 외워짐
+	8. 고급 포멧팅: 아~ 이런게 있구나!
+	9. **문자열 관련 함수** = 내장 함수!
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;02-3-리스트-형-자료구조&quot;&gt;02-3 리스트 형 자료구조&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;	&quot;자료구조의 자료구조&quot;, &quot;자료구조의 자료구조의 자료구조&quot;, ...
+	1. 리스트형 자료구조의 case는 다양하게 있음
+	2. 리스트의 생성 방법
+	3. 리스트의 인덱싱과 슬라이싱 = 문자열과 매우 비슷함.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;튜플-딕셔너리-집합-자료형---나중에&quot;&gt;튜플, 딕셔너리, 집합 자료형 -&amp;gt; 나중에&lt;/h2&gt;
+
+&lt;h2 id=&quot;자료형의-참과-거짓&quot;&gt;자료형의 참과 거짓&lt;/h2&gt;
+
+&lt;h2 id=&quot;사용자-입출력&quot;&gt;사용자 입출력&lt;/h2&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">code.org chaper 2, 3</summary></entry></feed>
