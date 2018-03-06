@@ -6,6 +6,9 @@ author: Rocky Lim
 categories: research
 excerpt: "유저스페이스에서 Open Channel SSD 컨트롤 하기"
 image:
+  feature:
+  teaser: liblightnvm_01_01.png
+  path: images/liblightnvm_01_01.png
 comments: true
 locale: "vn"
 share: true
