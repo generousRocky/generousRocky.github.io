@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-12T17:26:27+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">InnoDB basic and i/o path</title><link href="http://localhost:4000/research/innodb_01/" rel="alternate" type="text/html" title="InnoDB basic and i/o path" /><published>2018-03-01T19:00:00+09:00</published><updated>2018-03-01T19:00:00+09:00</updated><id>http://localhost:4000/research/innodb_01</id><content type="html" xml:base="http://localhost:4000/research/innodb_01/">&lt;nav class=&quot;toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-13T00:48:23+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">InnoDB basic and i/o path</title><link href="http://localhost:4000/research/innodb_01/" rel="alternate" type="text/html" title="InnoDB basic and i/o path" /><published>2018-03-01T19:00:00+09:00</published><updated>2018-03-01T19:00:00+09:00</updated><id>http://localhost:4000/research/innodb_01</id><content type="html" xml:base="http://localhost:4000/research/innodb_01/">&lt;nav class=&quot;toc&quot;&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#1-innodb-background&quot; id=&quot;markdown-toc-1-innodb-background&quot;&gt;1. InnoDB background&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#2-innodb-function-call-tracefunction-call-stack&quot; id=&quot;markdown-toc-2-innodb-function-call-tracefunction-call-stack&quot;&gt;2. InnoDB Function Call Trace(Function Call Stack)&lt;/a&gt;    &lt;ul&gt;
@@ -1666,6 +1666,104 @@ ex&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; cs find s main
 
 &lt;p&gt;tmux는 prefix 키인 &lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+b&lt;/code&gt;를 누른 후 다음 명령 키를 눌러야 동작할 수 있다.&lt;/p&gt;
 
-&lt;hr /&gt;
+&lt;h3 id=&quot;session&quot;&gt;Session&lt;/h3&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 새 세션 생성&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tmux new -s &amp;lt;session-name&amp;gt;
 
-&lt;p&gt;#####work in progress…&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Collection of all tips I've read and found</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/devEnvTip_01.png" /></entry></feed>
+&lt;span class=&quot;c&quot;&gt;# 세션 이름 수정&lt;/span&gt;
+ctrl + b, &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 세션 종료&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;tmux에서&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 세션 중단하기 (detached)&lt;/span&gt;
+ctrl + b, d
+
+&lt;span class=&quot;c&quot;&gt;# 세션 목록 보기 (list-session)&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tmux ls
+
+&lt;span class=&quot;c&quot;&gt;# 세션 다시 시작&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tmux attach -t &amp;lt;session-number or session-name&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;window&quot;&gt;Window&lt;/h3&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 새 윈도우 생성&lt;/span&gt;
+ctrl + b, c
+
+&lt;span class=&quot;c&quot;&gt;# 세션 생성시 윈도우랑 같이 생성&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tmux new -s &amp;lt;session-name&amp;gt; -n &amp;lt;window-name&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;# 윈도우 이름 수정&lt;/span&gt;
+ctrl + b, ,
+
+&lt;span class=&quot;c&quot;&gt;# 윈도우 종료&lt;/span&gt;
+ctrl + b, &amp;amp;
+ctrl + d
+
+&lt;span class=&quot;c&quot;&gt;# 윈도우 이동&lt;/span&gt;
+ctrl + b, 0-9 : window number
+n : next window
+p : prev window
+l : last window
+w : window selector
+f : find by name
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;pane&quot;&gt;Pane&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 틀 나누기
+ctrl + b, % : 횡 분할
+          &quot; : 종 분할
+
+# 틀 이동
+ctrl + b, q 그리고 화면에 나오는 숫자키
+ctrl + b, o : 순서대로 이동
+ctrl + b, arrow : 방향키로 숑숑
+
+# 틀 삭제
+ctrl + b, x
+ctrl + d
+
+# 틀 사이즈 조절
+(ctrl + b, :)
+resize-pane -L 10
+-R 10
+-D 10
+-U 10
+
+# 틀 레이아웃 변경
+ctrl + b, spacebar
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;shortcut-key&quot;&gt;Shortcut key&lt;/h3&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 단축키 목록&lt;/span&gt;
+ctrl + b, ?
+
+&lt;span class=&quot;c&quot;&gt;# 키 연결 및 해제 bind and unbind&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ctrl + b, :&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;bind&lt;/span&gt;-key &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-cnr] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-t key-table] key &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;arguments]
+unbind-key &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-acn] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;t key-table] key
+
+&lt;span class=&quot;c&quot;&gt;# 옵션 설정 `set` and `setw`&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -g &amp;lt;option-name&amp;gt; &amp;lt;option-value&amp;gt;  : &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-option
+setw -g &amp;lt;option-name&amp;gt; &amp;lt;option-value&amp;gt; : &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-window-option
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;code-mode&quot;&gt;Code Mode&lt;/h3&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# copy mode 진입&lt;/span&gt;
+ctrl + b, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 빠져나오기&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;copy mode에서&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; q or ESC
+
+&lt;span class=&quot;c&quot;&gt;# 이동&lt;/span&gt;
+arrow : 커서 이동
+pageUp, pageDown : 페이지 이동 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;iTerm에서는 fn + up, down, terminal에서는 alt + up, down&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Collection of all tips I've read and found</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/devEnvTip_01.png" /></entry></feed>

@@ -69,7 +69,7 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 	M.S in Seoul National university,<br />
 	Computer Engineering, Distributed Computing System Lab<br />
   <a href="http://dcslab.snu.ac.kr">DCSLAB Link</a><br />
-	2017 ~
+	2017 ~ 2018
 </p><br />
 
 <p>
@@ -85,7 +85,7 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 	<br />
 	CIT Code Academy, CIT 코드 아카데미 ㈜디지틀조선일보<br />
 	lecturer, 강사<br />
-	2017 ~
+	2017 ~ 2018
 </p><br />
 
 <p>

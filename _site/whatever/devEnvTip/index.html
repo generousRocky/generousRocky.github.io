@@ -381,9 +381,108 @@ ex<span class="o">)</span> cs find s main
 
 <p>tmux는 prefix 키인 <code class="highlighter-rouge">ctrl+b</code>를 누른 후 다음 명령 키를 눌러야 동작할 수 있다.</p>
 
-<hr />
+<h3 id="session">Session</h3>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># 새 세션 생성</span>
+<span class="gp">$ </span>tmux new -s &lt;session-name&gt;
 
-<p>#####work in progress…</p>
+<span class="c"># 세션 이름 수정</span>
+ctrl + b, <span class="err">$</span>
+
+<span class="c"># 세션 종료</span>
+<span class="gp">$ </span><span class="o">(</span>tmux에서<span class="o">)</span> <span class="nb">exit</span>
+
+<span class="c"># 세션 중단하기 (detached)</span>
+ctrl + b, d
+
+<span class="c"># 세션 목록 보기 (list-session)</span>
+<span class="gp">$ </span>tmux ls
+
+<span class="c"># 세션 다시 시작</span>
+<span class="gp">$ </span>tmux attach -t &lt;session-number or session-name&gt;
+</code></pre>
+</div>
+
+<h3 id="window">Window</h3>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># 새 윈도우 생성</span>
+ctrl + b, c
+
+<span class="c"># 세션 생성시 윈도우랑 같이 생성</span>
+<span class="gp">$ </span>tmux new -s &lt;session-name&gt; -n &lt;window-name&gt;
+
+<span class="c"># 윈도우 이름 수정</span>
+ctrl + b, ,
+
+<span class="c"># 윈도우 종료</span>
+ctrl + b, &amp;
+ctrl + d
+
+<span class="c"># 윈도우 이동</span>
+ctrl + b, 0-9 : window number
+n : next window
+p : prev window
+l : last window
+w : window selector
+f : find by name
+</code></pre>
+</div>
+
+<h3 id="pane">Pane</h3>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># 틀 나누기
+ctrl + b, % : 횡 분할
+          " : 종 분할
+
+# 틀 이동
+ctrl + b, q 그리고 화면에 나오는 숫자키
+ctrl + b, o : 순서대로 이동
+ctrl + b, arrow : 방향키로 숑숑
+
+# 틀 삭제
+ctrl + b, x
+ctrl + d
+
+# 틀 사이즈 조절
+(ctrl + b, :)
+resize-pane -L 10
+-R 10
+-D 10
+-U 10
+
+# 틀 레이아웃 변경
+ctrl + b, spacebar
+</code></pre>
+</div>
+
+<h3 id="shortcut-key">Shortcut key</h3>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># 단축키 목록</span>
+ctrl + b, ?
+
+<span class="c"># 키 연결 및 해제 bind and unbind</span>
+<span class="o">(</span>ctrl + b, :<span class="o">)</span>
+<span class="nb">bind</span>-key <span class="o">[</span>-cnr] <span class="o">[</span>-t key-table] key <span class="nb">command</span> <span class="o">[</span>arguments]
+unbind-key <span class="o">[</span>-acn] <span class="o">[</span>t key-table] key
+
+<span class="c"># 옵션 설정 `set` and `setw`</span>
+<span class="nb">set</span> -g &lt;option-name&gt; &lt;option-value&gt;  : <span class="nb">set</span>-option
+setw -g &lt;option-name&gt; &lt;option-value&gt; : <span class="nb">set</span>-window-option
+</code></pre>
+</div>
+
+<h3 id="code-mode">Code Mode</h3>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="c"># copy mode 진입</span>
+ctrl + b, <span class="o">[</span>
+
+<span class="c"># 빠져나오기</span>
+<span class="o">(</span>copy mode에서<span class="o">)</span> q or ESC
+
+<span class="c"># 이동</span>
+arrow : 커서 이동
+pageUp, pageDown : 페이지 이동 <span class="o">(</span>iTerm에서는 fn + up, down, terminal에서는 alt + up, down<span class="o">)</span>
+</code></pre>
+</div>
+
 
 				<hr />
 				<footer class="page-footer">
