@@ -1,54 +1,190 @@
----
-layout: article
-title:  "InnoDB basic and i/o path"
-date:   2018-03-01 10:00:00 Z
-author: Rocky Lim
-categories: research
-excerpt: "InooDB basic concept and function call trace(function call stack, read write path)"
-image:
-  feature:
-  teaser: innodb_01.jpg
-  path: images/innodb_01.jpg
-comments: true
-locale: "vn"
-share: true
-ads: true
----
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>InnoDB basic and i/o path • Rocky's Research Blog</title>
+    <meta name="description" content="InooDB basic concept and function call trace(function call stack, read write path)">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="InnoDB basic and i/o path">
+	<meta name="twitter:description" content="InooDB basic concept and function call trace(function call stack, read write path)">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="InnoDB basic and i/o path">
+	<meta property="og:description" content="InooDB basic concept and function call trace(function call stack, read write path)">
+	<meta property="og:url" content="http://localhost:4000/research/innodb_01/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
 
-{% include toc.html %}
+    <link rel="canonical" href="http://localhost:4000/research/innodb_01/">
 
-# 1. InnoDB background
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
 
-* InnoDB - Default storage engine of MySQL DB
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
 
-InnoDB tables arrange your data on disk to optimize queries based on primary keys. Each InnoDB table has a primary key index called the clustered index that organizes the data to minimize I/O for primary key lookups
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
 
-Inserts, updates, and deletes are optimized by an automatic mechanism called change buffering. InnoDB not only allows concurrent read and write access to the same table, it caches changed data to streamline disk I/O.
+  </head>
 
-* file-per-table
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
 
-A general name for the setting controlled by the *innodb_file_per_table* option, which is an important configuration option that affects aspects of InnoDB file storage, availability of features, and I/O characteristics. As of MySQL 5.6.7, *innodb_file_per_table* is enabled by default.
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">A liitle about this blog's owner, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">Things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">Things I’ve designed, published, developed, coded, or whatever.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
 
-With the *innodb_file_per_table* option enabled, you can create a table in its own **.ibd file** rather than in the shared **ibdata files** of the **system tablespace**. When table data is stored in an individual **.ibd file**, you have more flexibility to choose **row formats** required for features such as data **compression**. The TRUNCATE TABLE operation is also faster, and reclaimed space can be used by the operating system rather than remaining reserved for InnoDB.
+<div id="js-menu-screen" class="menu-screen"></div>
 
-You can monitor the internal workings of the storage engine by querying **INFORMATION_SCHEMA** tables.
 
-You can monitor the performance details of the storage engine by querying **Performance Schema** tables.
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
 
-* system tablespace
+		<div class="page-title">
+			<h1>InnoDB basic and i/o path</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#1-innodb-background" id="markdown-toc-1-innodb-background">1. InnoDB background</a></li>
+  <li><a href="#2-innodb-function-call-tracefunction-call-stack" id="markdown-toc-2-innodb-function-call-tracefunction-call-stack">2. InnoDB Function Call Trace(Function Call Stack)</a>    <ul>
+      <li><a href="#pread" id="markdown-toc-pread">pread</a></li>
+      <li><a href="#pwrite" id="markdown-toc-pwrite">pwrite</a></li>
+    </ul>
+  </li>
+</ul>
 
-One or more data files (**ibdata files**) containing metadata for InnoDB-related objects (**the InnoDB data dictionary**), and the storage areas for the **change buffer**, the **doublewrite buffer**, and possibly **undo logs**. It may also contain table and index data for InnoDB tables if tables were created in the system tablespace instead of **file-per-table** or **general tablespaces**. The data and metadata in the system tablespace apply to all **databases** in a MySQL **instance**.
+</nav>
 
-In MySQL 5.7, the default is ***file-per-table mode***, where each table and its associated indexes are stored in a separate ***.ibd file***. This default makes it easier to use InnoDB features that rely on the Barracuda file format, such as table compression, efficient storage of off-page columns, and large index key prefixes (innodb_large_prefix).
+<h1 id="1-innodb-background">1. InnoDB background</h1>
 
-# 2. InnoDB Function Call Trace(Function Call Stack)
+<ul>
+  <li>InnoDB - Default storage engine of MySQL DB</li>
+</ul>
 
-The following function call trace comes from **gdb** while processing tpcc-h workload. I sampled from start points of i/o thread  to **pread** and **pwrite** systeam call(the end of mysql layer).
+<p>InnoDB tables arrange your data on disk to optimize queries based on primary keys. Each InnoDB table has a primary key index called the clustered index that organizes the data to minimize I/O for primary key lookups</p>
 
-## pread
+<p>Inserts, updates, and deletes are optimized by an automatic mechanism called change buffering. InnoDB not only allows concurrent read and write access to the same table, it caches changed data to streamline disk I/O.</p>
 
-```
-#0  pread64 () at ../sysdeps/unix/syscall-template.S:84
+<ul>
+  <li>file-per-table</li>
+</ul>
+
+<p>A general name for the setting controlled by the <em>innodb_file_per_table</em> option, which is an important configuration option that affects aspects of InnoDB file storage, availability of features, and I/O characteristics. As of MySQL 5.6.7, <em>innodb_file_per_table</em> is enabled by default.</p>
+
+<p>With the <em>innodb_file_per_table</em> option enabled, you can create a table in its own <strong>.ibd file</strong> rather than in the shared <strong>ibdata files</strong> of the <strong>system tablespace</strong>. When table data is stored in an individual <strong>.ibd file</strong>, you have more flexibility to choose <strong>row formats</strong> required for features such as data <strong>compression</strong>. The TRUNCATE TABLE operation is also faster, and reclaimed space can be used by the operating system rather than remaining reserved for InnoDB.</p>
+
+<p>You can monitor the internal workings of the storage engine by querying <strong>INFORMATION_SCHEMA</strong> tables.</p>
+
+<p>You can monitor the performance details of the storage engine by querying <strong>Performance Schema</strong> tables.</p>
+
+<ul>
+  <li>system tablespace</li>
+</ul>
+
+<p>One or more data files (<strong>ibdata files</strong>) containing metadata for InnoDB-related objects (<strong>the InnoDB data dictionary</strong>), and the storage areas for the <strong>change buffer</strong>, the <strong>doublewrite buffer</strong>, and possibly <strong>undo logs</strong>. It may also contain table and index data for InnoDB tables if tables were created in the system tablespace instead of <strong>file-per-table</strong> or <strong>general tablespaces</strong>. The data and metadata in the system tablespace apply to all <strong>databases</strong> in a MySQL <strong>instance</strong>.</p>
+
+<p>In MySQL 5.7, the default is <strong><em>file-per-table mode</em></strong>, where each table and its associated indexes are stored in a separate <strong><em>.ibd file</em></strong>. This default makes it easier to use InnoDB features that rely on the Barracuda file format, such as table compression, efficient storage of off-page columns, and large index key prefixes (innodb_large_prefix).</p>
+
+<h1 id="2-innodb-function-call-tracefunction-call-stack">2. InnoDB Function Call Trace(Function Call Stack)</h1>
+
+<p>The following function call trace comes from <strong>gdb</strong> while processing tpcc-h workload. I sampled from start points of i/o thread  to <strong>pread</strong> and <strong>pwrite</strong> systeam call(the end of mysql layer).</p>
+
+<h2 id="pread">pread</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>#0  pread64 () at ../sysdeps/unix/syscall-template.S:84
 #1  0x0000000001ab1d0f in SyncFileIO::execute (this=0x7f7f2c0d1500, request=...) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:2185
 #2  0x0000000001ab442d in os_file_io (in_type=..., file=47, buf=0x7f7f247dc000, n=16384, offset=24133632, err=0x7f7f2c0d1904) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5445
 #3  0x0000000001ab4ea1 in os_file_pread (type=..., file=47, buf=0x7f7f247dc000, n=16384, offset=24133632, err=0x7f7f2c0d1904) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5627
@@ -83,12 +219,12 @@ The following function call trace comes from **gdb** while processing tpcc-h wor
 #32 0x0000000001dfe398 in pfs_spawn_thread (arg=0x41f37d0) at /home/rocky/mysql-5.7.22/storage/perfschema/pfs.cc:2190
 #33 0x00007f7f375496ba in start_thread (arg=0x7f7f2c0d7700) at pthread_create.c:333
 #34 0x00007f7f369de41d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-```
+</code></pre>
+</div>
 
-or 
+<p>or</p>
 
-```
-#0  pread64 () at ../sysdeps/unix/syscall-template.S:84
+<div class="highlighter-rouge"><pre class="highlight"><code>#0  pread64 () at ../sysdeps/unix/syscall-template.S:84
 #1  0x0000000001ab1d0f in SyncFileIO::execute (this=0x7f7f2c0d1380, request=...) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:2185
 #2  0x0000000001ab442d in os_file_io (in_type=..., file=49, buf=0x7f7f247e8000, n=16384, offset=2048000, err=0x7f7f2c0d1784) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5445
 #3  0x0000000001ab4ea1 in os_file_pread (type=..., file=49, buf=0x7f7f247e8000, n=16384, offset=2048000, err=0x7f7f2c0d1784) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5627
@@ -103,11 +239,11 @@ or
 #12 0x0000000001c6877d in btr_cur_search_to_nth_level (index=0x7f7eb41d44c0, level=0, tuple=0x7f7eb4b281a8, mode=PAGE_CUR_GE, latch_mode=1, cursor=0x7f7eb4b27fb8, has_search_latch=1, file=0x23e6d10 "/home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc", line=4066, mtr=0x7f7f2c0d43d0) at /home/rocky/mysql-5.7.22/storage/innobase/btr/btr0cur.cc:1109
 #13 0x0000000001b8271d in btr_pcur_open_with_no_init_func (index=0x7f7eb41d44c0, tuple=0x7f7eb4b281a8, mode=PAGE_CUR_GE, latch_mode=1, cursor=0x7f7eb4b27fb8, has_search_latch=1, file=0x23e6d10 "/home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc", line=4066, mtr=0x7f7f2c0d43d0) at /home/rocky/mysql-5.7.22/storage/innobase/include/btr0pcur.ic:521
 #14 0x0000000001b8b92f in row_sel_try_search_shortcut_for_mysql (out_rec=0x7f7f2c0d37f8, prebuilt=0x7f7eb4b27d90, offsets=0x7f7f2c0d3830, heap=0x7f7f2c0d3828, mtr=0x7f7f2c0d43d0) at /home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc:4066
-#15 0x0000000001b8d728 in row_search_mvcc (buf=0x7f7eb4b273e0 '\217' <repeats 48 times>, mode=PAGE_CUR_GE, prebuilt=0x7f7eb4b27d90, match_mode=1, direction=0) at /home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc:4878
-#16 0x00000000019ea5fa in ha_innobase::index_read (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' <repeats 48 times>, key_ptr=0x7f7eb4010b88 "\002", key_len=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/storage/innobase/handler/ha_innodb.cc:8708
-#17 0x0000000000fd150e in handler::index_read_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' <repeats 48 times>, key=0x7f7eb4010b88 "\002", keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.h:2785
-#18 0x0000000000fcd11d in handler::index_read_idx_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' <repeats 48 times>, index=0, key=0x7f7eb4010b88 "\002", keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.cc:7519
-#19 0x0000000000fc29ec in handler::ha_index_read_idx_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' <repeats 48 times>, index=0, key=0x7f7eb4010b88 "\002", keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.cc:3083
+#15 0x0000000001b8d728 in row_search_mvcc (buf=0x7f7eb4b273e0 '\217' &lt;repeats 48 times&gt;, mode=PAGE_CUR_GE, prebuilt=0x7f7eb4b27d90, match_mode=1, direction=0) at /home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc:4878
+#16 0x00000000019ea5fa in ha_innobase::index_read (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' &lt;repeats 48 times&gt;, key_ptr=0x7f7eb4010b88 "\002", key_len=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/storage/innobase/handler/ha_innodb.cc:8708
+#17 0x0000000000fd150e in handler::index_read_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' &lt;repeats 48 times&gt;, key=0x7f7eb4010b88 "\002", keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.h:2785
+#18 0x0000000000fcd11d in handler::index_read_idx_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' &lt;repeats 48 times&gt;, index=0, key=0x7f7eb4010b88 "\002", keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.cc:7519
+#19 0x0000000000fc29ec in handler::ha_index_read_idx_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' &lt;repeats 48 times&gt;, index=0, key=0x7f7eb4010b88 "\002", keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.cc:3083
 #20 0x00000000015f4d24 in read_const (table=0x7f7eb4b26740, ref=0x7f7eb400ff38) at /home/rocky/mysql-5.7.22/sql/sql_executor.cc:2174
 #21 0x00000000015f47da in join_read_const_table (tab=0x7f7eb400fe68, pos=0x7f7eb4010000) at /home/rocky/mysql-5.7.22/sql/sql_executor.cc:2059
 #22 0x0000000001621eee in JOIN::extract_func_dependent_tables (this=0x7f7eb400f120) at /home/rocky/mysql-5.7.22/sql/sql_optimizer.cc:5580
@@ -126,16 +262,16 @@ or
 #35 0x0000000001dfe398 in pfs_spawn_thread (arg=0x41f37d0) at /home/rocky/mysql-5.7.22/storage/perfschema/pfs.cc:2190
 #36 0x00007f7f375496ba in start_thread (arg=0x7f7f2c0d7700) at pthread_create.c:333
 #37 0x00007f7f369de41d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-```
-or
+</code></pre>
+</div>
+<p>or
 .
 .
-.
+.</p>
 
-## pwrite
+<h2 id="pwrite">pwrite</h2>
 
-```
-# pwrite
+<div class="highlighter-rouge"><pre class="highlight"><code># pwrite
 # SyncFileIO::execute
 # os_file_io
 #0  os_file_pwrite (type=..., file=3, buf=0x7f59d19af200 "\200\037y\276\002", n=1024, offset=49545216, err=0x7f59c67fb38c) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
@@ -153,12 +289,12 @@ at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
 #10 0x0000000001bc910d in srv_master_thread (arg=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/srv/srv0srv.cc:2385
 #11 0x00007f59ea9cf6ba in start_thread (arg=0x7f59c67fc700) at pthread_create.c:333
 #12 0x00007f59e9e6441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-```
+</code></pre>
+</div>
 
-or
+<p>or</p>
 
-```
-# pwrite
+<div class="highlighter-rouge"><pre class="highlight"><code># pwrite
 # SyncFileIO::execute
 # os_file_io
 #0  os_file_pwrite (type=..., file=3, buf=0x7f59d29af200 "\200\037y\274\002", n=1024, offset=49544192, err=0x7f59c67fb37c) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
@@ -177,16 +313,16 @@ at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
 #11 0x0000000001bc910d in srv_master_thread (arg=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/srv/srv0srv.cc:2385
 #12 0x00007f59ea9cf6ba in start_thread (arg=0x7f59c67fc700) at pthread_create.c:333
 #13 0x00007f59e9e6441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-```
+</code></pre>
+</div>
 
-or
+<p>or</p>
 
-```
-# pwrite
+<div class="highlighter-rouge"><pre class="highlight"><code># pwrite
 # SyncFileIO::execute
 # os_file_io
-#0  os_file_pwrite (type=..., file=9, buf=0x7f59e03a0000 "2\257\224", <incomplete sequence \343>, n=1048576, offset=1048576, err=0x7f59cd1a41dc) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
-#1  0x0000000001ab4ae7 in os_file_write_page (type=..., name=0x54bbac8 "./ibdata1", file=9, buf=0x7f59e03a0000 "2\257\224", <incomplete sequence \343>, offset=1048576, n=1048576)
+#0  os_file_pwrite (type=..., file=9, buf=0x7f59e03a0000 "2\257\224", &lt;incomplete sequence \343&gt;, n=1048576, offset=1048576, err=0x7f59cd1a41dc) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
+#1  0x0000000001ab4ae7 in os_file_write_page (type=..., name=0x54bbac8 "./ibdata1", file=9, buf=0x7f59e03a0000 "2\257\224", &lt;incomplete sequence \343&gt;, offset=1048576, n=1048576)
 at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
 #2  0x0000000001ab600e in os_file_write_func (type=..., name=0x54bbac8 "./ibdata1", file=9, buf=0x7f59e03a0000, offset=1048576, n=1048576) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6115
 #3  0x0000000001ab828b in os_aio_func (type=..., mode=24, name=0x54bbac8 "./ibdata1", file=..., buf=0x7f59e03a0000,,offset=1048576, n=1048576, read_only=false, m1=0x54bb9e8, m2=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
@@ -200,12 +336,12 @@ at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
 #11 0x0000000001cc0ee8 in buf_flush_page_cleaner_coordinator (arg=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:3298
 #12 0x00007f59ea9cf6ba in start_thread (arg=0x7f59cd1a5700) at pthread_create.c:333
 #13 0x00007f59e9e6441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-```
+</code></pre>
+</div>
 
-or
+<p>or</p>
 
-```
-# pwrite
+<div class="highlighter-rouge"><pre class="highlight"><code># pwrite
 # SyncFileIO::execute
 # os_file_io
 #0  os_file_pwrite (type=..., file=8, buf=0x7fd5a69af200 "\200\037\312\312\002", n=2048, offset=9838592, err=0x7fd5b41c74fc) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
@@ -221,7 +357,7 @@ or
 #10 0x0000000001c26e03 in trx_commit_complete_for_mysql (trx=0x7fd5b4cd08d0) at /home/rocky/mysql-5.7.22/storage/innobase/trx/trx0trx.cc:2451
 #11 0x00000000019e0d70 in innobase_commit (hton=0x38307a0, thd=0x7fd534000950, commit_trx=true) at /home/rocky/mysql-5.7.22/storage/innobase/handler/ha_innodb.cc:4416
 #12 0x0000000000fbf04b in ha_commit_low (thd=0x7fd534000950, all=true, run_after_commit=true) at /home/rocky/mysql-5.7.22/sql/handler.cc:1900
-#13 0x0000000001745cbe in TC_LOG_DUMMY::commit (this=0x2ed3e08 <tc_log_dummy>, thd=0x7fd534000950, all=true) at /home/rocky/mysql-5.7.22/sql/tc_log.cc:28
+#13 0x0000000001745cbe in TC_LOG_DUMMY::commit (this=0x2ed3e08 &lt;tc_log_dummy&gt;, thd=0x7fd534000950, all=true) at /home/rocky/mysql-5.7.22/sql/tc_log.cc:28
 #14 0x0000000000fbece4 in ha_commit_trans (thd=0x7fd534000950, all=true, ignore_global_read_lock=false) at /home/rocky/mysql-5.7.22/sql/handler.cc:1796
 #15 0x0000000001748310 in trans_commit (thd=0x7fd534000950) at /home/rocky/mysql-5.7.22/sql/transaction.cc:239
 #16 0x00000000016405f3 in mysql_execute_command (thd=0x7fd534000950, first_level=true) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:4418
@@ -232,12 +368,12 @@ or
 #21 0x0000000001dfe380 in pfs_spawn_thread (arg=0x4386580) at /home/rocky/mysql-5.7.22/storage/perfschema/pfs.cc:2190
 #22 0x00007fd5be83f6ba in start_thread (arg=0x7fd5b41ca700) at pthread_create.c:333
 #23 0x00007fd5bdcd441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-```
+</code></pre>
+</div>
 
-or
+<p>or</p>
 
-```
-# pwrite
+<div class="highlighter-rouge"><pre class="highlight"><code># pwrite
 # SyncFileIO::execute
 # os_file_io
 #0  os_file_pwrite (type=..., file=8, buf=0x7fd5a69af200 "\200\037\312\312\002", n=2048, offset=9838592, err=0x7fd5b41c74fc) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
@@ -253,7 +389,7 @@ or
 #10 0x0000000001c26e03 in trx_commit_complete_for_mysql (trx=0x7fd5b4cd08d0) at /home/rocky/mysql-5.7.22/storage/innobase/trx/trx0trx.cc:2451
 #11 0x00000000019e0d70 in innobase_commit (hton=0x38307a0, thd=0x7fd534000950, commit_trx=true) at /home/rocky/mysql-5.7.22/storage/innobase/handler/ha_innodb.cc:4416
 #12 0x0000000000fbf04b in ha_commit_low (thd=0x7fd534000950, all=true, run_after_commit=true) at /home/rocky/mysql-5.7.22/sql/handler.cc:1900
-#13 0x0000000001745cbe in TC_LOG_DUMMY::commit (this=0x2ed3e08 <tc_log_dummy>, thd=0x7fd534000950, all=true) at /home/rocky/mysql-5.7.22/sql/tc_log.cc:28
+#13 0x0000000001745cbe in TC_LOG_DUMMY::commit (this=0x2ed3e08 &lt;tc_log_dummy&gt;, thd=0x7fd534000950, all=true) at /home/rocky/mysql-5.7.22/sql/tc_log.cc:28
 #14 0x0000000000fbece4 in ha_commit_trans (thd=0x7fd534000950, all=true, ignore_global_read_lock=false) at /home/rocky/mysql-5.7.22/sql/handler.cc:1796
 #15 0x0000000001748310 in trans_commit (thd=0x7fd534000950) at /home/rocky/mysql-5.7.22/sql/transaction.cc:239
 #16 0x00000000016405f3 in mysql_execute_command (thd=0x7fd534000950, first_level=true) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:4418
@@ -264,12 +400,12 @@ or
 #21 0x0000000001dfe380 in pfs_spawn_thread (arg=0x4386580) at /home/rocky/mysql-5.7.22/storage/perfschema/pfs.cc:2190
 #22 0x00007fd5be83f6ba in start_thread (arg=0x7fd5b41ca700) at pthread_create.c:333
 #23 0x00007fd5bdcd441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-```
+</code></pre>
+</div>
 
-or
+<p>or</p>
 
-```
-# pwrite
+<div class="highlighter-rouge"><pre class="highlight"><code># pwrite
 # SyncFileIO::execute
 # os_file_io
 #0  os_file_pwrite (type=..., file=9, buf=0x7fd5b4210000 "\231xח", n=49152, offset=1048576, err=0x7fd5a11a422c) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
@@ -285,6 +421,116 @@ or
 #10 0x0000000001cc0ed0 in buf_flush_page_cleaner_coordinator (arg=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:3298
 #11 0x00007fd5be83f6ba in start_thread (arg=0x7fd5a11a5700) at pthread_create.c:333
 #12 0x00007fd5bdcd441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-```
+</code></pre>
+</div>
 
-or . . .
+<p>or . . .</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=InnoDB%20basic%20and%20i/o%20path&amp;url=http://localhost:4000/research/innodb_01/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/innodb_01/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/innodb_01/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2018-03-01T19:00:00Z" itemprop="datePublished">March 01, 2018</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2018 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

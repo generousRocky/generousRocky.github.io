@@ -440,6 +440,29 @@ metadata information (if any)”</p>
 </code></pre>
 </div>
 
+<p>mysql 5.7 version</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>mysqld_main        32  sql/main.cc
+  onnection_event_loop  5125  sql/mysqld.cc
+    process_new_connection    68  sql/conn_handler/connection_acceptor.h
+      add_connection    268  sql/conn_handler/connection_handler_manager.cc
+
+---another thread---
+
+handle_connection		236	sql/conn_handler/connection_handler_per_thread.cc
+  do_command        306  sql/conn_handler/connection_handler_per_thread.cc
+    dispatch_command  1002  return_value= dispatch_command(thd, &amp;com_data, command);
+      mysql_parse      1509  mysql_parse(thd, &amp;parser_state);
+        mysql_execute_command  5658  error= mysql_execute_command(thd, true);
+          execute          3640  sql/sql_parse.cc
+            mysql_insert     3107  res= mysql_insert(thd, all_tables);
+              write_record      769  error= write_record(thd, insert_table, &amp;info, &amp;update);
+               handler::ha_write_row     1539  sql/sql_insert.cc
+                  ha_innobase::write_row        7995  sql/handler.cc
+</code></pre>
+</div>
+
+<p>dispatch_command에서 COM_QUERY가 계속 요청됨, mysql_execute_command에서 상세 쿼리 종류에 따라 path가 달라지게 됨.</p>
+
 
 				<hr />
 				<footer class="page-footer">
@@ -459,7 +482,7 @@ metadata information (if any)”</p>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2018-03-01T10:00:00Z" itemprop="datePublished">March 01, 2018</time></p>
+	<p>Updated <time datetime="2018-03-01T19:00:00Z" itemprop="datePublished">March 01, 2018</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>
