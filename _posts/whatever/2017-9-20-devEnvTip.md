@@ -1,6 +1,6 @@
 ---
 layout: article
-title:  "세상의 모든 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc."
+title:  "커멘드라인 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc."
 date:   2017-9-20 10:00:00 Z
 author: Rocky Lim
 categories: whatever
