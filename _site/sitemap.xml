@@ -137,8 +137,8 @@
 <lastmod>2018-03-01T19:00:00+09:00</lastmod>
 </url>
 <url>
-<loc>http://localhost:4000/whatever/LSMTREE/</loc>
-<lastmod>2018-06-27T19:00:00+09:00</lastmod>
+<loc>http://localhost:4000/research/rocksdb_ocssd_01/</loc>
+<lastmod>2018-12-30T19:00:00+09:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/research/</loc>
@@ -166,5 +166,9 @@
 <url>
 <loc>http://localhost:4000/publication/fast17-bjorling.pdf</loc>
 <lastmod>2017-11-26T12:04:15+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/publication/rocky_mwds18.pdf</loc>
+<lastmod>2018-10-25T21:02:04+09:00</lastmod>
 </url>
 </urlset>

@@ -2,28 +2,28 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>RocksDB and LSM-TREE BACKGROUND • Rocky's Research Blog</title>
-    <meta name="description" content="LSM Tree data structure basic, RocksDB storage banckend">
+    <title>MWDS'18 accepted paper • Rocky's Research Blog</title>
+    <meta name="description" content="Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="RocksDB and LSM-TREE BACKGROUND">
-	<meta name="twitter:description" content="LSM Tree data structure basic, RocksDB storage banckend">
+	<meta name="twitter:title" content="MWDS'18 accepted paper">
+	<meta name="twitter:description" content="Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation">
 	
 	<meta name="twitter:creator" content="@">
 	
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="http://localhost:4000/images/rocksdb_01.png">
 	
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="RocksDB and LSM-TREE BACKGROUND">
-	<meta property="og:description" content="LSM Tree data structure basic, RocksDB storage banckend">
-	<meta property="og:url" content="http://localhost:4000/whatever/LSMTREE/">
+	<meta property="og:title" content="MWDS'18 accepted paper">
+	<meta property="og:description" content="Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation">
+	<meta property="og:url" content="http://localhost:4000/research/rocksdb_ocssd_01/">
 	<meta property="og:site_name" content="Rocky's Research Blog">
 
-    <link rel="canonical" href="http://localhost:4000/whatever/LSMTREE/">
+    <link rel="canonical" href="http://localhost:4000/research/rocksdb_ocssd_01/">
 
     <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
@@ -118,6 +118,13 @@
       <div id="main" role="main">
 	<article class="wrap" itemscope itemtype="http://schema.org/Article">
 		
+		<div class="page-feature">
+			<div class="page-image">
+				<img src="http://localhost:4000/images/rocksdb_01.png" class="page-feature-image" alt="MWDS'18 accepted paper" itemprop="image">
+				
+			</div><!-- /.page-image -->
+		</div><!-- /.page-feature -->
+		
 		
   <nav class="breadcrumbs">
     <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
@@ -125,32 +132,30 @@
         <span itemprop="title">Home</span>
       </a> › 
     <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-      <a href="http://localhost:4000/whatever/" itemprop="url">
-        <span itemprop="title">Whatever</span>
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
       </a>
     </span>
   </nav><!-- /.breadcrumbs -->
 
 		<div class="page-title">
-			<h1>RocksDB and LSM-TREE BACKGROUND</h1>
+			<h1>MWDS'18 accepted paper</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
-				<h1 id="lsm-tree-background">LSM-Tree Background</h1>
+				<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#1-abstraction" id="markdown-toc-1-abstraction">1. Abstraction</a></li>
+  <li><a href="#2-get-paper-here" id="markdown-toc-2-get-paper-here">2. get paper here</a></li>
+</ul>
 
-<p>LSM-TREE에 데이터가 써질 때 마다, in-memory write buffer인 <em>mem-table</em> 에 더해진다. <em>mem-table</em> 은 skiplist로 구현되어 있으며, insert와 search에 log(n)의 복잡도를 갖는다. 이와 동시에, recovery를 위해 data는 Write Ahead Log(WAL)에 append 된다. <em>mem-table</em>이 어느정도 크기 이상으로 커지면, 지금까지 데이터가 써 지던 <em>mem-table</em> 과 WAL은 <strong>immutable</strong>해 지고, 새로운 <em>mem-table</em>과 WAL이 할당되어 이어지는 write request를 처리한다. 기존의 <em>mem-table</em> contents는 Level-0의 “<em>Sorted Sequence Table</em>” (SST) data file에 flush 된다. flush 후 기존의 <em>mem-table</em>과 WAL은 discard된다.</p>
+</nav>
 
-<p style="text-align: center;">
-  <img src="http://localhost:4000/images/lsm_1.png " alt="Drawing" style="width: 400;" />
-  <img src="http://localhost:4000/images/lsm_2.png " alt="Drawing" style="width: 400;" />
-</p>
+<h1 id="1-abstraction">1. Abstraction</h1>
+<p>The role of high-performance storage devices is becoming increasingly important in the web-scale infrastructure. In particular, nextgeneration storage devices such as Non Volatile Memory Express (NVMe) based solid state devices (SSDs) are being actively introduced to data centers. However, applications running on data centers do not take into account the characteristics of these high-performance storage devices. We focus on the performance degradation of the mixed workload of reads and writes when using high-performance storage devices in the log-structured merge tree (LSM-tree) based database systems. To address this problem, we propose application-driven flash management scheme to isolate read/write operation.</p>
 
-<p style="text-align: center;">
-  SST ﬁle organization &amp; Compaction
-</p>
-
-<p>SST들은 데이터를 정렬된 순서의 data block으로 가지고 있다. SST 파일은 data block 마다 index를 가지고 있으며 이 index entry는 SST 파일의 index block에 저장된다. level-0의 SST file의 수가 정해진 threshold를 넘으면, Level-0의 SST file들은 같은 level-1 SST 또는 level-1 SST와 merge된다(겹치는 key값의 범위를 가지고 있는 애들끼리). 즉, merge sort의 input으로 level-0 또는 level-1  SST 파일이 들어가 이들은 삭제 되고 merge sort의 결과로 level-1 file이 생성된다.</p>
-
+<h1 id="2-get-paper-here">2. get paper here</h1>
+<p>LINK:</p>
 
 				<hr />
 				<footer class="page-footer">
@@ -164,13 +169,13 @@
 	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=RocksDB%20and%20LSM-TREE%20BACKGROUND&amp;url=http://localhost:4000/whatever/LSMTREE/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/whatever/LSMTREE/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/whatever/LSMTREE/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=MWDS&#39;18%20accepted%20paper&amp;url=http://localhost:4000/research/rocksdb_ocssd_01/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/rocksdb_ocssd_01/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/rocksdb_ocssd_01/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2018-06-27T19:00:00Z" itemprop="datePublished">June 27, 2018</time></p>
+	<p>Updated <time datetime="2018-12-30T19:00:00Z" itemprop="datePublished">December 30, 2018</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>
