@@ -141,6 +141,10 @@
 <lastmod>2018-12-30T19:00:00+09:00</lastmod>
 </url>
 <url>
+<loc>http://localhost:4000/research/rocksdb_ocssd_02/</loc>
+<lastmod>2018-12-30T19:00:00+09:00</lastmod>
+</url>
+<url>
 <loc>http://localhost:4000/research/</loc>
 </url>
 <url>
@@ -166,6 +170,10 @@
 <url>
 <loc>http://localhost:4000/publication/fast17-bjorling.pdf</loc>
 <lastmod>2017-11-26T12:04:15+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/publication/rocky_ksc18.pdf</loc>
+<lastmod>2018-12-03T16:06:31+09:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/publication/rocky_mwds18.pdf</loc>

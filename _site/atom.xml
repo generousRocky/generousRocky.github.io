@@ -1,4 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-12-31T20:11:08+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">MWDS’18 accepted paper</title><link href="http://localhost:4000/research/rocksdb_ocssd_01/" rel="alternate" type="text/html" title="MWDS'18 accepted paper" /><published>2018-12-30T19:00:00+09:00</published><updated>2018-12-30T19:00:00+09:00</updated><id>http://localhost:4000/research/rocksdb_ocssd_01</id><content type="html" xml:base="http://localhost:4000/research/rocksdb_ocssd_01/">&lt;nav class=&quot;toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-01-01T21:36:52+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">KSC’18 accepted paper</title><link href="http://localhost:4000/research/rocksdb_ocssd_02/" rel="alternate" type="text/html" title="KSC'18 accepted paper" /><published>2018-12-30T19:00:00+09:00</published><updated>2018-12-30T19:00:00+09:00</updated><id>http://localhost:4000/research/rocksdb_ocssd_02</id><content type="html" xml:base="http://localhost:4000/research/rocksdb_ocssd_02/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-abstraction&quot; id=&quot;markdown-toc-1-abstraction&quot;&gt;1. Abstraction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-get-paper-here&quot; id=&quot;markdown-toc-2-get-paper-here&quot;&gt;2. get paper here&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h1 id=&quot;1-abstraction&quot;&gt;1. Abstraction&lt;/h1&gt;
+&lt;p&gt;고성능 저장장치의 역할은 웹-스케일 인프라에서 점차 더 중요해 지고 있다. 특히 NVMe(Non-Volatile Memory Express) 기반 SSD(Solid State Device)로 대표되는 차세대 저장장치는 데이터센터에 적극적으 로 도입되고 있다. 하지만 데이터센터에서 실행되는 응용프로그램은 이러한 고성능 저장장치의 특징을 고려하지 않는다. 본 논문에서는 NVMe SSD와 같은 고성능 저장장치를 사용하는 LSM-tree(LogStructured Merge tree) 기반의 데이터베이스 시스템에서, 읽기와 쓰기 요청이 혼재되어 있는 워크로드에 서의 성능 저하 현상에 집중한다. 이 문제를 해결하기 위해 본 연구에서는 I/O 작업을 분리하여 처리하 도록 어플리케이션 계층에서의 플래시 관리 기법을 제시한다.&lt;/p&gt;
+
+&lt;h1 id=&quot;2-get-paper-here&quot;&gt;2. get paper here&lt;/h1&gt;
+&lt;p&gt;LINK: &lt;a href=&quot;https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_kcs18.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/rocksdb_02.png" /></entry><entry><title type="html">MWDS’18 accepted paper</title><link href="http://localhost:4000/research/rocksdb_ocssd_01/" rel="alternate" type="text/html" title="MWDS'18 accepted paper" /><published>2018-12-30T19:00:00+09:00</published><updated>2018-12-30T19:00:00+09:00</updated><id>http://localhost:4000/research/rocksdb_ocssd_01</id><content type="html" xml:base="http://localhost:4000/research/rocksdb_ocssd_01/">&lt;nav class=&quot;toc&quot;&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#1-abstraction&quot; id=&quot;markdown-toc-1-abstraction&quot;&gt;1. Abstraction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#2-get-paper-here&quot; id=&quot;markdown-toc-2-get-paper-here&quot;&gt;2. get paper here&lt;/a&gt;&lt;/li&gt;
@@ -10,7 +22,7 @@
 &lt;p&gt;The role of high-performance storage devices is becoming increasingly important in the web-scale infrastructure. In particular, nextgeneration storage devices such as Non Volatile Memory Express (NVMe) based solid state devices (SSDs) are being actively introduced to data centers. However, applications running on data centers do not take into account the characteristics of these high-performance storage devices. We focus on the performance degradation of the mixed workload of reads and writes when using high-performance storage devices in the log-structured merge tree (LSM-tree) based database systems. To address this problem, we propose application-driven flash management scheme to isolate read/write operation.&lt;/p&gt;
 
 &lt;h1 id=&quot;2-get-paper-here&quot;&gt;2. get paper here&lt;/h1&gt;
-&lt;p&gt;LINK:&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/rocksdb_01.png" /></entry><entry><title type="html">InnoDB basic and i/o path</title><link href="http://localhost:4000/research/innodb_01/" rel="alternate" type="text/html" title="InnoDB basic and i/o path" /><published>2018-03-01T19:00:00+09:00</published><updated>2018-03-01T19:00:00+09:00</updated><id>http://localhost:4000/research/innodb_01</id><content type="html" xml:base="http://localhost:4000/research/innodb_01/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;p&gt;LINK: &lt;a href=&quot;https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_mwds18.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/rocksdb_01.png" /></entry><entry><title type="html">InnoDB basic and i/o path</title><link href="http://localhost:4000/research/innodb_01/" rel="alternate" type="text/html" title="InnoDB basic and i/o path" /><published>2018-03-01T19:00:00+09:00</published><updated>2018-03-01T19:00:00+09:00</updated><id>http://localhost:4000/research/innodb_01</id><content type="html" xml:base="http://localhost:4000/research/innodb_01/">&lt;nav class=&quot;toc&quot;&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#1-innodb-background&quot; id=&quot;markdown-toc-1-innodb-background&quot;&gt;1. InnoDB background&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#2-innodb-function-call-tracefunction-call-stack&quot; id=&quot;markdown-toc-2-innodb-function-call-tracefunction-call-stack&quot;&gt;2. InnoDB Function Call Trace(Function Call Stack)&lt;/a&gt;    &lt;ul&gt;
@@ -1327,110 +1339,4 @@ EX) VoIP(인터넷을 통해 전화할 수 있는 기술), IPTV(인터넷 망을
 
 &lt;p&gt;네트워크 뿐 아니라 PC안에서도 processor, Disk, System Bus, Video Card등은 모두 bandwidth를 갖고있다.&lt;/p&gt;
 
-&lt;hr /&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter 18 - How the Internet Bring us the Internet</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw07_0.png" /></entry><entry><title type="html">How Computers Work [06]</title><link href="http://localhost:4000/book/hcw06/" rel="alternate" type="text/html" title="How Computers Work [06]" /><published>2017-09-28T19:00:00+09:00</published><updated>2017-09-28T19:00:00+09:00</updated><id>http://localhost:4000/book/hcw06</id><content type="html" xml:base="http://localhost:4000/book/hcw06/">&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#chapter-11&quot; id=&quot;markdown-toc-chapter-11&quot;&gt;Chapter 11&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#lanlocal-area-network&quot; id=&quot;markdown-toc-lanlocal-area-network&quot;&gt;LAN(Local Area Network)&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#wwwworld-wide-web&quot; id=&quot;markdown-toc-wwwworld-wide-web&quot;&gt;WWW(world wide web)&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#packer-and-network&quot; id=&quot;markdown-toc-packer-and-network&quot;&gt;packer and network&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-&lt;p&gt;i&lt;/p&gt;
-&lt;h1 id=&quot;chapter-11&quot;&gt;Chapter 11&lt;/h1&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw06_1.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;h2 id=&quot;lanlocal-area-network&quot;&gt;LAN(Local Area Network)&lt;/h2&gt;
-&lt;p&gt;개념적 의미는 물리적으로 연결되어 있는 여러대의 pc, server등을 말함. node끼리의 물리적 연결은 cable, 광섬유, 구리선, 라디오 시그널이나 적외선 또한 포함한다.&lt;/p&gt;
-
-&lt;p&gt;LAN에서 어떤 기술을 사용하던 간에, 궁극적인 목표는 data을 한 node에서 다른 node로 전송하기 위함(+빠르고, 안정적이고, 싼 값에). 여기서 data는 단순한 정보 일 수도 있고, &lt;strong&gt;데이터에 대한 요청(request), 그에 대한 reply&lt;/strong&gt;일 수 있다. 또한 네트워크 상으로 연결된 어떤 프로그램에 대한 instruction 일 수도 있다.&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw06_2.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;대부분의 네트크 상의node들은 client server 관계로 연결되어 있다.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;client&lt;/strong&gt; - server에 request를 보내는 node(pc, 또다른 server가 될 수도 있음)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;file server&lt;/strong&gt; - which is a specialized computer with multiple large hard drives that are not used exclusively by any individual on the network.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;internet server&lt;/strong&gt; - WWW(world wide web)에 LAN에 속해 있는 node들이 접속할 수 있도록 도와주는 server. ISP(Internet Service Provider, 우리나라는 KT, 하나로통신 등이 있음)에서 이 서버를 운영하고 있다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw06_3.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;peer-to-peer network(p2p, p to p)&lt;/strong&gt; - client-server 네트워크 모델과는 다른 네트워크 연결 방식, 각 node는 client를 거치지 않고 직접 연결되어 있으며, 토렌트, 웹하드, 등이 있다. 최근 모바일 기기, iot기기가 많이 등장하면서 일상생활 곳곳에 사용되는 네트워크 연결 방식. &lt;strong&gt;직접 연결된 peer사이에는 다시 client-server 모델이 적용된다.&lt;/strong&gt; ex) 맥-iphone,&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;wwwworld-wide-web&quot;&gt;WWW(world wide web)&lt;/h2&gt;
-
-&lt;p&gt;월드 와이드 웹(World Wide Web, WWW, W3)은 인터넷에 연결된 컴퓨터들을 통해 사람들이 정보를 공유할 수 있는 전 세계적인 정보 공간을 말한다. 간단히 웹(Web)이라 부르는 경우가 많다. 이 용어는 인터넷과 동의어로 쓰이는 경우가 많으나 엄격히 말해 서로 다른 개념이다. 웹은 전자 메일과 같이 인터넷 상에서 동작하는 하나의 서비스일 뿐이다&lt;/p&gt;
-
-&lt;p&gt;인터넷상의 정보를 하이퍼텍스트 방식과 멀티미디어 환경에서 검색할 수 있게 해주는 정보검색 시스템이다. 하이퍼텍스트 형식으로 표현된 인터넷상의 다양한 정보를 효과적으로 검색하는 시스템으로 전 세계적으로 가장 널리 보급되어 있다&lt;/p&gt;
-
-&lt;p&gt;하이퍼텍스트는 웹 브라우저라 불리는 프로그램을 통해 웹 서버에서 “문서”나 웹 페이지등의 정보 조각을 읽어들여 컴퓨터 모니터에 출력하는 형태로 보이게 된다. 그러고 나서 사용자는 각 페이지에 있는 하이퍼링크를 따라 다른 문서로 이동하거나, 그 페이지를 서비스하고 있는 서버로 일련의 정보를 보낼 수도 있다. 하이퍼링크를 따라 이동하는 행위를 흔히 웹 서핑(web surfing, 문화어: 망유람[2]) 또는 웹 브라우징이라 한다. 그리고 관련된 내용들이 모여있는 웹 페이지들의 집합을 웹 사이트라 한다.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://ko.wikipedia.org/wiki/월드_와이드_웹&quot;&gt;https://ko.wikipedia.org/wiki/월드_와이드_웹&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;packer-and-network&quot;&gt;packer and network&lt;/h2&gt;
-
-&lt;p&gt;네트워크를 통해 각 node는 다른 node에게 &lt;strong&gt;packet&lt;/strong&gt;의 형태로 데이터를 전송한다. packet의 구성은 다음과 같이 &lt;strong&gt;매우 간단하게&lt;/strong&gt; 나누어 볼 수 있다.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Preamble - Synchronizes the network nodes
-““나 지금부터 packet 보낼거야~””, &lt;strong&gt;101010101 또는 010101010&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;Destination Address—A single PC or all PCs on a network&lt;/li&gt;
-  &lt;li&gt;Source Address—The address of the computer from which the packet originated&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;network address란?&lt;br /&gt;
-인터넷 상에 존재하는 호스트 들을 구분하기 위한 32비트 주소 체계. 일반적으로 다음고 같이 점이 찍혀진 10진수를 사용하여 표현한다.&lt;br /&gt;
-&lt;strong&gt;192.168.0.12&lt;/strong&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Type—Defines the format used for the data&lt;/li&gt;
-  &lt;li&gt;Data—The actual information&lt;/li&gt;
-  &lt;li&gt;CRC—Cyclical Redundancy Check, which is used to spot transmission errors&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;어떻게-주소로-길을-찾아가지&quot;&gt;어떻게 주소로 길을 찾아가지?&lt;/h3&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw06_4.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw06_5.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;라우터 - 라우터(router[a], 문화어: 경로기) 혹은 라우팅 기능을 갖는 공유기는 패킷의 위치를 추출하여, 그 위치에 대한 최적의 경로를 지정하며, 이 경로를 따라 데이터 패킷을 다음 장치로 전향시키는 장치이다. 이때 최적의 경로는 일반적으로는 가장 빠르게 통신이 가능한 경로이므로, 이것이 최단 거리 일수도 있지만, 돌아가는 경로라도 고속의 전송로를 통하여 전달이 되는 경로가 될 수 있다. 간단히 말해 서로 다른 내트워크 간에 중계 역할을 해준다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;스위치(switch) -  작은 라우터, 기능은 같음.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;hub - 병목현상(bottle neck)을 해결하기 위함, 메모리 버퍼를 가지고 있다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter 17 - How Network Tie Computer Togethe</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw06_0.png" /></entry></feed>
+&lt;hr /&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter 18 - How the Internet Bring us the Internet</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw07_0.png" /></entry></feed>

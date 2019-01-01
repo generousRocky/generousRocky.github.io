@@ -2,28 +2,28 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CSIRO) Radio Tomography System using low-power Sensor Network Device (1) • Rocky's Research Blog</title>
-    <meta name="description" content="What is radio tomographic imaging?">
+    <title>KSC'18 accepted paper • Rocky's Research Blog</title>
+    <meta name="description" content="플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)">
-	<meta name="twitter:description" content="What is radio tomographic imaging?">
+	<meta name="twitter:title" content="KSC'18 accepted paper">
+	<meta name="twitter:description" content="플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화">
 	
 	<meta name="twitter:creator" content="@">
 	
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="http://localhost:4000/images/rocksdb_02.png">
 	
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (1)">
-	<meta property="og:description" content="What is radio tomographic imaging?">
-	<meta property="og:url" content="http://localhost:4000/research/csiro01/">
+	<meta property="og:title" content="KSC'18 accepted paper">
+	<meta property="og:description" content="플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화">
+	<meta property="og:url" content="http://localhost:4000/research/rocksdb_ocssd_02/">
 	<meta property="og:site_name" content="Rocky's Research Blog">
 
-    <link rel="canonical" href="http://localhost:4000/research/csiro01/">
+    <link rel="canonical" href="http://localhost:4000/research/rocksdb_ocssd_02/">
 
     <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
@@ -118,6 +118,13 @@
       <div id="main" role="main">
 	<article class="wrap" itemscope itemtype="http://schema.org/Article">
 		
+		<div class="page-feature">
+			<div class="page-image">
+				<img src="http://localhost:4000/images/rocksdb_02.png" class="page-feature-image" alt="KSC'18 accepted paper" itemprop="image">
+				
+			</div><!-- /.page-image -->
+		</div><!-- /.page-feature -->
+		
 		
   <nav class="breadcrumbs">
     <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
@@ -132,39 +139,23 @@
   </nav><!-- /.breadcrumbs -->
 
 		<div class="page-title">
-			<h1>CSIRO) Radio Tomography System using low-power Sensor Network Device (1)</h1>
+			<h1>KSC'18 accepted paper</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
 				<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#1-abstraction" id="markdown-toc-1-abstraction">1. Abstraction</a></li>
+  <li><a href="#2-get-paper-here" id="markdown-toc-2-get-paper-here">2. get paper here</a></li>
+</ul>
 
 </nav>
 
-<h3 id="what-is-radio-tomographic-imaging">What is radio tomographic imaging?</h3>
+<h1 id="1-abstraction">1. Abstraction</h1>
+<p>고성능 저장장치의 역할은 웹-스케일 인프라에서 점차 더 중요해 지고 있다. 특히 NVMe(Non-Volatile Memory Express) 기반 SSD(Solid State Device)로 대표되는 차세대 저장장치는 데이터센터에 적극적으 로 도입되고 있다. 하지만 데이터센터에서 실행되는 응용프로그램은 이러한 고성능 저장장치의 특징을 고려하지 않는다. 본 논문에서는 NVMe SSD와 같은 고성능 저장장치를 사용하는 LSM-tree(LogStructured Merge tree) 기반의 데이터베이스 시스템에서, 읽기와 쓰기 요청이 혼재되어 있는 워크로드에 서의 성능 저하 현상에 집중한다. 이 문제를 해결하기 위해 본 연구에서는 I/O 작업을 분리하여 처리하 도록 어플리케이션 계층에서의 플래시 관리 기법을 제시한다.</p>
 
-<p style="text-align: center;">
-	<img src="http://localhost:4000/images/csiro_1_1.png" alt="Drawing" style="width: 420px;" />
-</p>
-
-<p>Radio Tomographic Imaging (RTI) is an emerging technology for imaging passive objects (objects that do not carry a transmitting device) with wireless networks [1]. The key source of image is Received Signal Strength Index(RRSI) which has a nature that it decreases(usually) when objects disturb the going ahead radio signal.</p>
-
-<p style="text-align: center;">
-	<img src="http://localhost:4000/images/csiro_1_2.png" alt="Drawing" style="width: 450px;" />
-</p>
-
-<p>The picture above shows the RRSI values as time goes by, and there are some changes up and down at certain times because of a moving object. In fact, the graph was obtained from short experiments when the experimenter move around the nodes. In the radio tomography network, all of the nodes makes a lots of RSSI data extremely fast and by using the data, images are created.<br /><br /></p>
-
-<p>Working as a intern in CSIRO, I was on project regarding radio tomography. The purpose of this project is developing radio tomography system by using low power sensor network device. For this, I used TI Sensortasg cc2650 as a low power device. and I used Contiki-OS for device application OS for radio tomography system.<br /><br /></p>
-
-<p>There are two major steps for Developing Radio Tomography using low power network device. First one is to develop the device application that I use, TI Sensortag. Next one is to reconstruct image form data that collected by using network devices.<br /><br /></p>
-
-<p>I implemented Contiki device application for nodes that consist the Radio Tomography Network. I also implemented Contiki device application of master node that schedules the other nodes and collects data from the network. Next, I deployed the nodes around target area so the radio signal can pass through the area. I collected raw data of RSSI of each node in the radio tomography network and reconstructed image of the area.<br /><br /></p>
-
-<p>Node scheduling concepts of the device application and reconstruction algorithm will be covered in the next chapters. <br /><br /></p>
-
-<p><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong><strong>__</strong>_<br /><br /></p>
-
-<p>[1] Wilson, Joey, and Neal Patwari. “Radio tomographic imaging with wireless networks.” IEEE Transactions on Mobile Computing 9.5 (2010): 621-632.</p>
+<h1 id="2-get-paper-here">2. get paper here</h1>
+<p>LINK: <a href="https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_kcs18.pdf">here</a></p>
 
 				<hr />
 				<footer class="page-footer">
@@ -178,13 +169,13 @@
 	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=CSIRO)%20Radio%20Tomography%20System%20using%20low-power%20Sensor%20Network%20Device%20(1)&amp;url=http://localhost:4000/research/csiro01/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/csiro01/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/csiro01/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=KSC&#39;18%20accepted%20paper&amp;url=http://localhost:4000/research/rocksdb_ocssd_02/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/rocksdb_ocssd_02/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/rocksdb_ocssd_02/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2017-02-10T19:01:50Z" itemprop="datePublished">February 10, 2017</time></p>
+	<p>Updated <time datetime="2018-12-30T19:00:00Z" itemprop="datePublished">December 30, 2018</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>
