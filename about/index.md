@@ -119,3 +119,8 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 ### International
 
 * Dec 2018  <a href="https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_mwds18.pdf">"Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation"</a>
+
+## Get CV from here
+
+* <a href="/publication/resume_rockylim.pdf">"CV"</a>
+
