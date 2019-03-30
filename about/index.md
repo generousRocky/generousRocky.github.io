@@ -123,5 +123,5 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 ## Get CV from here
 
 * <a href="/publication/resume_rockylim.pdf">"CV"</a>
-* <a href="/publication/resume_rockylim_hynix">"CV_h"</a>
+* <a href="/publication/resume_rockylim_hynix.pdf">"CV_h"</a>
 
