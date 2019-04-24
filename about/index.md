@@ -21,7 +21,19 @@ ads: false
 	<img src="{{ site.url }}/images/rocky_icon.png" alt="Drawing" style="width: 230px;"/>
 </p>
 
-My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at Seoul National University in Korea and studying computer science. I worked for CSIRO, a national research organisation in Australia as a intern, and AICT(Advanced Institutes of Convergence Technology) in Korea as a research intern as well. Among the various fields of computer science, I am interested in embedded systems, sensor network, and distributed computing system. This blog is mainly a place where I record small accomplishments I have made on such research topics. Plus, I'm gonna post whatever I’ve designed, published, developed, coded, or literally whatever!<br /><br />cheers,
+My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at Seoul National University in Korea and studying database and storage systems.
+I worked for CSIRO, a national research organisation in Australia and AICT(Advanced Institutes of Convergence Technology) in Korea as a research intern.
+Among the various fields of computer science, I am interested in followings:
+
+* Database, Storage system, Parallel Computing
+* Key-Value store, NoSQL, DBMS
+* Linux/Unix environment
+* System performance tuning
+* Application-Driven Storage Management
+* Troubleshooting with multi-thread concurrency
+* Automation in the development process
+
+This blog is mainly a place where I record small accomplishments I have made on such research topics. Plus, I'm going to post whatever I’ve designed, published, developed or literally whatever.<br /><br />cheers,
 
 
 
@@ -38,12 +50,12 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 
 	&nbsp; &nbsp; &nbsp; &nbsp;
 	<a href="https://www.facebook.com/heerak.lim">
-		<span class="icon icon--github">{% include icons/github.svg %}</span>
+		<span class="icon icon--facebook">{% include icons/facebook.svg %}</span>
 	</a>
 	&nbsp; &nbsp;
 
 	<a href="https://github.com/RockyLim92">
-		<span class="icon icon--facebook">{% include icons/facebook.svg %}</span>
+		<span class="icon icon--github">{% include icons/github.svg %}</span>
 	</a>
 	&nbsp; &nbsp;
 
@@ -123,5 +135,3 @@ My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at
 ## Get CV from here
 
 * <a href="/publication/resume_rockylim.pdf">"CV"</a>
-* <a href="/publication/resume_rockylim_hynix.pdf">"CV_h"</a>
-
