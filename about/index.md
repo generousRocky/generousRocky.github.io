@@ -3,7 +3,7 @@ title:
 date: 2017-07-22 13:44:20 Z
 layout: article
 modified: 2017-07-22 13:44:20 Z
-excerpt: "A liitle about this blog's owner, Rocky Lim"
+excerpt: "about me, Rocky Lim"
 image:
   feature:
   teaser:
