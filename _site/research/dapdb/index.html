@@ -2,28 +2,28 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>CSIRO) Radio Tomography System using low-power Sensor Network Device (3) • Rocky's Research Blog</title>
-    <meta name="description" content="How to get started Contiki with a CC2650 board in Linux">
+    <title>DapDB • Rocky's Research Blog</title>
+    <meta name="description" content="DapDB: Cutting Latency in Key-Value Store with Dynamic Arrangement of internal Parallelism in SSD">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (3)">
-	<meta name="twitter:description" content="How to get started Contiki with a CC2650 board in Linux">
+	<meta name="twitter:title" content="DapDB">
+	<meta name="twitter:description" content="DapDB: Cutting Latency in Key-Value Store with Dynamic Arrangement of internal Parallelism in SSD">
 	
 	<meta name="twitter:creator" content="@">
 	
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:image" content="http://localhost:4000/images/ubuntu14_04_02.jpg">
+	<meta name="twitter:image" content="http://localhost:4000/images/dapdb.png">
 	
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="CSIRO) Radio Tomography System using low-power Sensor Network Device (3)">
-	<meta property="og:description" content="How to get started Contiki with a CC2650 board in Linux">
-	<meta property="og:url" content="http://localhost:4000/research/csiro03/">
+	<meta property="og:title" content="DapDB">
+	<meta property="og:description" content="DapDB: Cutting Latency in Key-Value Store with Dynamic Arrangement of internal Parallelism in SSD">
+	<meta property="og:url" content="http://localhost:4000/research/dapdb/">
 	<meta property="og:site_name" content="Rocky's Research Blog">
 
-    <link rel="canonical" href="http://localhost:4000/research/csiro03/">
+    <link rel="canonical" href="http://localhost:4000/research/dapdb/">
 
     <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
@@ -120,7 +120,7 @@
 		
 		<div class="page-feature">
 			<div class="page-image">
-				<img src="http://localhost:4000/images/ubuntu14_04_02.jpg" class="page-feature-image" alt="CSIRO) Radio Tomography System using low-power Sensor Network Device (3)" itemprop="image">
+				<img src="http://localhost:4000/images/dapdb.png" class="page-feature-image" alt="DapDB" itemprop="image">
 				
 			</div><!-- /.page-image -->
 		</div><!-- /.page-feature -->
@@ -139,45 +139,98 @@
   </nav><!-- /.breadcrumbs -->
 
 		<div class="page-title">
-			<h1>CSIRO) Radio Tomography System using low-power Sensor Network Device (3)</h1>
+			<h1>DapDB</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
-				<h3 id="how-to-get-started-contiki-with-a-cc2650-board-in-linux">How to get started Contiki with a CC2650 board in Linux</h3>
+				<nav class="toc">
 
-<p>this description assumes you’ll follow all steps by <strong>“root”</strong> and you are using <strong>ubunutu 14.04</strong></p>
+</nav>
 
-<p>At first, download or clone the example source codes and tools from the github project(https://github.com/csiro-wsn/contiki-examples) or my github repository (<strong><a href="https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples">https://github.com/RockyLim92/radioTomography/tree/master/contiki-examples</a></strong>). I recommend to use mine because there are a few syntax errors in “tools/tools_intall.sh” in csiro github.</p>
+<h3 id="overview">Overview</h3>
+<p>Abstract—Modern data centers aim to take advantage of high parallelism in storage devices for I/O intensive applications such as storage servers, cache systems, and database systems. Database systems are the most typical applications that should provide a highly reliable service with high-performance. Therefore, many data centers running database systems are actively introducing next-generation high-performance storage devices such as Non Volatile Memory Express (NVMe) based Solid State Devices (SSDs). NVMe SSDs and its protocol are characterized by taking full advantage of the high degree of parallelism of the device which is expected to ensure enhanced performance of the applications. However, taking full advantage of the device’s parallelism does not always guarantee high performance as well as predictable performance. In particular, heavily mixed read and write requests give rise to serious performance degradation on throughput and response time due to the interferences of requests in SSDs each other. To eliminate the interference in SSDs and improve performance, this paper presents DapDB, a low-latency Key-Value Store tailored for Open-Channel SSD with dynamic arrangement of internal parallelism in SSDs. We divided and isolated entire parallel units (LUNs) of the NVMe SSD into tree type and re-arrange them to three different types of LSM-tree base Key-value store. To implement DapDB based on RocksDB, we used Open-Channel SSD. We modiﬁed storage backend of RocksDB to run application-driven Flash management scheme using Open-Channel SSD. DapDB can fully control internal parallelism of SSD. It may take advantage of entire parallelism for every I/O request, It can use the entire parallelism of the SSD for every I/O request, or it can use a strategy to yield the degree of parallelism of the I/O request to reduce the interference between the various I/O requests. Our extensive experiments have shown that DapDB’s Isolation-Arrangement scheme achieves both improved overall throughput and response time, i.e., on average 1.20× faster and 43% less than traditional Striping-Arrangement scheme respectively.</p>
 
-<p>First of all, install git and i386 libraries. The followings are the install script.</p>
+<h3 id="contributors">Contributor(s)</h3>
+<ul>
+  <li><strong>Rocky Lim</strong> - <a href="https://github.com/RockyLim92">GitHub</a></li>
+</ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>sudo apt-get install libc6:i386 libx11-6:i386 libasound2:i386 libatk1.0-0:i386 libcairo2:i386 libcups2:i386 libdbus-glib-1-2:i386 libgconf-2-4:i386 libgdk-pixbuf2.0-0:i386 libgtk-3-0:i386 libice6:i386 libncurses5:i386 libsm6:i386 liborbit2:i386 libudev1:i386 libusb-0.1-4:i386 libstdc++6:i386 libxt6:i386 libxtst6:i386 libgnomeui-0:i386 libusb-1.0-0-dev:i386 libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 unzip
+<h3 id="development">Development</h3>
+<ul>
+  <li>It based on RocksDB.</li>
+</ul>
+
+<h4 id="branch-description">branch description</h4>
+
+<ul>
+  <li>dapdb_striping: for baseline, all I/O types share LUNs</li>
+  <li>dapdb_isolation: Isolation-Arrangement scheme, each I/O type has dedicated LUNs</li>
+  <li>dapdb_dynamic: Isolation-Arrangement scheme + dynamic arrangement.</li>
+</ul>
+
+<h3 id="build-or-installation">Build (or Installation)</h3>
+<p>Follow the instructions on [https://github.com/RockyLim92/rocksdb/blob/master/INSTALL.md].</p>
+
+<p>After installation of prerequisite, just type following on ‘nvm’ directory.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>~$ sudo make rocks
 </code></pre>
 </div>
 
-<p>Second, install tool chain by running “tools/tools_intall.sh” shell script file. After then, you can compile some example codes or your own contiki code for CC2650. The following is compile command.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>make TARGET=srf06-cc26xx BOARD=sensortag/cc2650
+<h3 id="usage">Usage</h3>
+<p>To run db_bench, type</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>~$ source run.sh
 </code></pre>
 </div>
 
-<p>To grogram your .elf file to CC2650 board, use Uniflash(<strong><a href="http://www.ti.com/tool/uniflash">http://www.ti.com/tool/uniflash</a></strong>). If you get the error message about “libgcrypt.so.11” during the installation, install libgcrypt11_1.5.3.-5 library</p>
+<h3 id="contents">Contents</h3>
+<ul>
+  <li><code class="highlighter-rouge">nvm/*</code>: storage backend for DapDB tailored for Open-Channel SSDs.</li>
+</ul>
 
-<p>After install Uniflash, update Uniflash by “Help”
-Go to “/opt/ti/uniflash_3.4/ccs_base/common/uscif/xds110/” and connect your device into your Linux.
-Type</p>
+<h3 id="acknowledgments">Acknowledgments</h3>
+<ul>
+  <li><strong>Matias Bjørling</strong></li>
+  <li><strong>Javier Gonzalez</strong></li>
+  <li><strong>DCSLAB, SNU</strong></li>
+</ul>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>./xdsdfu –m
-</code></pre>
-</div>
+<h3 id="references">References</h3>
+<ul>
+  <li><a href="https://rockylim92.github.io/publication/DapDB.pdf"><strong>DapDB: Cutting Latency in Key-Value Store with Dynamic Arrangement of internal Parallelism in SSD</strong></a> - (in progress)</li>
+  <li>etc.</li>
+</ul>
 
-<p>and wait a little and type again</p>
+<hr />
 
-<div class="highlighter-rouge"><pre class="highlight"><code>./xdsdfu –f firmware.bin –r
-</code></pre>
-</div>
+<p><a href="https://travis-ci.org/facebook/rocksdb"><img src="https://travis-ci.org/facebook/rocksdb.svg?branch=master" alt="Build Status" /></a></p>
 
-<p>This is kind of initializing command at the first time</p>
+<p>RocksDB is developed and maintained by Facebook Database Engineering Team.
+It is built on earlier work on LevelDB by Sanjay Ghemawat (sanjay@google.com)
+and Jeff Dean (jeff@google.com)</p>
+
+<p>This code is a library that forms the core building block for a fast
+key value server, especially suited for storing data on flash drives.
+It has a Log-Structured-Merge-Database (LSM) design with flexible tradeoffs
+between Write-Amplification-Factor (WAF), Read-Amplification-Factor (RAF)
+and Space-Amplification-Factor (SAF). It has multi-threaded compactions,
+making it specially suitable for storing multiple terabytes of data in a
+single database.</p>
+
+<p>Start with example usage here: https://github.com/facebook/rocksdb/tree/master/examples</p>
+
+<p>See the <a href="https://github.com/facebook/rocksdb/wiki">github wiki</a> for more explanation.
+Compile for LightNVM using make ENV=NVM.</p>
+
+<p>The public interface is in <code class="highlighter-rouge">include/</code>.  Callers should not include or
+rely on the details of any other header files in this package.  Those
+internal APIs may be changed without warning.</p>
+
+<p>Design discussions are conducted in https://www.facebook.com/groups/rocksdb.dev/</p>
+
+<p>For more information about LightNVM integration with RocksDB and collaboration,
+please contact Javier González at <a href="mailto:jg@lightnvm.io">jg@lightnvm.io</a></p>
+
 
 				<hr />
 				<footer class="page-footer">
@@ -191,13 +244,13 @@ Type</p>
 	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=CSIRO)%20Radio%20Tomography%20System%20using%20low-power%20Sensor%20Network%20Device%20(3)&amp;url=http://localhost:4000/research/csiro03/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/csiro03/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/csiro03/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=DapDB&amp;url=http://localhost:4000/research/dapdb/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/dapdb/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/dapdb/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2017-02-10T19:01:50Z" itemprop="datePublished">February 10, 2017</time></p>
+	<p>Updated <time datetime="2019-04-23T19:00:00Z" itemprop="datePublished">April 23, 2019</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>

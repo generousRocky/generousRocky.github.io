@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation • Rocky's Research Blog</title>
+    <meta name="description" content="멀티스레드 동기화 방법 비교 + 인텔 트랜잭셔널 메모리 오퍼레이션 성능 비교">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation">
+	<meta name="twitter:description" content="멀티스레드 동기화 방법 비교 + 인텔 트랜잭셔널 메모리 오퍼레이션 성능 비교">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation">
+	<meta property="og:description" content="멀티스레드 동기화 방법 비교 + 인텔 트랜잭셔널 메모리 오퍼레이션 성능 비교">
+	<meta property="og:url" content="http://localhost:4000/research/synchronization/">
+	<meta property="og:site_name" content="Rocky's Research Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/synchronization/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Research Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Research Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Research Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Research Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">about, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">things not related above.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<p>여러가지 멀티스레드 동기화 기법 중 어느 기법이 가장 성능이 좋을지 확인해봐라.</p>
+
+<p>– 교수님 –</p>
+
+<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#system-specification" id="markdown-toc-system-specification">System Specification</a></li>
+  <li><a href="#intelr-xeonr-cpu-e5-2620에서-제공하는-synchronization-operations" id="markdown-toc-intelr-xeonr-cpu-e5-2620에서-제공하는-synchronization-operations">Intel(R) Xeon(R) CPU E5-2620에서 제공하는 Synchronization operations</a></li>
+  <li><a href="#experimental-evaluation" id="markdown-toc-experimental-evaluation">Experimental Evaluation</a></li>
+</ul>
+
+</nav>
+
+<h2 id="system-specification">System Specification</h2>
+
+<h3 id="cpu">CPU</h3>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="gp">rocky@dum:~$ </span>lscpu
+Architecture:          	x86_64
+CPU op-mode<span class="o">(</span>s<span class="o">)</span>:        	32-bit, 64-bit
+Byte Order:            	Little Endian
+CPU<span class="o">(</span>s<span class="o">)</span>:                	32
+On-line CPU<span class="o">(</span>s<span class="o">)</span> list:   	0-31
+Thread<span class="o">(</span>s<span class="o">)</span> per core:   	2
+Core<span class="o">(</span>s<span class="o">)</span> per socket:    	8
+Socket<span class="o">(</span>s<span class="o">)</span>:             	2
+NUMA node<span class="o">(</span>s<span class="o">)</span>:          	2
+Vendor ID:             	GenuineIntel
+CPU family:            	6
+Model:                 	79
+Model name:            	Intel<span class="o">(</span>R<span class="o">)</span> Xeon<span class="o">(</span>R<span class="o">)</span> CPU E5-2620 v4 @ 2.10GHz
+Stepping:              	1
+CPU MHz:               	1200.843
+CPU max MHz:           	3000.0000
+CPU min MHz:           	1200.0000
+BogoMIPS:              	4201.30
+Virtualization:        	VT-x
+L1d cache:             	32K
+L1i cache:             	32K
+L2 cache:              	256K
+L3 cache:              	20480K
+NUMA node0 CPU<span class="o">(</span>s<span class="o">)</span>:    	0-7,16-23
+NUMA node1 CPU<span class="o">(</span>s<span class="o">)</span>:     	8-15,24-31
+</code></pre>
+</div>
+
+<h3 id="memory">Memory</h3>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="gp">rocky@dum:~$ </span>sudo dmidecode -t 17
+<span class="c"># dmidecode 3.0</span>
+Getting SMBIOS data from sysfs.
+SMBIOS 3.0.0 present.
+Memory Device
+Array Handle: 0x002A
+Error Information Handle: Not Provided
+Total Width: 72 bits
+Data Width: 64 bits
+Size: 8192 MB
+Form Factor: DIMM
+Set: None
+Locator: P1-DIMMA1
+Bank Locator: P0_Node0_Channel0_Dimm0
+ype: DDR4
+Type Detail: Synchronous
+Speed: 2400 MHz
+Manufacturer: Samsung
+Serial Number: 2087B773
+Asset Tag: P1-DIMMA1_AssetTag <span class="o">(</span>date:17/38<span class="o">)</span>
+Part Number: M393A1G40EB1-CRC
+Rank: 1
+Configured Clock Speed: 2133 MHz
+Minimum Voltage: Unknown
+Maximum Voltage: Unknown
+Configured Voltage: Unknown
+</code></pre>
+</div>
+
+<ul>
+  <li>Summary: Intel(R) Xeon(R) CPU E5-2620 v4 @ 2.10GHz. 64아키텍처의 16물리 코어(하이퍼 스레딩, 32 논리 코어) 머신.  NUMA 아키텍처로 2개의 socket(NUMA node)이 있으며, 각 socket당 8개 물리 코어가 있음. 메인 메모리는 DDR4의 8192MB 메모리가 4개 뱅크에 각각 위치하고 있으며 총 메인 메모리 공간은 32GB이다.</li>
+</ul>
+
+<h2 id="intelr-xeonr-cpu-e5-2620에서-제공하는-synchronization-operations">Intel(R) Xeon(R) CPU E5-2620에서 제공하는 Synchronization operations</h2>
+
+<h3 id="1-fetch-and-add계열">1. Fetch And Add계열</h3>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="n">type</span> <span class="n">__sync_fetch_and_add</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_fetch_and_sub</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_fetch_and_or</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_fetch_and_and</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_fetch_and_xor</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_fetch_and_nand</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre>
+</div>
+
+<p>Note: These builtins perform the operation suggested by the name, and returns the value that had previously been in memory.</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="o">{</span> tmp <span class="o">=</span> <span class="k">*</span>ptr; <span class="k">*</span>ptr <span class="nv">op</span><span class="o">=</span> value; <span class="k">return </span>tmp; <span class="o">}</span>
+<span class="o">{</span> tmp <span class="o">=</span> <span class="k">*</span>ptr; <span class="k">*</span>ptr <span class="o">=</span> ~tmp &amp; value; <span class="k">return </span>tmp; <span class="o">}</span>   // nand
+</code></pre>
+</div>
+
+<h3 id="2-add-and-fetch계열">2. Add And Fetch계열</h3>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="n">type</span> <span class="n">__sync_add_and_fetch</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_sub_and_fetch</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_or_and_fetch</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_and_and_fetch</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_xor_and_fetch</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+<span class="n">type</span> <span class="n">__sync_nand_and_fetch</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre>
+</div>
+
+<p>Note: These builtins perform the operation suggested by the name, and return the new value.</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code><span class="o">{</span> <span class="k">*</span>ptr <span class="nv">op</span><span class="o">=</span> value; <span class="k">return</span> <span class="k">*</span>ptr; <span class="o">}</span>
+<span class="o">{</span> <span class="k">*</span>ptr <span class="o">=</span> ~<span class="k">*</span>ptr &amp; value; <span class="k">return</span> <span class="k">*</span>ptr; <span class="o">}</span>   // nand
+</code></pre>
+</div>
+
+<h3 id="3-compare-and-swap">3. Compare And Swap</h3>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="n">type</span> <span class="n">__sync_val_compare_and_swap</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">oldval</span> <span class="n">type</span> <span class="n">newval</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre>
+</div>
+
+<p>Note: These builtins perform an atomic compare and swap. That is, if the current value of *ptr is oldval, then write newval into *ptr.</p>
+
+<h3 id="4-memory-barrier">4. Memory Barrier</h3>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="n">__sync_synchronize</span> <span class="p">(...)</span>
+</code></pre>
+</div>
+
+<p>Note: This builtin issues a full memory barrier.</p>
+
+<h3 id="5-test-and-set">5. Test And Set</h3>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="n">type</span> <span class="n">__sync_lock_test_and_set</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="n">type</span> <span class="n">value</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre>
+</div>
+<p>Note: This builtin, as described by Intel, is not a traditional test-and-set operation, but rather an atomic exchange operation. It writes value into *ptr, and returns the previous contents of *ptr.</p>
+
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="kt">void</span> <span class="n">__sync_lock_release</span> <span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre>
+</div>
+<p>Note: This builtin releases the lock acquired by __sync_lock_test_and_set. Normally this means writing the constant 0 to *ptr.</p>
+
+<h2 id="experimental-evaluation">Experimental Evaluation</h2>
+
+<p>single thread run과 동기화 기법들인 mutex lock, Compare-and-Swap, Fetch-and-Add, Add-and-Fetch, Test and Set(TAS를 이용한 mutual exclusion), Memory Barrier 총 6 가지를 사용하여 shared variable의 increment 성능 평가를 진행한다. Single thread를 제외한 6가지 방법에서는 32개 thread를 사용하였다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Method</th>
+      <th style="text-align: left">Results(sec)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Single thread</td>
+      <td style="text-align: left">3.041056455s</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Mutex lock</td>
+      <td style="text-align: left">133.816444880s</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Fetch-and-Add</td>
+      <td style="text-align: left">26.720684224s</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Add-and-Fetch</td>
+      <td style="text-align: left">26.909436926s</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Compare-And-Swap</td>
+      <td style="text-align: left">101.935627317s</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Test-and-Set</td>
+      <td style="text-align: left">1467.726637515s</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Memory Barrier</td>
+      <td style="text-align: left">324.967494416s</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>실험 결과에 따르면 single thread로 increment를 진행하였을 때, 가장 성능이 좋음을 알 수 있다. Variable의 increment와 같은 간단한 task는 task 자체보다 thread간 동기화로 발생하는 오버헤드가 더 크기 때문에 이런 결과가 발생하였다. 특히, shared variable를 1씩 increment하는 task는 task의 대부분(100%)가  atomic하게 실행되어야 할 정도로 간단하고 짧은 작업이기 때문에 위 결과와 같이 큰 차이를 보였다.</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=performance%20Comparion%20of%20synchroniztion%20Operations%20+%20Intel%20Transactional%20Memory%20Operation&amp;url=http://localhost:4000/research/synchronization/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/synchronization/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/synchronization/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2019-04-29T19:00:00Z" itemprop="datePublished">April 29, 2019</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2019 <a href="http://localhost:4000">Rocky's Research Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>
