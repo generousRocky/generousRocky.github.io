@@ -21,7 +21,7 @@ ads: false
 	<img src="{{ site.url }}/images/rocky_icon.png" alt="Drawing" style="width: 230px;"/>
 </p>
 
-My name is Heerak Lim and in English it is called Rocky. I'm in my M.S degree at Seoul National University in Korea and studying database and storage systems.
+My name is Heerak Lim and in English, called Rocky. I'm in my M.S degree at Seoul National University in Korea and studying database and storage systems.
 I worked for CSIRO, a national research organisation in Australia and AICT(Advanced Institutes of Convergence Technology) in Korea as a research intern.
 Among the various fields of computer science, I am interested in followings:
 
@@ -33,7 +33,7 @@ Among the various fields of computer science, I am interested in followings:
 * Troubleshooting with multi-thread concurrency
 * Automation in the development process
 
-This blog is mainly a place where I record small accomplishments I have made on such research topics. Plus, I'm going to post whatever I’ve designed, published, developed or literally whatever.<br /><br />cheers,
+This blog is mainly a place where I record some accomplishments or process that I have made on such research topics. Plus, I'm going to post whatever I’ve designed, published, developed or literally whatever.<br /><br />cheers,
 
 
 
