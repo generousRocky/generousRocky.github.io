@@ -33,7 +33,7 @@ Among the various fields of computer science, I am interested in followings:
 * Troubleshooting with multi-thread concurrency
 * Automation in the development process
 
-This blog is mainly a place where I record some accomplishments or process that I have made on such research topics. Plus, I'm going to post whatever I’ve designed, published, developed or literally whatever.<br /><br />cheers,
+This blog is mainly a place where I record some accomplishments or progresses that I have made on such research topics. Plus, I'm going to post whatever I’ve designed, published, developed or literally whatever.<br /><br />cheers,
 
 
 
