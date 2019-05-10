@@ -81,7 +81,7 @@ This blog is mainly a place where I record some accomplishments or process that 
 	M.S in Seoul National university,<br />
 	Computer Engineering, Distributed Computing System Lab<br />
   <a href="http://dcslab.snu.ac.kr">DCSLAB Link</a><br />
-	2017 ~ 2018
+	2017.09 ~ 
 </p><br />
 
 <p>
