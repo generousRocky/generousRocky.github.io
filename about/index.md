@@ -21,19 +21,21 @@ ads: false
 	<img src="{{ site.url }}/images/rocky_icon.png" alt="Drawing" style="width: 230px;"/>
 </p>
 
-My name is Heerak Lim and in English, called Rocky. I'm in my M.S degree at Seoul National University in Korea and studying database and storage systems.
-I worked for CSIRO, a national research organisation in Australia and AICT(Advanced Institutes of Convergence Technology) in Korea as a research intern.
+My name is Heerak Lim and in English, called Rocky.
+I graduated from Seoul National University in Korea with a master's degree in computer science and majored in database systems, and storage systems.
+I am currently working for SAP Laps Korea.
+Beforem that, I worked for CSIRO, a national research organisation in Australia and AICT(Advanced Institutes of Convergence Technology) in Korea as a research intern.
 Among the various fields of computer science, I am interested in followings:
 
 * Database, Storage system, Parallel Computing
 * Key-Value store, NoSQL, DBMS
 * Linux/Unix environment
-* System performance tuning
+* system performance
 * Application-Driven Storage Management
-* Troubleshooting with multi-thread concurrency
-* Automation in the development process
+* multi-thread concurrency
+* automation in the development process
 
-This blog is mainly a place where I record some accomplishments or progresses that I have made on such research topics. Plus, I'm going to post whatever I’ve designed, published, developed or literally whatever.<br /><br />cheers,
+This blog is mainly a place where I record some accomplishments or progresses that I have made on such research topics. Plus, I'm going to post whatever I’ve designed, published, developed.<br /><br />cheers,
 
 
 
@@ -74,6 +76,16 @@ This blog is mainly a place where I record some accomplishments or progresses th
 
 ## Education and Career
 
+
+<p>
+	<img src="{{ site.url }}/images/SAP.png" align="left" style="width: 200px;" hspace="15" vspace="30">
+	<br />
+
+	SAP Labs Korea,<br />
+	Developer for SAP HANA Cloud Database and Big Data<br />
+	2019.08 ~ 
+</p><br />
+
 <p>
 	<img src="{{ site.url }}/images/snu.png" align="left" style="width: 120px;" hspace="15" vspace="30">
 	<br />
@@ -81,7 +93,7 @@ This blog is mainly a place where I record some accomplishments or progresses th
 	M.S in Seoul National university,<br />
 	Computer Engineering, Distributed Computing System Lab<br />
   <a href="http://dcslab.snu.ac.kr">DCSLAB Link</a><br />
-	2017.09 ~ 
+	2017.09 ~ 2019.08
 </p><br />
 
 <p>
@@ -96,7 +108,7 @@ This blog is mainly a place where I record some accomplishments or progresses th
 	<img src="{{ site.url }}/images/CIT-BG-1_small.png" align="left" style="width: 200px;" hspace="15" vspace="30">
 	<br />
 	CIT Code Academy, CIT 코드 아카데미 ㈜디지틀조선일보<br />
-	lecturer, 강사<br />
+	lecturer<br />
 	2017 ~ 2018
 </p><br />
 
@@ -121,6 +133,13 @@ This blog is mainly a place where I record some accomplishments or progresses th
 
 <br /><br />
 ## Publication
+
+## Technical Document
+* The Jasmine OpenSSD Platform: Technical Reference Manual (v1.4, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_Tech_Ref_Manual_v.1.4e.pdf>
+
+* The Jasmine OpenSSD Platform: FTL Developer's Guide (v1.2, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_FTL_Dev_Guide_v.1.2e.pdf>
+
+
 ### International
 
 * Dec 2018  <a href="https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_mwds18.pdf">"Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation"</a>

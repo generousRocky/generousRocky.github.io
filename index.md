@@ -1,7 +1,7 @@
 ---
 layout: home
 permalink: /
-title: "Latest Posts ( Latest 4 posts per each section )"
+title: "Latest 4 Posts"
 excerpt:
 image:
   feature: wood-texture-1600x800.jpg
