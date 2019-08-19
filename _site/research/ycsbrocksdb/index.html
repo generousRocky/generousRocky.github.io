@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>YCSB benchmark for modified RocksDB(not for YCSB's default version) • Rocky's Tech Blog</title>
+    <meta name="description" content="코드를 수정한 RocksDB 버전에 YCSB 벤치마크 돌리기">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="YCSB benchmark for modified RocksDB(not for YCSB's default version)">
+	<meta name="twitter:description" content="코드를 수정한 RocksDB 버전에 YCSB 벤치마크 돌리기">
+	
+	<meta name="twitter:creator" content="@">
+	
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="YCSB benchmark for modified RocksDB(not for YCSB's default version)">
+	<meta property="og:description" content="코드를 수정한 RocksDB 버전에 YCSB 벤치마크 돌리기">
+	<meta property="og:url" content="http://localhost:4000/research/ycsbrocksdb/">
+	<meta property="og:site_name" content="Rocky's Tech Blog">
+
+    <link rel="canonical" href="http://localhost:4000/research/ycsbrocksdb/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Tech Blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">Rocky's Tech Blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">Rocky's Tech Blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+    
+    <li><a href="http://localhost:4000" > </a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/book/" >Book</a></li>
+  
+    
+    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>Rocky's Tech Blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">about, Rocky Lim</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000">
+        
+        <div class="title"> </div>
+        
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">related to my research field</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/book/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Book</div>
+        <p class="excerpt">things I've studied, read</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/whatever/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Whatever</div>
+        <p class="excerpt">things not related above.</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/research/" itemprop="url">
+        <span itemprop="title">Research</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>YCSB benchmark for modified RocksDB(not for YCSB's default version)</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#rocksdb-jni-package-generation" id="markdown-toc-rocksdb-jni-package-generation">RocksDB jni package generation</a></li>
+  <li><a href="#ycsb-compilation" id="markdown-toc-ycsb-compilation">YCSB compilation</a>    <ul>
+      <li><a href="#get-ycsb-code-and-configuation" id="markdown-toc-get-ycsb-code-and-configuation">get YCSB code and configuation</a></li>
+      <li><a href="#ycsb-compilation-1" id="markdown-toc-ycsb-compilation-1">YCSB compilation</a></li>
+      <li><a href="#parameter-settings-under-ycsb" id="markdown-toc-parameter-settings-under-ycsb">parameter settings under YCSB</a></li>
+    </ul>
+  </li>
+</ul>
+
+</nav>
+
+<p>facebook에서 배포하는 RocksDB버전을 수정 없이 그대로 성능평가하기 위해서는 그냥 YCSB의 <a href="https://github.com/brianfrankcooper/YCSB/blob/master/rocksdb/README.md">README</a> 문서를 참고하면 된다. Maven이 알아서 RocksDB 패키지도 받아서 YCSB를 돌려볼 수 있다.</p>
+
+<p>하지만 RocksDB의 코드를 고쳐서 내가 수정한 버전의 RocksDB의 성능을 평가하려면 RocksDB를 JAVA로 빌드하여 jni package를 만든 다음 그 패키지를 사용하여 YCSB를 동작시켜야 한다.</p>
+
+<p>나의 경우 Open-Channel SSD를 RocksDB의 스토리지로 사용하기 위해 RocksDB 스토리지 백엔드를 posix i/o 가 아닌 외부 라이브러리(liblightnvm)을 사용하여 새로운 백엔드를 사용하도록 고쳤고, 앞으로 설명할 내용 외에도 jin function을 몇가지 직접 만드는 추가적인 작업이 필요했다. 하지만 일반적인 코드 수정이나 알고리즘적인 수정의 경우 본 글의 instruction이면 충분할 것 같다.</p>
+
+<h1 id="rocksdb-jni-package-generation">RocksDB jni package generation</h1>
+
+<p>일단 어떤 버전을 어떻게 수정하였던 정상적으로 동작하는 RocksDB의 소스코드가 필요하다. 다음으로 넘어가기 전에 내가 가지고 있는 RocksDB 소스코드를 <code class="highlighter-rouge">make release</code> 해서 <code class="highlighter-rouge">db_bench</code>가 정상적으로 돌아가는지 확인 해 보자.</p>
+
+<p>내가 수정한 버전의 RocksDB가 정상적으로 동작한다면, RocksDB를 JAVA compile해야한다.</p>
+
+<p>RocsDB 소스코드에서 java 디렉토리는 jni package와 관련이 있다. compression method는 5가지를 모두 사용하지는 않으므로 필요한 것만 남기고 주석처리로 없애준다(시간 절약을 위해).</p>
+
+<ul>
+  <li>다음 예시와 같이 Makefile을 수정한다(snappy compression만 남김).</li>
+</ul>
+
+<div class="language-make highlighter-rouge"><pre class="highlight"><code><span class="c"># A version of each $(LIBOBJECTS) compiled with -fPIC and a fixed set of static compression libraries
+</span><span class="nv">java_static_libobjects</span> <span class="o">=</span> <span class="err">$</span><span class="o">(</span>patsubst %,jls/%,<span class="nv">$(LIBOBJECTS)</span><span class="o">)</span>
+<span class="nv">CLEAN_FILES</span> <span class="o">+=</span> jls
+
+<span class="err">ifneq</span> <span class="err">($(ROCKSDB_JAVA_NO_COMPRESSION),</span> <span class="err">1)</span>
+<span class="c"># JAVA_COMPRESSIONS = libz.a libbz2.a libsnappy.a liblz4.a libzstd.a
+</span><span class="nv">JAVA_COMPRESSIONS</span> <span class="o">=</span> libsnappy.a
+<span class="err">endif</span>
+
+<span class="c"># JAVA_STATIC_FLAGS = -DZLIB -DBZIP2 -DSNAPPY -DLZ4 -DZSTD
+</span><span class="nv">JAVA_STATIC_FLAGS</span> <span class="o">=</span> -DSNAPPY
+<span class="c"># JAVA_STATIC_INCLUDES = -I./zlib-$(ZLIB_VER) -I./bzip2-$(BZIP2_VER) -I./snappy-$(SNAPPY_VER) -I./lz4-$(LZ4_VER)/lib -I./ zstd-$(ZSTD_VER)/lib
+</span><span class="nv">JAVA_STATIC_INCLUDES</span> <span class="o">=</span> -I./snappy-<span class="nv">$(SNAPPY_VER)</span>
+</code></pre>
+</div>
+
+<p>java compile을 위해서는 <code class="highlighter-rouge">Makefile</code>의 rocksdbjavastaticrelease rule을 사용한다. cross-platform이 아니므로 해당 line은 comment out 해준다. 이 라인을 지움으로써 cross-platform java package를 취소하였으므로, <code class="highlighter-rouge">ibrocksdbjni-*.jnilib</code>부분을 지워준다.</p>
+
+<ul>
+  <li>결과적으로 다음 예시와 같이 Makefile을 수정한다.</li>
+</ul>
+
+<div class="language-make highlighter-rouge"><pre class="highlight"><code><span class="nl">rocksdbjavastaticrelease</span><span class="o">:</span> <span class="nf">rocksdbjavastatic</span>
+  <span class="c"># cd java/crossbuild &amp;&amp; vagrant destroy -f &amp;&amp; vagrant up linux32 &amp;&amp; vagrant halt linux32 &amp;&amp; vagrant up linux64 &amp;&amp; vagrant halt linux64
+</span>  <span class="err">cd</span> <span class="err">java;jar</span> <span class="err">-cf</span> <span class="err">target/$(ROCKSDB_JAR_ALL)</span> <span class="err">HISTORY*.md</span>
+  <span class="c"># cd java/target;jar -uf $(ROCKSDB_JAR_ALL) librocksdbjni-*.so librocksdbjni-*.jnilib
+</span>  <span class="err">cd</span> <span class="err">java/target;jar</span> <span class="err">-uf</span> <span class="err">$(ROCKSDB_JAR_ALL)</span> <span class="err">librocksdbjni-*.so</span>
+  <span class="err">cd</span> <span class="err">java/target/classes;jar</span> <span class="err">-uf</span> <span class="err">../$(ROCKSDB_JAR_ALL)</span> <span class="err">org/rocksdb/*.class</span> <span class="err">org/rocksdb/util/*.class</span>
+</code></pre>
+</div>
+
+<p>정상적으로 Makefile을 수정하였다면, <code class="highlighter-rouge">make rocksdbjavastaticrelease</code> 명령어를 통해 빌드를 해 보자. 만약 코어가 충분하다면 <code class="highlighter-rouge">-j16</code> 과 같은 옵션을 줄 수 있다.</p>
+
+<p>성공적으로 빌드가 된다면, <code class="highlighter-rouge">rocksdb/java/target/rocksdbjni-5.18.3.jar</code>와 같이 jni package 파일이 생성될 것이다. 여기서 <code class="highlighter-rouge">5.18.3</code>과 같은 버전은 작업하는 RocksDB의 소스코드에 따라 다르게 생성 될 것이다.</p>
+
+<p>이렇게 생성된 jni package는 이후 YCSB 동작에서 사용된다.</p>
+
+<h1 id="ycsb-compilation">YCSB compilation</h1>
+<h2 id="get-ycsb-code-and-configuation">get YCSB code and configuation</h2>
+<p>다음과 같은 명령어를 통해 YCSB 코드를 받는다</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>git clone https://github.com/brianfrankcooper/YCSB.git
+git checkout 0.15.0
+</code></pre>
+</div>
+
+<p>YCSB의 code modle dependency들을 다운로드하기 위해 <code class="highlighter-rouge">YCSB/core/pom.xml</code> 파일에서 <code class="highlighter-rouge">&lt;dependencies&gt;</code> 하위 부분에 다음과 같은 내용을 추가한다.</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.apache.htrace<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>htrace-core4<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>4.1.0-incubating<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+      <span class="nt">&lt;groupId&gt;</span>org.hdrhistogram<span class="nt">&lt;/groupId&gt;</span>
+      <span class="nt">&lt;artifactId&gt;</span>HdrHistogram<span class="nt">&lt;/artifactId&gt;</span>
+      <span class="nt">&lt;version&gt;</span>2.1.4<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre>
+</div>
+
+<h2 id="ycsb-compilation-1">YCSB compilation</h2>
+
+<p>Maven을 통해 RocksDB 를 바인딩 한다. 주의할 점은 단순히<code class="highlighter-rouge">mvm clean package</code>명령어를 사용하면 모든 데이터베이스 어플리케이션(HBase, MongoDB 등등)의 모듈을 위한 dependency들을 다운로드 하기 때문에 시간이 매우 오래 걸린다.</p>
+
+<ul>
+  <li>다음 명령어는 RocksDB를 바인딩 하기위한 명령어 이다.</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>mvn -pl com.yahoo.ycsb:rocksdb-binding -am clean package
+</code></pre>
+</div>
+
+<p>dependency 추가로 인해 <code class="highlighter-rouge">YCSB/rocksdb/target/dependency/</code> 경로에 <code class="highlighter-rouge">htrace-core4-4.1.0-incubating.jar</code> <code class="highlighter-rouge">HdrHistogram-2.1.4.jar</code> 파일이 생성되어 있는것을 확인할 수 있다.</p>
+
+<p>YCSB 디렉토리의 <em>YCSB/pom.xml</em> 파일에서 <code class="highlighter-rouge">&lt;rocksdb.version&gt;5.11.3&lt;/rocksdb.version&gt;</code>부분을 보면, YCSB가 RocksDB의 5.11.3 버전의 jni package를 다운로드 받아 사용한다는 것을 알 수 있다. 이 부분을 수정하면 원하는 버전의 jni package를 받아 YCSB를 돌려볼 수 있다. (하지만 여전히 facebook에서 배포한 버전 그대로이다. 우리가 원하는 것은 직접 소스코드를 수정하여 빌드한 RocksDB의 성능을 평가하고싶은것이다.)</p>
+
+<p>리눅스 시스템에서는 <code class="highlighter-rouge">bin/ycsb.sh</code> 파일을 실행하여 여러가지 YCSB 벤치마크를 조작할 수 있다.</p>
+
+<ul>
+  <li>다음 명령어를 통해 YCSB-workloada의 데이터를 로드 해 본다. workloada에 대한 configuration은 <code class="highlighter-rouge">workloads/workloada</code> 파일에 명세되어 있으며, 데이터가 저장될 디렉토리도 함께 옵션으로 준다.</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>bin/ycsb.sh load rocksdb -s -P workloads/workloada -p rocksdb.dir<span class="o">=</span>/home/rocky/ycsbdata
+</code></pre>
+</div>
+
+<p>LOG파일을 앞 부분을 확인해 보면 아직 YCSB의 디폴트 버전인 5.11.3 버전의 RocksDB가 동작하고 있음을 확인할 수 있다.</p>
+
+<p><strong>(중요!) 이전 과정에서 생성된 jni package 파일인 <code class="highlighter-rouge">rocksdb/java/target/rocksdbjni-5.18.3.jar</code> 을 <code class="highlighter-rouge">YCSB/rocksdb/target/dependency/</code> 경로에 복사한다. 그리고 기존의 <code class="highlighter-rouge">rocksdbjni-5.11.3.jar</code> 파일은 삭제한다.</strong></p>
+
+<p>이후 RocksDB 데이터 경로인 <code class="highlighter-rouge">rocsdb.dir</code>에 지정 해 주었던 디렉토리 경로의 파일들을 모두 지우고 다시 laod 명령을 해 본다.</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>bin/ycsb.sh load rocksdb -s -P workloads/workloada -p rocksdb.dir<span class="o">=</span>/home/rocky/ycsbdata
+</code></pre>
+</div>
+
+<p>LOG파일의 앞 부분을 보면 원하는 버전의(내가 코드를 고치고 빌드한 버전의) RocksDB가 나타난 것을 확인할 수 있다.</p>
+
+<p>데이터를 load한 이후에는 여러 workload들을 돌려 성능 평가를 해볼수 있다.</p>
+
+<ul>
+  <li>다음 명령어는 <code class="highlighter-rouge">home/rocky/ycsbdata</code> 디렉토리에 존재하는 데이터베이스에 workload-a를 수행한다.</li>
+</ul>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>bin/ycsb.sh run rocksdb -s -P workloads/workloada -p rocksdb.dir<span class="o">=</span>/home/rocky/ycsbdata
+</code></pre>
+</div>
+
+<h2 id="parameter-settings-under-ycsb">parameter settings under YCSB</h2>
+
+<p>workload들의 default configuration은 Fieldcount와 Filelength가 작아 매우 짧은시간 내에 끝나버리니 충분한 크기로 변경 해 주어야한다. 각 workload 의 parameter는 <code class="highlighter-rouge">YCSB/worklaods/</code> 경로의 파일들을 수정해 변경할 수 있다.</p>
+
+<p>RocksDB의 여러 parameter및 configuration은 <code class="highlighter-rouge">YCSB\rocksdb\src\main\java\com\yahoo\ycsb\db\rocksdb\RocksDBClient.java</code> 파일에서 설정 해 줄 수 있다.</p>
+
+<p><code class="highlighter-rouge">initRocksDB()</code> 함수 아래 위치한 다음의 코드들은 RocksDB의 option들과 관련된 부분이다. RocksDB 소스코드에서 <code class="highlighter-rouge">java/src/main/java/org/rocksdb/Options.java</code> 파일과 <code class="highlighter-rouge">java/src/main/java/org/rocksdb/DBOptions.java</code> 파일에서 함수의 원형을 참고하여 option을 변경하는 함수를 찾아 원하는 옵션을 변경한다.</p>
+
+<div class="language-java highlighter-rouge"><pre class="highlight"><code>    <span class="k">if</span><span class="o">(</span><span class="n">cfDescriptors</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+      <span class="kd">final</span> <span class="n">Options</span> <span class="n">options</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Options</span><span class="o">()</span>
+          <span class="o">.</span><span class="na">optimizeLevelStyleCompaction</span><span class="o">()</span>
+          <span class="o">.</span><span class="na">setCreateIfMissing</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setCreateMissingColumnFamilies</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setIncreaseParallelism</span><span class="o">(</span><span class="n">rocksThreads</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setMaxBackgroundCompactions</span><span class="o">(</span><span class="n">rocksThreads</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setInfoLogLevel</span><span class="o">(</span><span class="n">InfoLogLevel</span><span class="o">.</span><span class="na">INFO_LEVEL</span><span class="o">);</span>
+      <span class="n">dbOptions</span> <span class="o">=</span> <span class="n">options</span><span class="o">;</span>
+      <span class="k">return</span> <span class="n">RocksDB</span><span class="o">.</span><span class="na">open</span><span class="o">(</span><span class="n">options</span><span class="o">,</span> <span class="n">rocksDbDir</span><span class="o">.</span><span class="na">toAbsolutePath</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="kd">final</span> <span class="n">DBOptions</span> <span class="n">options</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DBOptions</span><span class="o">()</span>
+          <span class="o">.</span><span class="na">setCreateIfMissing</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setCreateMissingColumnFamilies</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setIncreaseParallelism</span><span class="o">(</span><span class="n">rocksThreads</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setMaxBackgroundCompactions</span><span class="o">(</span><span class="n">rocksThreads</span><span class="o">)</span>
+          <span class="o">.</span><span class="na">setInfoLogLevel</span><span class="o">(</span><span class="n">InfoLogLevel</span><span class="o">.</span><span class="na">INFO_LEVEL</span><span class="o">);</span>
+      <span class="n">dbOptions</span> <span class="o">=</span> <span class="n">options</span><span class="o">;</span>
+
+      <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">ColumnFamilyHandle</span><span class="o">&gt;</span> <span class="n">cfHandles</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;&gt;();</span>
+      <span class="kd">final</span> <span class="n">RocksDB</span> <span class="n">db</span> <span class="o">=</span> <span class="n">RocksDB</span><span class="o">.</span><span class="na">open</span><span class="o">(</span><span class="n">options</span><span class="o">,</span> <span class="n">rocksDbDir</span><span class="o">.</span><span class="na">toAbsolutePath</span><span class="o">().</span><span class="na">toString</span><span class="o">(),</span> <span class="n">cfDescriptors</span><span class="o">,</span> <span class="n">cfHandles</span><span class="o">);</span>
+      <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cfNames</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">COLUMN_FAMILIES</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">cfNames</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">),</span> <span class="k">new</span> <span class="n">ColumnFamily</span><span class="o">(</span><span class="n">cfHandles</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">),</span> <span class="n">cfOptionss</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)));</span>
+      <span class="o">}</span>
+      <span class="k">return</span> <span class="n">db</span><span class="o">;</span>
+    <span class="o">}</span>
+</code></pre>
+</div>
+
+<p>만약 <code class="highlighter-rouge">RocksDBClient.java</code> 파일을 수정하였다면 아래 커멘드를 입력하여 다시 바인딩을 한다.(<code class="highlighter-rouge">mvn -pl com.yahoo.ycsb:rocksdb-binding -am clean package</code> 커멘드에서 <code class="highlighter-rouge">clean</code>이 빠졌음.)</p>
+
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>mvn -pl com.yahoo.ycsb:rocksdb-binding -am package
+</code></pre>
+</div>
+
+<p>이후 다시 생성된 <code class="highlighter-rouge">rocksdb/java/target/rocksdbjni-5.11.3.jar</code> 파일을 삭제한다.
+<code class="highlighter-rouge">load</code>나 <code class="highlighter-rouge">run</code> 커멘드를 실행하면, 원하는 옵션으로 RocksDB가 동작하는것을 확인활 수 있을것이다.</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=YCSB%20benchmark%20for%20modified%20RocksDB(not%20for%20YCSB&#39;s%20default%20version)&amp;url=http://localhost:4000/research/ycsbrocksdb/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/research/ycsbrocksdb/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/research/ycsbrocksdb/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2019-04-29T19:00:00Z" itemprop="datePublished">April 29, 2019</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<hr />
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	var disqus_shortname = '';
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		<div class="ads"><style>
+.responsive-ads { width: 300px; height: 200px; }
+@media(min-width: 520px) { .responsive-ads { width: 468px; height: 60px; } }
+@media(min-width: 768px) { .responsive-ads { width: 160px; height: 600px; } }
+</style>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle responsive-ads"
+	style="display:inline-block"
+	data-ad-client="lrocky1229"
+	data-ad-slot=""></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><!-- /.ads -->
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+		
+      
+			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2019 <a href="http://localhost:4000">Rocky's Tech Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>

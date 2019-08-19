@@ -1,7 +1,7 @@
 ---
 layout: home
 permalink: /
-title: "Latest 4 Posts"
+title: "Rocky's Tech Blog, Latest posts"
 excerpt:
 image:
   feature: wood-texture-1600x800.jpg
@@ -20,8 +20,11 @@ image:
 </div>
 
 
+
+
 <div style="text-align:left">
   <span style = " font-size:2em;  color: gray;">
+    ------
     &nbsp;<br />
     &nbsp;<br />
     &nbsp;<br />

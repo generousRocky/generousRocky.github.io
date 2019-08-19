@@ -82,7 +82,7 @@ This blog is mainly a place where I record some accomplishments or progresses th
 	<br />
 
 	SAP Labs Korea,<br />
-	Developer for SAP HANA Cloud Database and Big Data<br />
+	Developer for SAP HANA Cloud Database and Big Data platform<br />
 	2019.08 ~ 
 </p><br />
 

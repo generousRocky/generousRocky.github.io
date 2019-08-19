@@ -1,4 +1,4 @@
-# Research Bolg, Heerak Lim
+# Tech Bolg, Heerak Lim
 
 ## Notable Features
 

@@ -1,4 +1,233 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-07-08T21:04:53+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Research Blog</title><subtitle>This is a Research Blog of Rocky Lim</subtitle><entry><title type="html">performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation</title><link href="http://localhost:4000/research/synchronization/" rel="alternate" type="text/html" title="performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation" /><published>2019-04-29T19:00:00+09:00</published><updated>2019-04-29T19:00:00+09:00</updated><id>http://localhost:4000/research/synchronization</id><content type="html" xml:base="http://localhost:4000/research/synchronization/">&lt;p&gt;여러가지 멀티스레드 동기화 기법 중 어느 기법이 가장 성능이 좋을지 확인해봐라.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-08-19T15:55:16+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s Tech Blog</title><subtitle>Technology Blog of Rocky Lim</subtitle><entry><title type="html">약 2년간의 대학원 생활 회고</title><link href="http://localhost:4000/whatever/retrospect/" rel="alternate" type="text/html" title="약 2년간의 대학원 생활 회고" /><published>2019-07-10T19:00:00+09:00</published><updated>2019-07-10T19:00:00+09:00</updated><id>http://localhost:4000/whatever/retrospect</id><content type="html" xml:base="http://localhost:4000/whatever/retrospect/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#입학-전&quot; id=&quot;markdown-toc-입학-전&quot;&gt;입학 전&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#연구는-장비빨&quot; id=&quot;markdown-toc-연구는-장비빨&quot;&gt;연구는 장비빨&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#생활&quot; id=&quot;markdown-toc-생활&quot;&gt;생활&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#연구&quot; id=&quot;markdown-toc-연구&quot;&gt;연구&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#취업&quot; id=&quot;markdown-toc-취업&quot;&gt;취업&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;blockquote&gt;
+  &lt;h6 id=&quot;많은-개발자들이-회고를-써보며-지난-1년을-돌이켜보는-것을-보았다-나도-블로그를-시작하고나서부터-매해-연말-써보자-다짐했으나-시험이나-논문준비-등을-가장한-귀찮음을-이기지못하여-여태-실천하지-못하였다-졸업-논문-인준지에-교수님-사인도-쾅-받고-얼마전-만족스로운-포지션에-오퍼를-받아-졸업후-거취도-정해져-시간적으로-여유가-있어-지난-2년간의-대학원-생활을-돌이켜보자&quot;&gt;많은 개발자들이 회고를 써보며 지난 1년을 돌이켜보는 것을 보았다. 나도 블로그를 시작하고나서부터 매해 연말 써보자 다짐했으나, 시험이나 논문준비 등을 가장한 귀찮음을 이기지못하여 여태 실천하지 못하였다. 졸업 논문 인준지에 교수님 사인도 쾅 받고, 얼마전 만족스로운 포지션에 오퍼를 받아 졸업후 거취도 정해져 시간적으로 여유가 있어 지난 2년간의 대학원 생활을 돌이켜보자.&lt;/h6&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;입학-전&quot;&gt;입학 전&lt;/h1&gt;
+&lt;p&gt;학부시절 SSD의 Flash Translation Layer를 직접 구현하여 임베디드 보드에 올려 성능 실험을 해 보는 프로젝트를 한 적이 있었다. 이때 처음 스토리지 디바이스나 리눅스 스토리지 시스템을 접했다. 학부 3학년 때 까지 접해본 코드라곤 기본적인 자료구조나 알고리즘이 전부였으니 커널 코드나 FTL의 코드를 처음 접했을 때는 마치 내가 C언어를 배운적이 없었던 것 같았다.
+복잡한 자료구조와 온갖 포인터 연산으로 도배된 시스템 소프트웨어의 코드는 정말 진입 장벽이 높게 느껴져 프로젝트를 하는 내내 힘들었다.&lt;/p&gt;
+
+&lt;p&gt;학기가 끝나고 해당 과목에서 했던 프로젝트가 프로젝트로 끝나는 것이 아쉬워, 교수님을 찾아가 조금 더 발전시켜보고싶다는 의견을 전했고, 교수님께서도 의미가 있으면서도 학부생 수준에 맞는 연구 방향을 제시 해 주셨다.
+이때 처음으로 연구스러운(답이 나와있지 않은 공부) 무언가를 해 보았고, 논문도 써보고 학회장에 가서 발표를 하기도 했다. 아마 이때쯤 내 커리어에 대해서 조금씩 고민을 했고 대학원에 가야겠다는 결심을 한 것 같다. 어렵긴 하지만 시스템이나 저수준 도메인에서 내 커리어를 발전시키면 내가 더 경쟁력 있는 사람이 될 것 같았다. 그때 당시 생각은 대학원에서 관련 연구나 공부를 더 해야지만 내가 원하는 방향으로 커리어를 발전시킬 수 있겠다는 생각이 들었고, 대학원에 가야겠다고 생각했다(지금 생각 해 보면 방법은 많은 것 같다. 관련 스타트업에서 경력을 쌓는다던지).&lt;/p&gt;
+
+&lt;p&gt;여러 연구실 홈페이지를 돌아다니면서 스토리지나 시스템 분야의 연구를 하는지 찾아보고 지원을 하였고, 결과적으로 서울대학교 분산시스템 연구실에서 생활하게 되었다.&lt;/p&gt;
+
+&lt;p&gt;여기까지가 대학원 입학하기까지의 재미없는 이야기이다.&lt;/p&gt;
+
+&lt;h1 id=&quot;연구는-장비빨&quot;&gt;연구는 장비빨&lt;/h1&gt;
+
+&lt;p&gt;대학원 기간동안의 스트레스관리에 가장 큰 도움을 준 것은 전자기기를 지르는것이었다. 2년동안 랩탑이나, 모니터, 키보드 등을 정말 많이 바꿨는데, 새 장비를 살 때 마다 쌓였던 스트레스는 눈녹듯 사라지는것을 경험했다. 2년동안 연구실 공사나 자리 이동등으로 책상 배치가 바뀌는 경우가 자주 있었고 그때마다 사진을 찍어놓았다. 모두 모아 시간순으로 보니 나름 재미있었다.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+  &lt;img src=&quot;http://localhost:4000/images/retrospect/dev0.jpeg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+&lt;center&gt;
+아마 입학 첫 날 내 책상을 찍은사진같다..
+&lt;/center&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+  &lt;img src=&quot;http://localhost:4000/images/retrospect/dev1.jpeg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&quot;생활&quot;&gt;생활&lt;/h1&gt;
+
+&lt;h1 id=&quot;연구&quot;&gt;연구&lt;/h1&gt;
+
+&lt;h1 id=&quot;취업&quot;&gt;취업&lt;/h1&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">석사 과정 입학부터 첫 커리어를 시작하기까지</summary></entry><entry><title type="html">YCSB benchmark for modified RocksDB(not for YCSB’s default version)</title><link href="http://localhost:4000/research/ycsbrocksdb/" rel="alternate" type="text/html" title="YCSB benchmark for modified RocksDB(not for YCSB's default version)" /><published>2019-04-29T19:00:00+09:00</published><updated>2019-04-29T19:00:00+09:00</updated><id>http://localhost:4000/research/ycsbrocksdb</id><content type="html" xml:base="http://localhost:4000/research/ycsbrocksdb/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#rocksdb-jni-package-generation&quot; id=&quot;markdown-toc-rocksdb-jni-package-generation&quot;&gt;RocksDB jni package generation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ycsb-compilation&quot; id=&quot;markdown-toc-ycsb-compilation&quot;&gt;YCSB compilation&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#get-ycsb-code-and-configuation&quot; id=&quot;markdown-toc-get-ycsb-code-and-configuation&quot;&gt;get YCSB code and configuation&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#ycsb-compilation-1&quot; id=&quot;markdown-toc-ycsb-compilation-1&quot;&gt;YCSB compilation&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#parameter-settings-under-ycsb&quot; id=&quot;markdown-toc-parameter-settings-under-ycsb&quot;&gt;parameter settings under YCSB&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;p&gt;facebook에서 배포하는 RocksDB버전을 수정 없이 그대로 성능평가하기 위해서는 그냥 YCSB의 &lt;a href=&quot;https://github.com/brianfrankcooper/YCSB/blob/master/rocksdb/README.md&quot;&gt;README&lt;/a&gt; 문서를 참고하면 된다. Maven이 알아서 RocksDB 패키지도 받아서 YCSB를 돌려볼 수 있다.&lt;/p&gt;
+
+&lt;p&gt;하지만 RocksDB의 코드를 고쳐서 내가 수정한 버전의 RocksDB의 성능을 평가하려면 RocksDB를 JAVA로 빌드하여 jni package를 만든 다음 그 패키지를 사용하여 YCSB를 동작시켜야 한다.&lt;/p&gt;
+
+&lt;p&gt;나의 경우 Open-Channel SSD를 RocksDB의 스토리지로 사용하기 위해 RocksDB 스토리지 백엔드를 posix i/o 가 아닌 외부 라이브러리(liblightnvm)을 사용하여 새로운 백엔드를 사용하도록 고쳤고, 앞으로 설명할 내용 외에도 jin function을 몇가지 직접 만드는 추가적인 작업이 필요했다. 하지만 일반적인 코드 수정이나 알고리즘적인 수정의 경우 본 글의 instruction이면 충분할 것 같다.&lt;/p&gt;
+
+&lt;h1 id=&quot;rocksdb-jni-package-generation&quot;&gt;RocksDB jni package generation&lt;/h1&gt;
+
+&lt;p&gt;일단 어떤 버전을 어떻게 수정하였던 정상적으로 동작하는 RocksDB의 소스코드가 필요하다. 다음으로 넘어가기 전에 내가 가지고 있는 RocksDB 소스코드를 &lt;code class=&quot;highlighter-rouge&quot;&gt;make release&lt;/code&gt; 해서 &lt;code class=&quot;highlighter-rouge&quot;&gt;db_bench&lt;/code&gt;가 정상적으로 돌아가는지 확인 해 보자.&lt;/p&gt;
+
+&lt;p&gt;내가 수정한 버전의 RocksDB가 정상적으로 동작한다면, RocksDB를 JAVA compile해야한다.&lt;/p&gt;
+
+&lt;p&gt;RocsDB 소스코드에서 java 디렉토리는 jni package와 관련이 있다. compression method는 5가지를 모두 사용하지는 않으므로 필요한 것만 남기고 주석처리로 없애준다(시간 절약을 위해).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;다음 예시와 같이 Makefile을 수정한다(snappy compression만 남김).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-make highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# A version of each $(LIBOBJECTS) compiled with -fPIC and a fixed set of static compression libraries
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;java_static_libobjects&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;patsubst %,jls/%,&lt;span class=&quot;nv&quot;&gt;$(LIBOBJECTS)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;CLEAN_FILES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; jls
+
+&lt;span class=&quot;err&quot;&gt;ifneq&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;($(ROCKSDB_JAVA_NO_COMPRESSION),&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;1)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# JAVA_COMPRESSIONS = libz.a libbz2.a libsnappy.a liblz4.a libzstd.a
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_COMPRESSIONS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; libsnappy.a
+&lt;span class=&quot;err&quot;&gt;endif&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# JAVA_STATIC_FLAGS = -DZLIB -DBZIP2 -DSNAPPY -DLZ4 -DZSTD
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_STATIC_FLAGS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; -DSNAPPY
+&lt;span class=&quot;c&quot;&gt;# JAVA_STATIC_INCLUDES = -I./zlib-$(ZLIB_VER) -I./bzip2-$(BZIP2_VER) -I./snappy-$(SNAPPY_VER) -I./lz4-$(LZ4_VER)/lib -I./ zstd-$(ZSTD_VER)/lib
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;JAVA_STATIC_INCLUDES&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; -I./snappy-&lt;span class=&quot;nv&quot;&gt;$(SNAPPY_VER)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;java compile을 위해서는 &lt;code class=&quot;highlighter-rouge&quot;&gt;Makefile&lt;/code&gt;의 rocksdbjavastaticrelease rule을 사용한다. cross-platform이 아니므로 해당 line은 comment out 해준다. 이 라인을 지움으로써 cross-platform java package를 취소하였으므로, &lt;code class=&quot;highlighter-rouge&quot;&gt;ibrocksdbjni-*.jnilib&lt;/code&gt;부분을 지워준다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;결과적으로 다음 예시와 같이 Makefile을 수정한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-make highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nl&quot;&gt;rocksdbjavastaticrelease&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;rocksdbjavastatic&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# cd java/crossbuild &amp;amp;&amp;amp; vagrant destroy -f &amp;amp;&amp;amp; vagrant up linux32 &amp;amp;&amp;amp; vagrant halt linux32 &amp;amp;&amp;amp; vagrant up linux64 &amp;amp;&amp;amp; vagrant halt linux64
+&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;java;jar&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;-cf&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;target/$(ROCKSDB_JAR_ALL)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;HISTORY*.md&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# cd java/target;jar -uf $(ROCKSDB_JAR_ALL) librocksdbjni-*.so librocksdbjni-*.jnilib
+&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;java/target;jar&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;-uf&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$(ROCKSDB_JAR_ALL)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;librocksdbjni-*.so&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;java/target/classes;jar&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;-uf&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;../$(ROCKSDB_JAR_ALL)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;org/rocksdb/*.class&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;org/rocksdb/util/*.class&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;정상적으로 Makefile을 수정하였다면, &lt;code class=&quot;highlighter-rouge&quot;&gt;make rocksdbjavastaticrelease&lt;/code&gt; 명령어를 통해 빌드를 해 보자. 만약 코어가 충분하다면 &lt;code class=&quot;highlighter-rouge&quot;&gt;-j16&lt;/code&gt; 과 같은 옵션을 줄 수 있다.&lt;/p&gt;
+
+&lt;p&gt;성공적으로 빌드가 된다면, &lt;code class=&quot;highlighter-rouge&quot;&gt;rocksdb/java/target/rocksdbjni-5.18.3.jar&lt;/code&gt;와 같이 jni package 파일이 생성될 것이다. 여기서 &lt;code class=&quot;highlighter-rouge&quot;&gt;5.18.3&lt;/code&gt;과 같은 버전은 작업하는 RocksDB의 소스코드에 따라 다르게 생성 될 것이다.&lt;/p&gt;
+
+&lt;p&gt;이렇게 생성된 jni package는 이후 YCSB 동작에서 사용된다.&lt;/p&gt;
+
+&lt;h1 id=&quot;ycsb-compilation&quot;&gt;YCSB compilation&lt;/h1&gt;
+&lt;h2 id=&quot;get-ycsb-code-and-configuation&quot;&gt;get YCSB code and configuation&lt;/h2&gt;
+&lt;p&gt;다음과 같은 명령어를 통해 YCSB 코드를 받는다&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/brianfrankcooper/YCSB.git
+git checkout 0.15.0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;YCSB의 code modle dependency들을 다운로드하기 위해 &lt;code class=&quot;highlighter-rouge&quot;&gt;YCSB/core/pom.xml&lt;/code&gt; 파일에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/code&gt; 하위 부분에 다음과 같은 내용을 추가한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.apache.htrace&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;htrace-core4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;4.1.0-incubating&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.hdrhistogram&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;HdrHistogram&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.1.4&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;ycsb-compilation-1&quot;&gt;YCSB compilation&lt;/h2&gt;
+
+&lt;p&gt;Maven을 통해 RocksDB 를 바인딩 한다. 주의할 점은 단순히&lt;code class=&quot;highlighter-rouge&quot;&gt;mvm clean package&lt;/code&gt;명령어를 사용하면 모든 데이터베이스 어플리케이션(HBase, MongoDB 등등)의 모듈을 위한 dependency들을 다운로드 하기 때문에 시간이 매우 오래 걸린다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;다음 명령어는 RocksDB를 바인딩 하기위한 명령어 이다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mvn -pl com.yahoo.ycsb:rocksdb-binding -am clean package
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;dependency 추가로 인해 &lt;code class=&quot;highlighter-rouge&quot;&gt;YCSB/rocksdb/target/dependency/&lt;/code&gt; 경로에 &lt;code class=&quot;highlighter-rouge&quot;&gt;htrace-core4-4.1.0-incubating.jar&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;HdrHistogram-2.1.4.jar&lt;/code&gt; 파일이 생성되어 있는것을 확인할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;YCSB 디렉토리의 &lt;em&gt;YCSB/pom.xml&lt;/em&gt; 파일에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;rocksdb.version&amp;gt;5.11.3&amp;lt;/rocksdb.version&amp;gt;&lt;/code&gt;부분을 보면, YCSB가 RocksDB의 5.11.3 버전의 jni package를 다운로드 받아 사용한다는 것을 알 수 있다. 이 부분을 수정하면 원하는 버전의 jni package를 받아 YCSB를 돌려볼 수 있다. (하지만 여전히 facebook에서 배포한 버전 그대로이다. 우리가 원하는 것은 직접 소스코드를 수정하여 빌드한 RocksDB의 성능을 평가하고싶은것이다.)&lt;/p&gt;
+
+&lt;p&gt;리눅스 시스템에서는 &lt;code class=&quot;highlighter-rouge&quot;&gt;bin/ycsb.sh&lt;/code&gt; 파일을 실행하여 여러가지 YCSB 벤치마크를 조작할 수 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;다음 명령어를 통해 YCSB-workloada의 데이터를 로드 해 본다. workloada에 대한 configuration은 &lt;code class=&quot;highlighter-rouge&quot;&gt;workloads/workloada&lt;/code&gt; 파일에 명세되어 있으며, 데이터가 저장될 디렉토리도 함께 옵션으로 준다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/ycsb.sh load rocksdb -s -P workloads/workloada -p rocksdb.dir&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/home/rocky/ycsbdata
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;LOG파일을 앞 부분을 확인해 보면 아직 YCSB의 디폴트 버전인 5.11.3 버전의 RocksDB가 동작하고 있음을 확인할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;(중요!) 이전 과정에서 생성된 jni package 파일인 &lt;code class=&quot;highlighter-rouge&quot;&gt;rocksdb/java/target/rocksdbjni-5.18.3.jar&lt;/code&gt; 을 &lt;code class=&quot;highlighter-rouge&quot;&gt;YCSB/rocksdb/target/dependency/&lt;/code&gt; 경로에 복사한다. 그리고 기존의 &lt;code class=&quot;highlighter-rouge&quot;&gt;rocksdbjni-5.11.3.jar&lt;/code&gt; 파일은 삭제한다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;이후 RocksDB 데이터 경로인 &lt;code class=&quot;highlighter-rouge&quot;&gt;rocsdb.dir&lt;/code&gt;에 지정 해 주었던 디렉토리 경로의 파일들을 모두 지우고 다시 laod 명령을 해 본다.&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/ycsb.sh load rocksdb -s -P workloads/workloada -p rocksdb.dir&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/home/rocky/ycsbdata
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;LOG파일의 앞 부분을 보면 원하는 버전의(내가 코드를 고치고 빌드한 버전의) RocksDB가 나타난 것을 확인할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;데이터를 load한 이후에는 여러 workload들을 돌려 성능 평가를 해볼수 있다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;다음 명령어는 &lt;code class=&quot;highlighter-rouge&quot;&gt;home/rocky/ycsbdata&lt;/code&gt; 디렉토리에 존재하는 데이터베이스에 workload-a를 수행한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bin/ycsb.sh run rocksdb -s -P workloads/workloada -p rocksdb.dir&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/home/rocky/ycsbdata
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;parameter-settings-under-ycsb&quot;&gt;parameter settings under YCSB&lt;/h2&gt;
+
+&lt;p&gt;workload들의 default configuration은 Fieldcount와 Filelength가 작아 매우 짧은시간 내에 끝나버리니 충분한 크기로 변경 해 주어야한다. 각 workload 의 parameter는 &lt;code class=&quot;highlighter-rouge&quot;&gt;YCSB/worklaods/&lt;/code&gt; 경로의 파일들을 수정해 변경할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;RocksDB의 여러 parameter및 configuration은 &lt;code class=&quot;highlighter-rouge&quot;&gt;YCSB\rocksdb\src\main\java\com\yahoo\ycsb\db\rocksdb\RocksDBClient.java&lt;/code&gt; 파일에서 설정 해 줄 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;initRocksDB()&lt;/code&gt; 함수 아래 위치한 다음의 코드들은 RocksDB의 option들과 관련된 부분이다. RocksDB 소스코드에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;java/src/main/java/org/rocksdb/Options.java&lt;/code&gt; 파일과 &lt;code class=&quot;highlighter-rouge&quot;&gt;java/src/main/java/org/rocksdb/DBOptions.java&lt;/code&gt; 파일에서 함수의 원형을 참고하여 option을 변경하는 함수를 찾아 원하는 옵션을 변경한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cfDescriptors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isEmpty&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Options&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;optimizeLevelStyleCompaction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setCreateIfMissing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setCreateMissingColumnFamilies&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setIncreaseParallelism&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rocksThreads&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setMaxBackgroundCompactions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rocksThreads&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setInfoLogLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InfoLogLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;INFO_LEVEL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;dbOptions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RocksDB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rocksDbDir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toAbsolutePath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DBOptions&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DBOptions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setCreateIfMissing&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setCreateMissingColumnFamilies&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setIncreaseParallelism&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rocksThreads&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setMaxBackgroundCompactions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rocksThreads&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setInfoLogLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InfoLogLevel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;INFO_LEVEL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;dbOptions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+      &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ColumnFamilyHandle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cfHandles&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
+      &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RocksDB&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RocksDB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rocksDbDir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toAbsolutePath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cfDescriptors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cfHandles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cfNames&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;COLUMN_FAMILIES&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cfNames&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ColumnFamily&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cfHandles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cfOptionss&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)));&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;만약 &lt;code class=&quot;highlighter-rouge&quot;&gt;RocksDBClient.java&lt;/code&gt; 파일을 수정하였다면 아래 커멘드를 입력하여 다시 바인딩을 한다.(&lt;code class=&quot;highlighter-rouge&quot;&gt;mvn -pl com.yahoo.ycsb:rocksdb-binding -am clean package&lt;/code&gt; 커멘드에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;clean&lt;/code&gt;이 빠졌음.)&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mvn -pl com.yahoo.ycsb:rocksdb-binding -am package
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;이후 다시 생성된 &lt;code class=&quot;highlighter-rouge&quot;&gt;rocksdb/java/target/rocksdbjni-5.11.3.jar&lt;/code&gt; 파일을 삭제한다.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;load&lt;/code&gt;나 &lt;code class=&quot;highlighter-rouge&quot;&gt;run&lt;/code&gt; 커멘드를 실행하면, 원하는 옵션으로 RocksDB가 동작하는것을 확인활 수 있을것이다.&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">코드를 수정한 RocksDB 버전에 YCSB 벤치마크 돌리기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/ycsbrocksdb1.png" /></entry><entry><title type="html">performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation</title><link href="http://localhost:4000/research/synchronization/" rel="alternate" type="text/html" title="performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation" /><published>2019-04-29T19:00:00+09:00</published><updated>2019-04-29T19:00:00+09:00</updated><id>http://localhost:4000/research/synchronization</id><content type="html" xml:base="http://localhost:4000/research/synchronization/">&lt;p&gt;여러가지 멀티스레드 동기화 기법 중 어느 기법이 가장 성능이 좋을지 확인해봐라.&lt;/p&gt;
 
 &lt;p&gt;– 교수님 –&lt;/p&gt;
 
@@ -1169,259 +1398,4 @@ dev_ppaf_mask:
 
 &lt;p&gt;[5] Swanson, S., &amp;amp; Caulfield, A. M. (2013). Refactor, reduce, recycle: Restructuring the i/o stack for the future of storage. Computer, 46(8), 52-59.&lt;/p&gt;
 
-&lt;p&gt;[6] AXBOE, J. Fio - Flexible I/O tester. URL http://freecode.com/projects/fio (2014).&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/2018-02-01-openChannelSSD_ksc01.png" /></entry><entry><title type="html">How Computers Work [09]</title><link href="http://localhost:4000/book/hcw09/" rel="alternate" type="text/html" title="How Computers Work [09]" /><published>2017-11-10T21:00:00+09:00</published><updated>2017-11-10T21:00:00+09:00</updated><id>http://localhost:4000/book/hcw09</id><content type="html" xml:base="http://localhost:4000/book/hcw09/">&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#how-email-outtraces-snail-mail&quot; id=&quot;markdown-toc-how-email-outtraces-snail-mail&quot;&gt;How Email outtraces snail mail&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#how-internet-file-sharing-wroks&quot; id=&quot;markdown-toc-how-internet-file-sharing-wroks&quot;&gt;How Internet File Sharing Wroks&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#how-clouds-encompass-us-all&quot; id=&quot;markdown-toc-how-clouds-encompass-us-all&quot;&gt;HOW CLOUDS ENCOMPASS US ALL&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;h1 id=&quot;how-email-outtraces-snail-mail&quot;&gt;How Email outtraces snail mail&lt;/h1&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw09_1.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Using an email client, Jane creates a message to go to Bob. She also attaches a photo of herself for the company website, which is encoded using a standard algorithm, such as MIME, uuencode, or BINHEX. Just as easily, Jane could enclose a word processing document, spreadsheet, or program.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The encoding turns the data making up the photograph into ASCII text, which computers commonly use for unformatted, simple text. The email software might also compress the enclosure before attaching it to the message so it takes less time to send.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The client software contacts the Internet service provider’s computer server over a modem or network connection. The client software connects to a piece of software called an &lt;strong&gt;SMTP&lt;/strong&gt; server, short for &lt;strong&gt;Simple Mail Transfer Protocol&lt;/strong&gt;. The server acknowledges that it has been contacted, and the client tells the server it has a message to be sent to a certain address. The SMTP replies with a message saying either, “Send it now,” or “Too busy; send later.”&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;프로토콜(Protocol) - 응용프로그램 간(즉, 클라이언트와 데이터베이스 서버 간)의 데이터 전송 방식을 제어하는 규칙들의 집합을 네트워크 프로토콜이라고 한다. 네트워크 프로토콜은 네트워크를 통해 데이터를 전송할 때 사용하는 유형을 지정함. 네트워크 프로토콜의 예로는 TCP/IP, SMTP가 있다.&lt;/p&gt;
-
-&lt;p&gt;프로토콜은 두 가지로 이루어져 있으며 물리적 측면과 논리적 측면으로 나뉜다.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;물리적 측면: 자료 전송에 쓰이는 전송 매체, 접속용 단자 및 전송 신호, 회선 규격 등.&lt;/li&gt;
-  &lt;li&gt;논리적 측면: 프레임(Frame, 자료의 표현 형식 단위) 구성, 프레임 안에 있는 각 항목의 뜻과 기능, 자료 전송의 절차 등.
-      1. 폐쇄적인 프로토콜: 자사 장치들끼리 통신하기 위한 독자적인 통신 규약이며, 자세한 규격이 공개되어 있지 않아서 크래킹 위협에 상대적으로 안전하다. (보기: IBM의 SNA, SDLC 프로토콜)
-      2. 공개된 범용 프로토콜: 여러 장치들에 쓰이는 널리 알려진 규격이며, 규격이 널리 공개되어 있기 때문에 컴퓨터와 네트워크 크래킹에 취약한 편이다. (보기: 인터넷의 TCP/IP)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;The client sends the message to the SMTP server and asks for confirmation. The server confirms that it has received the message.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The SMTP server asks another piece of software, a domain name server, how to route the message through the Internet. The &lt;strong&gt;domain name server&lt;/strong&gt; looks up the domain name—the part of the address after the @ character—to locate the recipient’s email server. The domain name server tells the SMTP the best path for the message.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;’@’ 문자 뒤에 주소의 일부인 도메인 이름을 조회하여받는 사람의 전자 메일 서버를 찾습니다. 도메인 이름 서버는 SMTP에 메시지의 가장 적합한 경로를 알려줌.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;After the &lt;strong&gt;SMTP&lt;/strong&gt; sends the message, the email travels through various Internet routers. Routers decide which electronic pathway to send the email along based on how busy the routes are. The message might also pass through one or more &lt;strong&gt;gateways&lt;/strong&gt;, which translate the data from one type of computer system—such as Windows, Unix, and Macintosh—to the type of computer system that’s the next pass-through point on the route.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;라우터는 경로가 얼마나 바쁜지에 따라 전자 메일을 보낼 전자 경로를 결정&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;When the email arrives at Bob’s SMTP server, the server transfers the message to another server, usually of the &lt;strong&gt;POP (Post Office Protocol) or IMAP (Internet Message Access Protocol)&lt;/strong&gt; variety. The email server holds the message until Bob asks for it.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;POP, IMAP도 서버에서 돌아가고 있는 프로그램으로 생각해도 된다. 네이버 메일의 경우, 네이버 회사 데이터센터에서 운용되고 있는 서버에 구현되어 있을 것 같음(예상)&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Using his email client, Bob logs on to the email server with a username and password and then asks the server to check for mail.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The email server retrieves Jane’s stored message and transmits it to Bob’s email client. Some email software decodes and decompresses any enclosures. Others make Bob use a utility program to expand and decode the attachment. Either way, Bob can now read Jane’s message and any attachments.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;how-internet-file-sharing-wroks&quot;&gt;How Internet File Sharing Wroks&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;네트워크 프로그래밍 위해서,&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw09_2.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;A file-sharing program user logs on to one of several file-sharing servers (although many file-sharing programs have no central servers, in which case, consider the “server” shown here to be a virtual server that connects multiple user computers). The client software sends the server a list of files in the user’s library that other users can then search for and download—these files can be anything from MP3 songs to Microsoft Word documents or program files.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The host posts the list in a database where other users can search it. The server lists the libraries for hundreds of users, but all files found in those libraries remain on the computers of the other users.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;데이터베이스?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Another client enters a search term. This can be file metadata, such as a band name or movie director, or any other phrase you would expect to be associated with the file.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;메타데이터?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The client looks at all the library records on the server and displays any titles that match at least some of the search criteria. The results include the names of the files, the type of Internet connection, &lt;strong&gt;Internet protocol (IP)&lt;/strong&gt; addresses of other clients making those files available, and other assorted trivia.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;인터넷 프로토콜(IP) -  IP 주소에 따라 다른 네트워크 간 패킷의 전송, 즉 경로 제어를 위한 규약으로 다른 네트워크 간의 데이터 전송을 가능하게 한다. 그러나 패킷이 발신된 순서대로 도착하는 것은 보증하지 않는다. 전송 제어 프로토콜(TCP) 또는 사용자 데이터그램 프로토콜(UDP)과 함께 사용한다.
-[네이버 지식백과] 인터넷 프로토콜 [Internet Protocol] (IT용어사전, 한국정보통신기술협회)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;The user selects one or more of the files for transfer. His client software sends a message to the other client using its IP address. The message asks permission to download the song, and the remote client obliges by becoming a server and sending the file to the computer that asked for it.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;At the same time someone is downloading a file, other users are finding songs on that person’s hard drive and are downloading them. Several uploads/downloads can run simultaneously by taking turns sharing the Internet connections.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;how-clouds-encompass-us-all&quot;&gt;HOW CLOUDS ENCOMPASS US ALL&lt;/h1&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;Cloud&lt;/strong&gt; storage has two parts. The first—the &lt;strong&gt;front end&lt;/strong&gt;—is you or other computer users, all called clients, working at their PCs. Every time a client saves or opens a file, the request is passed to the &lt;strong&gt;back end&lt;/strong&gt;—an elaborate system that makes up the electronic clouds. Because the client’s files are saved in a cloud, the client does not have to be at an office or personal computer to retrieve them. With correct usernames and passwords, clients may retrieve their files on other computers, tablets, and smartphones to share them with others through a service such as Dropbox, Google Drive, or OneDrive.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;front end - client&lt;/li&gt;
-  &lt;li&gt;back end - server&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;구글드라이브를 통해 파일을 클라우드에 저장 해 두면, server를 통해 물리적인 기기에 제한 없이 자신의 파일에 접근 할 수 있다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The client’s request first goes to a &lt;strong&gt;central server&lt;/strong&gt;, a computer responsible for managing all the traffic coming from hundreds or thousands of clients. To make sure all client requests are handled properly, the central server follows a set of rules, called &lt;strong&gt;protocols&lt;/strong&gt;, written to ensure there are no gaps, contradictions, or impossibilities embedded in the client request.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;다수의 클라이언트 - 하나의 서버(사실, 여러 개 일 수도)&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;After the request passes the central server’s inspection, the server uses middleware software, so called because its digital turf lies between the clients and the legions of file servers whose purpose is to be repositories of whatever a client creates. With the demand for storage space so large and so immediate, a dedicated server for each client is impractical and, as we’ll see, not a good idea. But the middleware lets the storage system act as if the client does have a direct path to a dedicated, single-client server.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;이후는 그냥 읽어보자, 아~ 이런게 있구나~&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;At the same time the middleware pulls a trick on the numerous high-powered computers that make up the cloud—also called server farms—where the stored file resides. Because most of the servers are not running at full capacity, the central server uses empty storage space and otherwise idle processor time to create virtual computers. Each virtual computer operates as though it were the only computer on the farm. A neat juggling act of timing lets each virtual computer have its opportunity to send and receive information and get access to the server’s hard drives in the times when the other virtual servers are at rest.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;When the central server receives a request from a client to save a file, it may first encrypt the file to deter hackers who would break into the server’s farm to steal sensitive information. Then the central server consults a record of traffic and storage use among the hundreds of servers at more than one farm location. (Google is estimated to have 1 million servers.) A reputable cloud has twice the number of servers needed to store all of its clients’ file. In case of server malfunction, the cloud stores all of its data in more than one place and in more than one physical location. Doubling the number of servers and keeping copies—and sometimes copies of previous versions of a file—is referred to as &lt;strong&gt;redundancy&lt;/strong&gt;.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;같은 파일을 저장하는 동일한 서버가 두 개 이상 있다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;In case of a major catastrophe, parts of the file may be distributed among several servers, making it more difficult for a file to be totally eradicated. Such a strategy was part of the original impetus for the Internet among the U.S. military, which wanted a redundant system of information in case some computer centers were taken out in a nuclear war. The system has also been cited as a way to ensure the distribution of information among insurgents otherwise censored by a repressive government.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter20 - How we keep in touch the Internet way</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw09_0.png" /></entry><entry><title type="html">How Computers Work [08]</title><link href="http://localhost:4000/book/hcw08/" rel="alternate" type="text/html" title="How Computers Work [08]" /><published>2017-11-04T21:00:00+09:00</published><updated>2017-11-04T21:00:00+09:00</updated><id>http://localhost:4000/book/hcw08</id><content type="html" xml:base="http://localhost:4000/book/hcw08/">&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 380px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#how-a-browser-opens-pages&quot; id=&quot;markdown-toc-how-a-browser-opens-pages&quot;&gt;How a browser opens pages&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#dnsdomain-name-serversystem&quot; id=&quot;markdown-toc-dnsdomain-name-serversystem&quot;&gt;DNS(Domain Name Server(System))?&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#how-dns-works&quot; id=&quot;markdown-toc-how-dns-works&quot;&gt;How DNS Works?&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#how-a-browser-displays-web-pages&quot; id=&quot;markdown-toc-how-a-browser-displays-web-pages&quot;&gt;How a browser displays web pages&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;h1 id=&quot;how-a-browser-opens-pages&quot;&gt;How a browser opens pages&lt;/h1&gt;
-
-&lt;p&gt;“A website is a collection of files, text, and media that someone has made generally available to others through the Internet. “&lt;/p&gt;
-
-&lt;p&gt;웹페이지 간의 이동은&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;텍스트, 또는 이미지 등과 같은 하이퍼링크(Hyperlink)를 통해서&lt;/li&gt;
-  &lt;li&gt;URL(Universal Resouce Locator)를 브라우저의 address창에 입력하는 것.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;위 두 가지를 통해 가능하다.&lt;/p&gt;
-
-&lt;p&gt;브라우저에서 하이퍼 링크를 클릭하거나 특정 address를 입력한다면, 브라우저 프로그램은 해당하는 address를 네트워크를 통해 DNS(Domain Name Server)에 보낸다.&lt;/p&gt;
-
-&lt;h2 id=&quot;dnsdomain-name-serversystem&quot;&gt;DNS(Domain Name Server(System))?&lt;/h2&gt;
-&lt;p&gt;호스트의 도메인 이름(human readable)을 호스트의 네트워크 주소(computer readable)로 바꾸어 주거나 그 반대의 변환을 수행할 수 있도록 해 주는 서버 또는 시스템.
-특정 컴퓨터(또는 네트워크로 연결된 임의의 장치)의 주소를 찾기위해, 사람이 이해하기 쉬운 도메인 이름을 숫자로 된 식별 변호(IP 주소)로 변환 해 준다. 예를 들어, www.dcslab.snu.ac.kr 와 같은 컴퓨터 도메인 이름을 192.108.1.4와 같은 주소로 변환하고, 라우팅 정보를 제공하는 데이터베이스 시스템&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw08_1.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;h2 id=&quot;how-dns-works&quot;&gt;How DNS Works?&lt;/h2&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw08_2.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;web browser에 주소를 입력한다.&lt;/li&gt;
-  &lt;li&gt;만약 www.micosoft.com을 입력한다면, 입력 값이 위와 같이 이동한다.
-    &lt;ol&gt;
-      &lt;li&gt;DNS 서버&lt;/li&gt;
-      &lt;li&gt;루트 DNS서버&lt;/li&gt;
-      &lt;li&gt;.com DNS서버&lt;/li&gt;
-      &lt;li&gt;Microsoft.com DNS서버&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-  &lt;li&gt;각각의 DNS서버를 차례대로 이동하며 해당 웹 사이트의 ip주소를 찾는다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;DNS Server: 웹 서버 주소에 해당하는 ip주소 테이블을 저장하고 있는 컴퓨터&lt;/p&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw08_3.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;위에서 설정하는 DNS서버 주소는 Local DNS 서버 주소 라고 생각하면 된다.&lt;/p&gt;
-
-&lt;h1 id=&quot;how-a-browser-displays-web-pages&quot;&gt;How a browser displays web pages&lt;/h1&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Stored on the server, the web page itself consists of an HTML text file. HTML is a collection of codes enclosed in angle brackets—&amp;lt;&amp;gt;—that control the formatting of text in the file.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;HTML Code는 텍스트 뿐 아니라 이미지나 영상, 음성 파일등 서버에서 저장할 수 있는 대부분의 파일들을 포함 할 수 있다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;특정 웹페이지를 보기 위해서 Client가 원하는 웹페이지의 주소를 해당 서버로 보내면 해당 서버는 HTML Code를 return 한다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;동시에 서버는 HTML 코드에 있는 이미지, 영상 등의 파일을 Client로 보내도록 명령한다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;클라이언트는 HTML 코드와 이미지, 영상과 같은 파일을 RAM에 캐싱한다.(크롬 브라우저가 메모리를 많이 사용하는 대신 빠른 이유) 나중에 브라우저가 전에 보았던 웹 페이지나 이미지, 영상을 다시 볼때는 서버에 다시 요청하는 것이 아니라 RAM에 캐싱되어 있던 부분에서 가져온다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;브라우저는 서버로 부터 받은 HTML, 텍스트, 이미지, 영상들을 합하여 웹 페이지를 재 구성하여 화면에 배치할 위치를 결정한다(HTML코드를 따라서). 웹페이지의 모든 구성요소가 동시에 Client로 도착하는 것은 아니기 때문에 가장 간단한 요소인 텍스트가 일반적으로 가장 먼저 표시되고 그 이후에 이미지나 영상이 보여진다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-	&lt;img src=&quot;http://localhost:4000/images/hcw08_4.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600px;&quot; /&gt;
-&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">CIT 강의자료) Chapter19 - How the Web Puts It All at Your Fingertips</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/hcw08_0.png" /></entry></feed>
+&lt;p&gt;[6] AXBOE, J. Fio - Flexible I/O tester. URL http://freecode.com/projects/fio (2014).&lt;/p&gt;</content><author><name>Rocky Lim</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/2018-02-01-openChannelSSD_ksc01.png" /></entry></feed>
