@@ -2,22 +2,17 @@
 
 - title: About Me
   url: /about/
-  excerpt: "about, Rocky Lim"
+  excerpt: "a gear acquisition syndrome patient"
   image: rocky_icon.png
-
-- title: " "
-  url:
-  excerpt:
-  image:
 
 - title: Research
   url: /research/
-  excerpt: "related to my research field"
+  excerpt: "Expore my research field"
   image: research.jpeg
 
-- title: Book
+- title: Development
   url: /book/
-  excerpt: "things I've studied, read"
+  excerpt: "Youtube, Dev environment"
   image: study.jpeg
 
 - title: Whatever

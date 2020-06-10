@@ -3,19 +3,19 @@ title:
 date: 2017-07-22 13:44:20 Z
 layout: article
 modified: 2017-07-22 13:44:20 Z
-excerpt: "about me, Rocky Lim"
+excerpt: "about me, Rocky"
 image:
   feature:
   teaser:
   thumb:
 share: true
-ads: false
+ads: true
 ---
 
 {% include toc.html %}
 
 
-## Heerak Lim (Rocky Lim). Seoul, Korea
+## Rocky. Seoul, Korea
 
 <p style="text-align: center;">
 	<img src="{{ site.url }}/images/rocky_icon.png" alt="Drawing" style="width: 230px;"/>
@@ -44,8 +44,6 @@ This blog is mainly a place where I record some accomplishments or progresses th
 #### It's always welcome.
 
 <p>
-	<img src="{{ site.url }}/images/3x4.jpg" align="left" hspace="30" vspace="30">
-	<br /><br /><br />
 	&nbsp; &nbsp; &nbsp; &nbsp; Email : rockylim@snu.ac.kr<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; Email : lrocky1229@gmail.com<br />
 	&nbsp; &nbsp; &nbsp; &nbsp; Mobile (KR) : +82 10 4814 3800<br /><br /><br />
