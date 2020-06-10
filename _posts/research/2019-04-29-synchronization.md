@@ -4,7 +4,7 @@ title:  "performance Comparion of synchroniztion Operations + Intel Transactiona
 date:   2019-04-29 10:00:00 Z
 author: Rocky Lim
 categories: research
-excerpt: "멀티스레드 동기화 방법 비교 + 인텔 트랜잭셔널 메모리 오퍼레이션 성능 비교"
+excerpt: "멀티스레드 동기화 방법 비교"
 image:
   feature:
   teaser: 2019-04-29-synchronization/sync.png

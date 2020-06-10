@@ -154,6 +154,7 @@ GEM
       html-pipeline (~> 2.2)
       jekyll (>= 3.0)
     kramdown (1.13.2)
+    libv8 (3.16.14.19)
     liquid (4.0.0)
     listen (3.0.6)
       rb-fsevent (>= 0.9.3)
@@ -177,6 +178,7 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    ref (2.0.0)
     rouge (1.11.1)
     safe_yaml (1.0.4)
     sass (3.5.1)
@@ -189,6 +191,9 @@ GEM
       faraday (~> 0.8, < 1.0)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
+    therubyracer (0.12.3)
+      libv8 (~> 3.16.14.15)
+      ref
     thread_safe (0.3.6)
     typhoeus (0.8.0)
       ethon (>= 0.8.0)
@@ -207,6 +212,7 @@ DEPENDENCIES
   jekyll-feed
   jekyll-gist
   jekyll-sitemap
+  therubyracer
 
 BUNDLED WITH
    1.17.2

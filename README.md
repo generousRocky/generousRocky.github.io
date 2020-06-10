@@ -1,4 +1,4 @@
-# Tech Bolg, Heerak Lim
+# Tech Bolg
 
 ## Notable Features
 

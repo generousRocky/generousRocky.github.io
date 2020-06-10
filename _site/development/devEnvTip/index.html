@@ -2,13 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>커멘드라인 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc. • Rocky's Tech Blog</title>
-    <meta name="description" content="Collection of all tips I've read and found">
+    <title>커멘드라인 개발환경 팁 • Rocky's tech blog</title>
+    <meta name="description" content="Tips for vim, tmux, ctags, cscope, etc.">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="커멘드라인 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc.">
-	<meta name="twitter:description" content="Collection of all tips I've read and found">
+	<meta name="twitter:title" content="커멘드라인 개발환경 팁">
+	<meta name="twitter:description" content="Tips for vim, tmux, ctags, cscope, etc.">
 	
 	<meta name="twitter:creator" content="@">
 	
@@ -18,14 +18,14 @@
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="커멘드라인 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc.">
-	<meta property="og:description" content="Collection of all tips I've read and found">
-	<meta property="og:url" content="http://localhost:4000/whatever/devEnvTip/">
-	<meta property="og:site_name" content="Rocky's Tech Blog">
+	<meta property="og:title" content="커멘드라인 개발환경 팁">
+	<meta property="og:description" content="Tips for vim, tmux, ctags, cscope, etc.">
+	<meta property="og:url" content="http://localhost:4000/development/devEnvTip/">
+	<meta property="og:site_name" content="Rocky's tech blog">
 
-    <link rel="canonical" href="http://localhost:4000/whatever/devEnvTip/">
+    <link rel="canonical" href="http://localhost:4000/development/devEnvTip/">
 
-    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's Tech Blog Atom Feed">
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="Rocky's tech blog Atom Feed">
     <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
 
     <meta name="HandheldFriendly" content="True">
@@ -47,62 +47,53 @@
 
     <header id="masthead">
   <div class="inner-wrap">
-    <a href="http://localhost:4000/" class="site-title">Rocky's Tech Blog</a>
+    <a href="http://localhost:4000/" class="site-title">Rocky's tech blog</a>
     <nav role="navigation" class="menu top-menu">
         <ul class="menu-item">
-	<li class="home"><a href="/">Rocky's Tech Blog</a></li>
+	<li class="home"><a href="/">Rocky's tech blog</a></li>
 	
     
     <li><a href="http://localhost:4000/about/" >About Me</a></li>
   
     
-    <li><a href="http://localhost:4000" > </a></li>
+    <li><a href="http://localhost:4000/development/" >Development</a></li>
   
     
     <li><a href="http://localhost:4000/research/" >Research</a></li>
   
     
-    <li><a href="http://localhost:4000/book/" >Book</a></li>
-  
-    
-    <li><a href="http://localhost:4000/whatever/" >Whatever</a></li>
+    <li><a href="http://localhost:4000/writing/" >Writing</a></li>
   
 </ul>
     </nav>
   </div><!-- /.inner-wrap -->
 </header><!-- /.masthead -->
     <nav role="navigation" id="js-menu" class="sliding-menu-content">
-  <h5>Rocky's Tech Blog <span>Table of Contents</span></h5>
+  <h5>Rocky's tech blog <span>Table of Contents</span></h5>
   <ul class="menu-item">
     <li>
       <a href="http://localhost:4000/about/">
-        <img src="http://localhost:4000/images/rocky_icon.png" alt="teaser" class="teaser">
+        <img src="http://localhost:4000/images/rocky_icon2.png" alt="teaser" class="teaser">
         <div class="title">About Me</div>
-        <p class="excerpt">about, Rocky Lim</p>
+        <p class="excerpt">A gear acquisition syndrome patient</p>
       </a>
     </li><li>
-      <a href="http://localhost:4000">
-        
-        <div class="title"> </div>
-        
+      <a href="http://localhost:4000/development/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Development</div>
+        <p class="excerpt">Everything related to development</p>
       </a>
     </li><li>
       <a href="http://localhost:4000/research/">
         <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
         <div class="title">Research</div>
-        <p class="excerpt">related to my research field</p>
+        <p class="excerpt">Expore my research field</p>
       </a>
     </li><li>
-      <a href="http://localhost:4000/book/">
-        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
-        <div class="title">Book</div>
-        <p class="excerpt">things I've studied, read</p>
-      </a>
-    </li><li>
-      <a href="http://localhost:4000/whatever/">
+      <a href="http://localhost:4000/writing/">
         <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
-        <div class="title">Whatever</div>
-        <p class="excerpt">things not related above.</p>
+        <div class="title">Writing</div>
+        <p class="excerpt">things not related to above.</p>
       </a>
     </li>
   </ul>
@@ -125,14 +116,14 @@
         <span itemprop="title">Home</span>
       </a> › 
     <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-      <a href="http://localhost:4000/whatever/" itemprop="url">
-        <span itemprop="title">Whatever</span>
+      <a href="http://localhost:4000/development/" itemprop="url">
+        <span itemprop="title">Development</span>
       </a>
     </span>
   </nav><!-- /.breadcrumbs -->
 
 		<div class="page-title">
-			<h1>커멘드라인 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc.</h1>
+			<h1>커멘드라인 개발환경 팁</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
@@ -489,20 +480,20 @@ pageUp, pageDown : 페이지 이동 <span class="o">(</span>iTerm에서는 fn + 
 					
 
 <div class="author-image">
-	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky Lim">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="Rocky">
 </div><!-- ./author-image -->
 <div class="author-content">
-	<h3 class="author-name" >Written by <span itemprop="author">Rocky Lim</span></h3>
+	<h3 class="author-name" >Written by <span itemprop="author">Rocky</span></h3>
 	<p class="author-bio">The joy of discovery is certainly the liveliest that the mind of man can ever feel.</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=커멘드라인%20개발환경%20팁:Tips%20for%20vim,%20tmux,%20ctags,%20cscope,%20etc.&amp;url=http://localhost:4000/whatever/devEnvTip/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
-	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/whatever/devEnvTip/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
-	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/whatever/devEnvTip/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=커멘드라인%20개발환경%20팁&amp;url=http://localhost:4000/development/devEnvTip/&amp;via=" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/development/devEnvTip/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/development/devEnvTip/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
 
 					<div class="page-meta">
-	<p>Updated <time datetime="2017-09-20T19:00:00Z" itemprop="datePublished">September 20, 2017</time></p>
+	<p>Updated <time datetime="2017-09-20T10:00:00Z" itemprop="datePublished">September 20, 2017</time></p>
 </div><!-- /.page-meta -->
 				</footer><!-- /.footer -->
 				<aside>
@@ -567,20 +558,17 @@ s.setAttribute('data-timestamp', +new Date());
 		<ul class="menu-item">
 		
       
-			<li><a href="https://www.facebook.com/heerak.lim" target="_blank">facebook</a></li>
+			<li><a href="https://www.youtube.com/channel/UCpY9pb4-S0PwCJBp2r6nOvg" target="_blank">Youtube</a></li>
 		
       
 			<li><a href="https://github.com/RockyLim92" target="_blank">GitHub</a></li>
-		
-      
-			<li><a href="https://www.instagram.com/hi_rocky92" target="_blank">Instagram</a></li>
 		
       
 			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
 		
 		</ul>
 	</nav><!-- /.bottom-menu -->
-	<p class="copyright">&#169; 2019 <a href="http://localhost:4000">Rocky's Tech Blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+	<p class="copyright">&#169; 2020 <a href="http://localhost:4000">Rocky's tech blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
 </footer>
 
     </div>

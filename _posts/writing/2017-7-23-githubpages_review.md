@@ -3,7 +3,7 @@ layout: article
 title: "Github page 제작 후기 with Jekyll"
 date: 2017-07-22 13:44:20 Z
 author: Rocky Lim
-categories: whatever
+categories: writing
 excerpt: 가입형 블로그에서 설치형 블로그로.
 image:
   feature: jekyll.png

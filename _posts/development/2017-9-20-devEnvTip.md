@@ -1,10 +1,10 @@
 ---
 layout: article
-title:  "커멘드라인 개발환경 팁:Tips for vim, tmux, ctags, cscope, etc."
+title:  "커멘드라인 개발환경 팁"
 date:   2017-9-20 10:00:00 Z
 author: Rocky Lim
-categories: whatever
-excerpt: "Collection of all tips I've read and found"
+categories: development
+excerpt: "Tips for vim, tmux, ctags, cscope, etc."
 image:
   feature:
   teaser: devEnvTip_01.png

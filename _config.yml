@@ -1,7 +1,7 @@
 # Site wide configuration
 
-title: "Rocky's Tech Blog"
-description: "Technology Blog of Rocky Lim"
+title: "Rocky's tech blog"
+description: "Explore things taste like developer"
 logo: git_icon.png
 teaser: rocky_icon.png # 400x250 px default teaser image used in image archive grid
 locale: en
