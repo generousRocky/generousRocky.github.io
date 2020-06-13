@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-06-11T03:20:22+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky’s tech blog</title><subtitle>Explore things taste like developer</subtitle><entry><title type="html">YCSB benchmark for modified RocksDB(not for YCSB’s default version)</title><link href="http://localhost:4000/research/ycsbrocksdb/" rel="alternate" type="text/html" title="YCSB benchmark for modified RocksDB(not for YCSB's default version)" /><published>2019-08-17T19:00:00+09:00</published><updated>2019-08-17T19:00:00+09:00</updated><id>http://localhost:4000/research/ycsbrocksdb</id><content type="html" xml:base="http://localhost:4000/research/ycsbrocksdb/">&lt;nav class=&quot;toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-06-14T02:23:20+09:00</updated><id>http://localhost:4000/</id><title type="html">Rocky tech blog</title><subtitle>Explore things taste like developer</subtitle><entry><title type="html">YCSB benchmark for modified RocksDB(not for YCSB’s default version)</title><link href="http://localhost:4000/research/ycsbrocksdb/" rel="alternate" type="text/html" title="YCSB benchmark for modified RocksDB(not for YCSB's default version)" /><published>2019-08-17T19:00:00+09:00</published><updated>2019-08-17T19:00:00+09:00</updated><id>http://localhost:4000/research/ycsbrocksdb</id><content type="html" xml:base="http://localhost:4000/research/ycsbrocksdb/">&lt;nav class=&quot;toc&quot;&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#rocksdb-jni-package-generation&quot; id=&quot;markdown-toc-rocksdb-jni-package-generation&quot;&gt;RocksDB jni package generation&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#ycsb-compilation&quot; id=&quot;markdown-toc-ycsb-compilation&quot;&gt;YCSB compilation&lt;/a&gt;    &lt;ul&gt;
@@ -689,161 +689,7 @@ at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;or . . .&lt;/p&gt;</content><author><name>Rocky</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">InooDB basic concept and function call trace(function call stack, read write path)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/innodb_01.jpg" /></entry><entry><title type="html">개발자와 DBA를 위한 real mysql(work in progress)</title><link href="http://localhost:4000/research/mysql_01/" rel="alternate" type="text/html" title="개발자와 DBA를 위한 real mysql(work in progress)" /><published>2018-02-20T19:00:00+09:00</published><updated>2018-02-20T19:00:00+09:00</updated><id>http://localhost:4000/research/mysql_01</id><content type="html" xml:base="http://localhost:4000/research/mysql_01/">&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#architecture&quot; id=&quot;markdown-toc-architecture&quot;&gt;Architecture&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#path-overview&quot; id=&quot;markdown-toc-path-overview&quot;&gt;Path Overview&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#threading&quot; id=&quot;markdown-toc-threading&quot;&gt;Threading&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#메모리-할당-및-사용-구조&quot; id=&quot;markdown-toc-메모리-할당-및-사용-구조&quot;&gt;메모리 할당 및 사용 구조&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#플러그인-스토리지-엔진-모델&quot; id=&quot;markdown-toc-플러그인-스토리지-엔진-모델&quot;&gt;플러그인 스토리지 엔진 모델&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#쿼리-실행-구조&quot; id=&quot;markdown-toc-쿼리-실행-구조&quot;&gt;쿼리 실행 구조&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#replication&quot; id=&quot;markdown-toc-replication&quot;&gt;replication&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#쿼리-캐시&quot; id=&quot;markdown-toc-쿼리-캐시&quot;&gt;쿼리 캐시&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#innodb-스토리지-엔진-아키텍쳐&quot; id=&quot;markdown-toc-innodb-스토리지-엔진-아키텍쳐&quot;&gt;InnoDB 스토리지 엔진 아키텍쳐&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#innodb-버퍼-풀&quot; id=&quot;markdown-toc-innodb-버퍼-풀&quot;&gt;InnoDB 버퍼 풀&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#insert-buffer&quot; id=&quot;markdown-toc-insert-buffer&quot;&gt;Insert Buffer&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#redo-로그-로그-버퍼&quot; id=&quot;markdown-toc-redo-로그-로그-버퍼&quot;&gt;Redo 로그, 로그 버퍼&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#실행-계획&quot; id=&quot;markdown-toc-실행-계획&quot;&gt;실행 계획&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#쿼리-실행-절차&quot; id=&quot;markdown-toc-쿼리-실행-절차&quot;&gt;쿼리 실행 절차&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;h1 id=&quot;architecture&quot;&gt;Architecture&lt;/h1&gt;
-
-&lt;h2 id=&quot;path-overview&quot;&gt;Path Overview&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Mysql 엔진
-클라이언트로부터 접속 및 sql 쿼리 요청을 받아 문장을 분석, 최적화한다. 데이터를 스토리지로부터 읽거나 써야 할 떄는 스토리지 엔진에게 요청한다. 이러한 요청을 Handler Request라고 한다. 여기에 사용되는 API는 Handler API라고 함.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;스토리지 엔진
-실제 데이터를 디바이스에 저장하거나 읽어오는 부분을 담당. MySQL서버에서 Mysql엔진은 하나이지만 스토리지 엔진은 여러 개 일 수 있다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;threading&quot;&gt;Threading&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;포그라운드 스레드(클라이언트 스레드)&lt;/strong&gt; - mysql 서버에 접속한 클라이언트 만큼 존재하며, 클라이언트가 요청하는 쿼리 문장을 처리한다. MySQL에서 사용자 스레드와 포그라운드 스레드는 같은의미로 사용됨. 클라이언트가 서버에 접속하게 되면 그 서버는 클라이언트의 요청을 처리해 줄 스레드를 클라이언트에게 할당 해 준다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;백그라운더 스레드&lt;/strong&gt; - InnoDB의 경우 여러가지 작업이 백그라운드로 처리된다. 예를 들어, insert Buffer를 병합, 로그를 디스크로 기록, InnoDB의 버퍼 풀의 데이터를 디스크에 기록, 데이터를 버퍼로 읽기, 모니터링 등이 있다. 읽기의 경우 클라이언트 스레드에서 처리되기 때문에, 읽기 스레드가 많을 필요가 없지만, 쓰기 스레드는 많은 작업들을 백그라운드로 처리하기 때문에, 충분하게 설정 해 주는 것이 좋다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;sql 처리에서 읽기는 지연이 없지만, 쓰기는 배치 프로세싱을 할 수 있음. InnoDB에서는 INSERT와 UPDATE 그리고 DELETE 쿼리로 데이터가 변경되는 경우, 데이터가 디스크의 데이터 파일로 완정히 저장될 때 까지 기다리지 않아도 된다. 하지만, MyISAM에서 일반적인 쿼리는 쓰기 버퍼링 기능을 사용할 수 없다.&lt;/p&gt;
-
-&lt;h2 id=&quot;메모리-할당-및-사용-구조&quot;&gt;메모리 할당 및 사용 구조&lt;/h2&gt;
-
-&lt;p&gt;MySQL에서 사용되는 메모리 공간은 크게 글로벌 메모리 영역과 로컬 메모리 영역으로 구분된다. 글로벌 메모리 영역의 모든 메모리 공간은 MySQL서버가 시작되면서 OS로부터 할당된다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;글로벌 메모리 영역&lt;/strong&gt; - 클라이언트 스레드의 수와 무관하게 하나의(일반적으로) 메모리 공간으로 할당 된다. 모든 스레드에 의해 공유된다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;로컬 메모리 영역&lt;/strong&gt; - 세션 메모리 영역이라고도 표현하며, MySQL 서버상에 존재하는 클라이언트 스레드가 쿼리를 처리하는데 사용하는 메모리 영역,  클라이언트 메모리 영역, 또는 세션 메모리 영역이라고도 한다.
-로컬 메모리 영역은 각 클라이언트 스레드 별로 독립적으로 할당되며, 절대 공유되어 사용되지 않는다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;플러그인-스토리지-엔진-모델&quot;&gt;플러그인 스토리지 엔진 모델&lt;/h2&gt;
-
-&lt;p&gt;대부분의 MySQL기능은 MySQL엔진에서 처리된다. I/O 작업만 스토리지 엔진에서 처리됨, 따라서 플러그인 처럼 서로다른 스토리지 엔진을 사용할 수 있다.&lt;/p&gt;
-
-&lt;p&gt;MySQL 엔진이 스토리지 엔진을 조정하기 위해 핸들러라는 것을 사용하게 된다. MySQL엔진이 각 스토리지 엔진에게 데이터를 읽어오거나 저장하도록 명령하려면 핸들러를 반드시 통해야 한다.&lt;/p&gt;
-
-&lt;h2 id=&quot;쿼리-실행-구조&quot;&gt;쿼리 실행 구조&lt;/h2&gt;
-
-&lt;p style=&quot;text-align: center;&quot;&gt;
-		&lt;img src=&quot;http://localhost:4000/images/mysql_01_01.jpg&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://rrhh234cm.tistory.com/140&quot;&gt;http://rrhh234cm.tistory.com/140&lt;/a&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;파서&lt;/strong&gt; - 문법 체크, 토큰분리&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;전처리기&lt;/strong&gt; - 객체의 존재 유무, 접근 권한 확인 등.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;옵티마이저&lt;/strong&gt; - 두뇌, 가장 중요&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;실행 엔진&lt;/strong&gt; - 손과 발,&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;핸들러(스토리지 엔진)&lt;/strong&gt; - I/O&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;replication&quot;&gt;replication&lt;/h2&gt;
-
-&lt;p&gt;데이터베이스의 데이터가 대용량화 됨에 따라, 확장성을 위한 여러 기술 중 하나. 두 개 이상의 MySQL서버가 동일한 데이터를 담도록 실시간으로 동기화 하는 기술.&lt;/p&gt;
-
-&lt;h2 id=&quot;쿼리-캐시&quot;&gt;쿼리 캐시&lt;/h2&gt;
-
-&lt;p&gt;쿼리의 결과를 쿼리 캐시에 담아 두고, 동일한 쿼리 요청이 왔을때 캐시에서 그 결과를 돌려준다.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;절차
-    &lt;ol&gt;
-      &lt;li&gt;요청된 쿼리 문장이 쿼리 캐시에 존재하는가(공백이나 개행문자 하나라도 같아야 한다)?&lt;/li&gt;
-      &lt;li&gt;해당 사용자가 그 결과를 볼 수 있는 권한을 가지고 있는가?&lt;/li&gt;
-      &lt;li&gt;트랜잭션 내에서 실행된 쿼리 인 경우, 그 결과가 가시 범위 내의 트랜잭션 내에서 만들어진 결과 인가(InnoDB의 경우)&lt;/li&gt;
-      &lt;li&gt;쿼리에 사용된 기능(내장 함수나 저장 함수, 예를 들어 랜덤이나 현재 날짜 관련 )이 캐시 되어도 동일한 결과를 보장 할 수 있는가?&lt;/li&gt;
-      &lt;li&gt;캐시가 만들어지고 난 이후ㅠ 해당 데이터가 다른 사용자에 의해 변경되지 않았는가?&lt;/li&gt;
-      &lt;li&gt;쿼리에 의해 만들어진 결과가 캐시하기에 너무 크지 않은가?&lt;/li&gt;
-      &lt;li&gt;그 밖에 쿼리 캐시를 사용하지 못하게 만드는 요소가 사용됐는가?
-등등등&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;innodb-스토리지-엔진-아키텍쳐&quot;&gt;InnoDB 스토리지 엔진 아키텍쳐&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;InnoDB 특징
-    &lt;ol&gt;
-      &lt;li&gt;프라이머리 키에 의한 클러스터링&lt;/li&gt;
-      &lt;li&gt;잠금이 필요없는 읽기&lt;/li&gt;
-      &lt;li&gt;foreign key 지원&lt;/li&gt;
-      &lt;li&gt;자동 데드락 감지&lt;/li&gt;
-      &lt;li&gt;자동화 된 장애 복구&lt;/li&gt;
-      &lt;li&gt;오라클 아키텍쳐 적용&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;innodb-버퍼-풀&quot;&gt;InnoDB 버퍼 풀&lt;/h2&gt;
-
-&lt;p&gt;MySQL의 쓰기 작업(INSERT, DELETE등)은 파일의 이곳 저곳에 위치한 레코드를 변경하기 때문에 랜덤한 디스크 작업을 발생시킴. 버퍼풀이 이러한 변경된 데이터를 모아서 처리하게 되면 랜덤한 디스크 잡업의 횟수를 줄일 수 있다.&lt;/p&gt;
-
-&lt;p&gt;InnoDB의 버퍼 풀은 데이터와 인덱스 모두 캐시하고 쓰기 버퍼링의 역할까지 모두 처리한다. 또한, 여러 백그라운드 작업의 기반이 되는 메모리 공간이다. 따라서 InnoDB의 버퍼 풀 크기를 충분하게 설정해야 한다.&lt;/p&gt;
-
-&lt;p&gt;InnoDB 버퍼 풀은 아직 디스크에 기록되지 않은 변경된 데이터를 가지고 있다. &lt;strong&gt;이런 데이터를 가지고 있는 페이지를 더티 페이지라고 하는데&lt;/strong&gt;, InnoDB에서는 이런 더티 페이지를 주기적으로 체크포인트 이벤트를 통해 Write Thread 가 필요한 만큼의 더티페이지를 디스크에 기록한다. 체크포인트가 발생한다고 해서 모든 더티페이지를 디스크에 기록하는 것은 아니다.&lt;/p&gt;
-
-&lt;h2 id=&quot;insert-buffer&quot;&gt;Insert Buffer&lt;/h2&gt;
-
-&lt;p&gt;INSERT나 UPDATE시 데이터 파일을 변경하는 작업 뿐 아니라 해당 테이블에 포함된 인덱스를 업데이트 해야하는 작업이 필요함. 이 작업은 랜덤한 디스크 읽기 이므로 오버헤드가 있음. 따라서, InnoDB에서는 변경해야 할 인덱스 페이지가 버퍼 풀에 있으면 바로 업데이트를 수행하고, 디스크로부터 읽어와서 업데이트를 해야 한다면 임시 공간에 저장 해 두고 결과를 사용자에게 반환한다. 이때 이 임시 공간을 Insert Buffer라고 한다&lt;/p&gt;
-
-&lt;h2 id=&quot;redo-로그-로그-버퍼&quot;&gt;Redo 로그, 로그 버퍼&lt;/h2&gt;
-
-&lt;p&gt;MySQL에서 변경된 데이터를 버퍼링 해 두기 위해 InnoDB 버퍼 풀 과 같은 장치가 마련되어 있음, 이것만으로 ACID를 보장하기 어려움. 변경된 내용을 순차적으로 디스크에 기록하는 로그 파일을 가지고 있음. 이 로그를 Redo log라고 함.&lt;/p&gt;
-
-&lt;p&gt;데이터의 변경 작업이 매우 많은 DBMS서버의 경우에는 이 리두 로그의 기록 작업이 문제가 됨. 따라서 ACID를 보장하는 수준에서 버핑을 하고 이 버퍼링에 사용되는 공간이 로그버퍼임.&lt;/p&gt;
-
-&lt;h1 id=&quot;실행-계획&quot;&gt;실행 계획&lt;/h1&gt;
-
-&lt;h2 id=&quot;쿼리-실행-절차&quot;&gt;쿼리 실행 절차&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;사용자로부터 요청된 SQL 문장을 잘개 쪼개서 MySQL 서버가 이해할 수 있는 수준으로 분리한다.&lt;/li&gt;
-  &lt;li&gt;SQL Parse tree를 만들어, 어떤 테이블로부터 읽고, 어떤 인덱스를 사용하여 테이블을 읽을지 정한다.&lt;/li&gt;
-  &lt;li&gt;2.로부터 결정된 방법을 통해 스토리지 엔진으로부터 데이터를 가져온다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;1~2 단계는 MySQL 엔진에서 처리하며, 3단계는 MySQL엔진과 스토리지엔진 모두가 관여한다.&lt;/p&gt;</content><author><name>Rocky</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">mysql architecture</summary></entry><entry><title type="html">liblightnvm(work in progress)</title><link href="http://localhost:4000/research/openChannelSSD_liblightnvm/" rel="alternate" type="text/html" title="liblightnvm(work in progress)" /><published>2018-02-20T19:00:00+09:00</published><updated>2018-02-20T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_liblightnvm</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_liblightnvm/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;p&gt;or . . .&lt;/p&gt;</content><author><name>Rocky</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">InooDB basic concept and function call trace(function call stack, read write path)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/innodb_01.jpg" /></entry><entry><title type="html">liblightnvm(work in progress)</title><link href="http://localhost:4000/research/openChannelSSD_liblightnvm/" rel="alternate" type="text/html" title="liblightnvm(work in progress)" /><published>2018-02-20T19:00:00+09:00</published><updated>2018-02-20T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_liblightnvm</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_liblightnvm/">&lt;nav class=&quot;toc&quot;&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#obtaining-device-information&quot; id=&quot;markdown-toc-obtaining-device-information&quot;&gt;Obtaining device information&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#physical-addressing&quot; id=&quot;markdown-toc-physical-addressing&quot;&gt;Physical Addressing&lt;/a&gt;&lt;/li&gt;
@@ -1845,4 +1691,144 @@ rqd structure 생성, structure 체워나가기.&lt;/p&gt;
 		&lt;span class=&quot;n&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request_fn_active&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>Rocky</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Kernel Code Analysis - Write path</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/openChannelSSD.png" /></entry></feed>
+&lt;/div&gt;</content><author><name>Rocky</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Kernel Code Analysis - Write path</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/openChannelSSD.png" /></entry><entry><title type="html">Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC)</title><link href="http://localhost:4000/research/openChannelSSD_tips/" rel="alternate" type="text/html" title="Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC)" /><published>2017-08-28T19:00:00+09:00</published><updated>2017-08-28T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_tips</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_tips/">&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/openChannelSSD_tips_01.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#1-install-supported-linux-kernel-and-boot-as-it&quot; id=&quot;markdown-toc-1-install-supported-linux-kernel-and-boot-as-it&quot;&gt;1. Install supported Linux Kernel and boot as it&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#2-install-nvme-cli-tool&quot; id=&quot;markdown-toc-2-install-nvme-cli-tool&quot;&gt;2. Install nvme-cli tool&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#3-using-open-channel-ssd-hardware&quot; id=&quot;markdown-toc-3-using-open-channel-ssd-hardware&quot;&gt;3. Using Open-Channel SSD hardware&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#4-instantiate-media-manager-and-target&quot; id=&quot;markdown-toc-4-instantiate-media-manager-and-target&quot;&gt;4. Instantiate media manager and target&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5-mount-and-use&quot; id=&quot;markdown-toc-5-mount-and-use&quot;&gt;5. Mount and use&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#5-extra&quot; id=&quot;markdown-toc-5-extra&quot;&gt;5. Extra&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h6 id=&quot;original-page-link-httpsopenchannelssdreadthedocsioenlatest&quot;&gt;Original page link: &lt;a href=&quot;https://openchannelssd.readthedocs.io/en/latest/&quot;&gt;https://openchannelssd.readthedocs.io/en/latest/&lt;/a&gt;&lt;/h6&gt;
+
+&lt;h1 id=&quot;1-install-supported-linux-kernel-and-boot-as-it&quot;&gt;1. Install supported Linux Kernel and boot as it&lt;/h1&gt;
+
+&lt;p&gt;LightNVM is directly supported in Linux since kernel 4.4. Pblk, which is used to get started, is available since 4.12+. Make sure to install 4.12+ or later if you want to use pblk.&lt;/p&gt;
+
+&lt;p&gt;To use Open-Channel SSDs, support in the operating system kernel is required. Support in the Linux kernel has been supported since 4.4 with the inclusion of the LightNVM subsystem. The project is still under development, therefore the latest release or release candidate is preferred. The latest source code is available at &lt;a href=&quot;https://github.com/OpenChannelSSD/linux&quot;&gt;https://github.com/OpenChannelSSD/linux&lt;/a&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tips:&lt;br /&gt;
+    &lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone -b pblk.cnex  https://github.com/OpenChannelSSD/linux.
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;p&gt;Like above script, you have to use pblk.cnex branch in the Linux repository witch has couple of extra patches.
+you can see an issue about this here: &lt;a href=&quot;https://github.com/OpenChannelSSD/liblightnvm/issues/7&quot;&gt;https://github.com/OpenChannelSSD/liblightnvm/issues/7&lt;/a&gt;
+&lt;br /&gt;&lt;br /&gt;When you compile Kernel, make sure that the .config file at least includes:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nv&quot;&gt;CONFIG_NVM&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y
+    &lt;span class=&quot;c&quot;&gt;# Expose the /sys/module/lnvm/parameters/configure_debug interface&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;CONFIG_NVM_DEBUG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y
+    &lt;span class=&quot;c&quot;&gt;# Target support (required to expose the open-channel SSD as a block device)&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;CONFIG_NVM_PBLK&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y    
+    &lt;span class=&quot;c&quot;&gt;# For NVMe support&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;CONFIG_BLK_DEV_NVME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;y
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After booting the a supported kernel. The following must be met:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;A compatible device, such as QEMU NVMe or an Open-Channel SSD, such as the CNEX Labs LightNVM SDK.&lt;/li&gt;
+  &lt;li&gt;A media manager on top of the device driver. The media manager manages the partition table for the device.&lt;/li&gt;
+  &lt;li&gt;A target on top of the block manager that exposes the Open-Channel SSD.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Tips:&lt;br /&gt;
+You don’t have to concern #2 becasue it is deprecated since 4.8.
+you can see an issue regarding this here: &lt;a href=&quot;https://github.com/OpenChannelSSD/documentation/issues/5&quot;&gt;https://github.com/OpenChannelSSD/documentation/issues/5&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;2-install-nvme-cli-tool&quot;&gt;2. Install nvme-cli tool&lt;/h1&gt;
+
+&lt;p&gt;nvme-cli is the tool used to administrate nvme devices. It can be installed typing like&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/linux-nvme/nvme-cli
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;nvme-cli
+sudo make; sudo make install
+
+sudo add-apt-repository ppa:sbates
+sudo apt-get update
+sudo apt-get install nvme-cli
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or installed from &lt;a href=&quot;https://github.com/linux-nvme/nvme-cli&quot;&gt;https://github.com/linux-nvme/nvme-cli&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;If you are not running Ubuntu, please see the nvme-cli github project for instructions.&lt;/p&gt;
+
+&lt;h1 id=&quot;3-using-open-channel-ssd-hardware&quot;&gt;3. Using Open-Channel SSD hardware&lt;/h1&gt;
+
+&lt;p&gt;If you have a LightNVM SDK from CNEX Labs, or another Open-Channel SSD, you should be able to see the device using&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which should output the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvme lnvm list
+Number of devices: 1
+Device      	Block manager	Version
+nvme0n1     	gennvm      	(0,1,0)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;4-instantiate-media-manager-and-target&quot;&gt;4. Instantiate media manager and target&lt;/h1&gt;
+
+&lt;p&gt;When the installation is finished and the kernel have been booted. Devices can be enumerated by:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm list
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;and initialized by:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm init -d nvme0n1
+sudo nvme lnvm create -d nvme0n1 --lun-begin=0 --lun-end=3 -n mydevice -t pblk
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;use the option -f to avoid recovering the L2P table from the device for quick initialization&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm create -d nvme0n1 --lun-begin=0 --lun-end=3 -n mydevice -t pblk -f
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo nvme lnvm create -d /dev/nvme0n1 -n mydevice -t pblk -b 0 -e 127
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;for other options for –help on each command. For example
+    sudo nvme lnvm create –help&lt;/p&gt;
+
+&lt;p&gt;Assuming nvme0n1 was shown during “nvme lnvm list”, it will then expose /dev/mydevice as a block device using it as the backend. Please note that pblk is only available at the Linux kernel Github repository, and it yet to be upstream.&lt;/p&gt;
+
+&lt;h1 id=&quot;5-mount-and-use&quot;&gt;5. Mount and use&lt;/h1&gt;
+
+&lt;p&gt;If you get here without any error, you can mount the device and use it like:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo mkfs -t ext4 /dev/mydevice
+sudo mkdir /media/nvme
+sudo mount /dev/mydevice /media/nvme
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;you can see “nvme” directory created and mounted to /dev/mydevice&lt;/p&gt;
+
+&lt;h1 id=&quot;5-extra&quot;&gt;5. Extra&lt;/h1&gt;
+
+&lt;p&gt;At first time, I used Ubuntu 16.04 Desktop. There are some problem like a kernel panic or taking forever for &lt;em&gt;mkfs&lt;/em&gt;. So, I changed and use 16.04 server.&lt;/p&gt;</content><author><name>Rocky</name><email>rockylim@snu.ac.kr</email><uri>https://rockylim92.github.io/</uri></author><summary type="html">Tips for getting started with CNEX SSD</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/oopenChannelSSD_tips_01.png" /></entry></feed>

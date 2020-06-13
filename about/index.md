@@ -14,63 +14,46 @@ ads: true
 
 {% include toc.html %}
 
-
-## Rocky. Seoul, Korea
-
 <p style="text-align: center;">
 	<img src="{{ site.url }}/images/rocky_icon.png" alt="Drawing" style="width: 230px;"/>
 </p>
 
-My name is Heerak Lim and in English, called Rocky.
-I graduated from Seoul National University in Korea with a master's degree in computer science and majored in database systems, and storage systems.
-I am currently working for SAP Laps Korea.
-Beforem that, I worked for CSIRO, a national research organisation in Australia and AICT(Advanced Institutes of Convergence Technology) in Korea as a research intern.
-Among the various fields of computer science, I am interested in followings:
-
+## I am interested in followings
+* Software Craftmanship, Agile, TDD
 * Database, Storage system, Parallel Computing
-* Key-Value store, NoSQL, DBMS
+* Key-Value store, DBMS
 * Linux/Unix environment
 * system performance
 * Application-Driven Storage Management
 * multi-thread concurrency
-* automation in the development process
-
-This blog is mainly a place where I record some accomplishments or progresses that I have made on such research topics. Plus, I'm going to post whatever I’ve designed, published, developed.<br /><br />cheers,
-
-
+* Automation
 
 ## Contact Me
 
 #### It's always welcome.
 
 <p>
-	&nbsp; &nbsp; &nbsp; &nbsp; Email : rockylim@snu.ac.kr<br />
-	&nbsp; &nbsp; &nbsp; &nbsp; Email : lrocky1229@gmail.com<br />
-	&nbsp; &nbsp; &nbsp; &nbsp; Mobile (KR) : +82 10 4814 3800<br /><br /><br />
 
-	&nbsp; &nbsp; &nbsp; &nbsp;
-	<a href="https://www.facebook.com/heerak.lim">
-		<span class="icon icon--facebook">{% include icons/facebook.svg %}</span>
-	</a>
-	&nbsp; &nbsp;
+	&nbsp;
+Email : rocky92.lim@gmail.com<br />
+	&nbsp; &nbsp; <br />
 
+	&nbsp;
 	<a href="https://github.com/RockyLim92">
 		<span class="icon icon--github">{% include icons/github.svg %}</span>
 	</a>
 	&nbsp; &nbsp;
 
-	<a href="https://www.linkedin.com/in/heerak-lim-6a6989137/2">
+    <a href="https://www.linkedin.com/in/heerak-lim-6a6989137/2">
 		<span class="icon icon--linkedin">{% include icons/linkedin.svg %}</span>
 	</a>
 	&nbsp; &nbsp;
 
-	<a href="https://www.instagram.com/hi_rocky92/">
-		<span class="icon icon--instagram">{% include icons/instagram.svg %}</span>
+<br />
+	<a href="https://www.youtube.com/channel/UCpY9pb4-S0PwCJBp2r6nOvg">
+		<img src="{{ site.url }}/images/youtube-icon.png" alt="Drawing" style="width: 200px;"/>
 	</a>
-	&nbsp; &nbsp;
 </p>
-
-<br /><br />
 
 ## Education and Career
 
@@ -80,8 +63,8 @@ This blog is mainly a place where I record some accomplishments or progresses th
 	<br />
 
 	SAP Labs Korea,<br />
-	Developer for SAP HANA Cloud Database and Big Data platform<br />
-	2019.08 ~ 
+	SW Developer<br />
+	2019.08 ~
 </p><br />
 
 <p>
@@ -97,25 +80,17 @@ This blog is mainly a place where I record some accomplishments or progresses th
 <p>
 	<img src="{{ site.url }}/images/data61.png" align="left" style="width: 200px;" hspace="15" vspace="30">
 	<br />
-	Common Wealth Scientific and Industrial Research Organisation ; CSIRO in Australia<br />
-	Research Intern, Data61, Distributed Sensing System Team<br />
+	CSIRO, Australia,<br />
+Common Wealth Scientific and Industrial Research Organisation, Research Intern,
+    <br />Data61, Distributed Sensing System Team<br />
 	2017
-</p><br />
-
-<p>
-	<img src="{{ site.url }}/images/CIT-BG-1_small.png" align="left" style="width: 200px;" hspace="15" vspace="30">
-	<br />
-	CIT Code Academy, CIT 코드 아카데미 ㈜디지틀조선일보<br />
-	lecturer<br />
-	2017 ~ 2018
 </p><br />
 
 <p>
 	<img src="{{ site.url }}/images/AICT.png" align="left" style="width: 120px;" hspace="15" vspace="30">
 	<br />
-	Advanced Institute of Convergence Technology ; AICT<br />
-	Research Intern,Medical-IT Convergence Technology Laboratory<br />
-	차세대융합기술연구원(서울대 융합기술연구원), 의료-it융합기술연구실, 인턴<br />
+	Advanced Institute of Convergence Technology; AICT<br />
+	Research Intern, Medical-IT Convergence Technology Laboratory<br />
 	2016
 </p><br />
 
@@ -132,15 +107,11 @@ This blog is mainly a place where I record some accomplishments or progresses th
 <br /><br />
 ## Publication
 
-## Technical Document
-* The Jasmine OpenSSD Platform: Technical Reference Manual (v1.4, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_Tech_Ref_Manual_v.1.4e.pdf>
-
-* The Jasmine OpenSSD Platform: FTL Developer's Guide (v1.2, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_FTL_Dev_Guide_v.1.2e.pdf>
-
-
 ### International
 
-* Dec 2018  <a href="https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_mwds18.pdf">"Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation"</a>
+* Dec 2019 <a href="https://ieeexplore.ieee.org/abstract/document/8990456">"Lim, Heerak, et al. "IsoKV: An Isolation Scheme for Key-Value Stores by Exploiting Internal Parallelism in SSD." 2019 IEEE 26th International Conference on High Performance Computing, Data, and Analytics (HiPC). IEEE, 2019."
+
+* Dec 2018  <a href="http://2018.middleware-conference.org/wp-content/uploads/mwds18-paper68.pdf">"Lim, Heerak. "Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation." Proceedings of the Doctoral Symposium of the 19th International Middleware Conference. ACM. 2018."</a>
 
 ### Domestic
 
@@ -149,6 +120,9 @@ This blog is mainly a place where I record some accomplishments or progresses th
 * Dec 2016  <a href="/publication/OpenSSD.pdf">"Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform"</a>
 * Jun 2016  "Design & Simulation method for the Pre-scan Active suspension control system on the Virtual AUTOSAR Platform"
 
-## Get CV from here
+### Technical Document
+* The Jasmine OpenSSD Platform: Technical Reference Manual (v1.4, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_Tech_Ref_Manual_v.1.4e.pdf>
 
-* <a href="/publication/resume_rockylim.pdf">"CV"</a>
+* The Jasmine OpenSSD Platform: FTL Developer's Guide (v1.2, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_FTL_Dev_Guide_v.1.2e.pdf>
+
+

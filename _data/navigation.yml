@@ -1,10 +1,5 @@
 # Site navigation links
 
-- title: About Me
-  url: /about/
-  excerpt: "A gear acquisition syndrome patient"
-  image: rocky_icon2.png
-
 - title: Development
   url: /development/
   excerpt: "Everything related to development"
@@ -19,3 +14,9 @@
   url: /writing/
   excerpt: "things not related to above."
   image: 300x200.png
+
+- title: About Me
+  url: /about/
+  excerpt: "A gear acquisition syndrome patient"
+  image: rocky_icon2.png
+
