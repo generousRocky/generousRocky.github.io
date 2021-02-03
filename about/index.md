@@ -49,12 +49,6 @@ Email : rocky92.lim@gmail.com<br />
 	</a>
 	&nbsp; &nbsp;
 
-<br />
-	<a href="https://www.youtube.com/channel/UCpY9pb4-S0PwCJBp2r6nOvg">
-		<img src="{{ site.url }}/images/youtube-icon.png" alt="Drawing" style="width: 200px;"/>
-	</a>
-</p>
-
 ## Education and Career
 
 
