@@ -48,6 +48,7 @@ Email : rocky92.lim@gmail.com<br />
 		<span class="icon icon--linkedin">{% include icons/linkedin.svg %}</span>
 	</a>
 	&nbsp; &nbsp;
+</p>
 
 ## Education and Career
 
