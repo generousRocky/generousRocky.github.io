@@ -174,4 +174,4 @@ single thread run과 동기화 기법들인 mutex lock, Compare-and-Swap, Fetch-
 | Test-and-Set| 1467.726637515s |
 | Memory Barrier| 324.967494416s |
 
-실험 결과에 따르면 single thread로 increment를 진행하였을 때, 가장 성능이 좋음을 알 수 있다. Variable의 increment와 같은 간단한 task는 task 자체보다 thread간 동기화로 발생하는 오버헤드가 더 크기 때문에 이런 결과가 발생하였다. 특히, shared variable를 1씩 increment하는 task는 task의 대부분(100%)가  atomic하게 실행되어야 할 정도로 간단하고 짧은 작업이기 때문에 위 결과와 같이 큰 차이를 보였다. 
+당연히, increment 같은 매우 짧은 task만 수행하므로 스레드 간 동기화 오버헤드가 성능의 대부분을 차지한다. 따라서 전체 elapse time은 single thread가 가장 짧다. 멀티 스레드 동기화가 오퍼레이션 중에는 fet and add 계열이 성능이 가장 좋아보이지만 thread contention 정도에 따라 결과가 다르게 나올 수 있다.
