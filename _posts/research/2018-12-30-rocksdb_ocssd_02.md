@@ -22,8 +22,8 @@ ads: true
 
 # 2. get paper from here
 
-LINK: [here](https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/Open%20Channel%20SSD%20%ED%94%8C%EB%9E%AB%ED%8F%BC%EC%97%90%EC%84%9C%20%EC%93%B0%EA%B8%B0%20%EB%B2%84%ED%8D%BC%20%EB%B0%8F%20%EC%8A%A4%EB%A0%88%EB%93%9C%20%EA%B5%AC%EC%84%B1%EC%97%90%20%EB%94%B0%EB%A5%B8%20%EC%84%B1%EB%8A%A5%20%EB%B6%84%EC%84%9D.pdf)
+LINK: [here](https://github.com/generousRocky/generousRocky.github.io/blob/master/publication/Open%20Channel%20SSD%20%ED%94%8C%EB%9E%AB%ED%8F%BC%EC%97%90%EC%84%9C%20%EC%93%B0%EA%B8%B0%20%EB%B2%84%ED%8D%BC%20%EB%B0%8F%20%EC%8A%A4%EB%A0%88%EB%93%9C%20%EA%B5%AC%EC%84%B1%EC%97%90%20%EB%94%B0%EB%A5%B8%20%EC%84%B1%EB%8A%A5%20%EB%B6%84%EC%84%9D.pdf)
 
 or
 
-LINK: [here](https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_kcs18.pdf)
+LINK: [here](https://github.com/generousRocky/generousRocky.github.io/blob/master/publication/rocky_kcs18.pdf)

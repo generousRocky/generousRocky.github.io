@@ -39,7 +39,7 @@ Email : rocky92.lim@gmail.com<br />
 	&nbsp; &nbsp; <br />
 
 	&nbsp;
-	<a href="https://github.com/RockyLim92">
+	<a href="https://github.com/generousRocky">
 		<span class="icon icon--github">{% include icons/github.svg %}</span>
 	</a>
 	&nbsp; &nbsp;
@@ -110,7 +110,7 @@ Common Wealth Scientific and Industrial Research Organisation, Research Intern,
 
 ### Domestic
 
-* Dec 2018  <a href="https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_ksc18.pdf">"플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화"</a>
+* Dec 2018  <a href="https://github.com/generousRocky/generousRocky.github.io/blob/master/publication/rocky_ksc18.pdf">"플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화"</a>
 * Dec 2017  <a href="/">"Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석"</a>
 * Dec 2016  <a href="/publication/OpenSSD.pdf">"Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform"</a>
 * Jun 2016  "Design & Simulation method for the Pre-scan Active suspension control system on the Virtual AUTOSAR Platform"
