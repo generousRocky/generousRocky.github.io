@@ -2,12 +2,12 @@
 
 - title: Development
   url: /development/
-  excerpt: "Everything related to development"
+  excerpt: "Taste like developer"
   image: study.jpeg
 
 - title: Research
   url: /research/
-  excerpt: "Expore my research field"
+  excerpt: "When I was in M.S., B.S."
   image: research.jpeg
 
 - title: Writing
@@ -17,6 +17,6 @@
 
 - title: About Me
   url: /about/
-  excerpt: "A gear acquisition syndrome patient"
+  excerpt: "Better Gear, Better Life"
   image: rocky_icon2.png
 

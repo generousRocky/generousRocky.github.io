@@ -5,7 +5,7 @@ title: "Latest posts in all categories"
 excerpt:
 image:
   feature: library.jpg
-ads: true
+ads: false
 ---
 
 <div style="text-align:left">

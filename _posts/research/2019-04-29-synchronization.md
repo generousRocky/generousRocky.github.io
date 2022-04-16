@@ -12,7 +12,7 @@ image:
 comments: true
 locale: "vn"
 share: true
-ads: true
+ads: false
 ---
 
 여러가지 멀티스레드 동기화 기법 중 어느 기법이 가장 성능이 좋을지 확인해봐라.

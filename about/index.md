@@ -3,13 +3,13 @@ title:
 date: 2017-07-22 13:44:20 Z
 layout: article
 modified: 2017-07-22 13:44:20 Z
-excerpt: "about me, Rocky"
+excerpt: "about me, generous Rocky"
 image:
   feature:
   teaser:
   thumb:
 share: true
-ads: true
+ads: false
 ---
 
 {% include toc.html %}
@@ -19,14 +19,10 @@ ads: true
 </p>
 
 ## I am interested in followings
-* Software Craftmanship, Agile, TDD
-* Database, Storage system, Parallel Computing
-* Key-Value store, DBMS
-* Linux/Unix environment
-* system performance
-* Application-Driven Storage Management
-* multi-thread concurrency
-* Automation
+* Solidity and smart constract (thesedays, I'm really in to)
+* Database, Storage system
+* Distributed(Parallel) Computing
+* System performance optimization
 
 ## Contact Me
 
@@ -35,11 +31,11 @@ ads: true
 <p>
 
 	&nbsp;
-Email : rocky92.lim@gmail.com<br />
+Email : lrocky1229@gmail.com<br />
 	&nbsp; &nbsp; <br />
 
 	&nbsp;
-	<a href="https://github.com/RockyLim92">
+	<a href="https://github.com/generousRocky">
 		<span class="icon icon--github">{% include icons/github.svg %}</span>
 	</a>
 	&nbsp; &nbsp;
@@ -110,10 +106,9 @@ Common Wealth Scientific and Industrial Research Organisation, Research Intern,
 
 ### Domestic
 
-* Dec 2018  <a href="https://github.com/RockyLim92/RockyLim92.github.io/blob/master/publication/rocky_ksc18.pdf">"플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화"</a>
+* Dec 2018  <a href="https://github.com/generousRocky/generousRocky.github.io/blob/master/publication/rocky_ksc18.pdf">"플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화"</a>
 * Dec 2017  <a href="/">"Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석"</a>
 * Dec 2016  <a href="/publication/OpenSSD.pdf">"Performance Modeling and Measurement of Selective Page-Mapping Table on the OpenSSD Platform"</a>
-* Jun 2016  "Design & Simulation method for the Pre-scan Active suspension control system on the Virtual AUTOSAR Platform"
 
 ### Technical Document
 * The Jasmine OpenSSD Platform: Technical Reference Manual (v1.4, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_Tech_Ref_Manual_v.1.4e.pdf>

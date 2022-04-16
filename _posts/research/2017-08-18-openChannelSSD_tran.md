@@ -12,7 +12,7 @@ excerpt: "Getting Started With Open Channel SSD"
 comments: true
 locale: "vn"
 share: true
-ads: true
+ads: false
 ---
 
 {% include toc.html %}
