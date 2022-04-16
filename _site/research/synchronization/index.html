@@ -39,7 +39,7 @@
       <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
       <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
     <![endif]-->
-
+    <script data-ad-client="ca-pub-6597217616610333" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   </head>
 
   <body id="js-body">
@@ -317,7 +317,7 @@ Configured Voltage: Unknown
   </tbody>
 </table>
 
-<p>실험 결과에 따르면 single thread로 increment를 진행하였을 때, 가장 성능이 좋음을 알 수 있다. Variable의 increment와 같은 간단한 task는 task 자체보다 thread간 동기화로 발생하는 오버헤드가 더 크기 때문에 이런 결과가 발생하였다. 특히, shared variable를 1씩 increment하는 task는 task의 대부분(100%)가  atomic하게 실행되어야 할 정도로 간단하고 짧은 작업이기 때문에 위 결과와 같이 큰 차이를 보였다.</p>
+<p>당연히, increment 같은 매우 짧은 task만 수행하므로 스레드 간 동기화 오버헤드가 성능의 대부분을 차지한다. 따라서 전체 elapse time은 single thread가 가장 짧다. 멀티 스레드 동기화가 오퍼레이션 중에는 fet and add 계열이 성능이 가장 좋아보이지만 thread contention 정도에 따라 결과가 다르게 나올 수 있다.</p>
 
 				<hr />
 				<footer class="page-footer">
@@ -376,6 +376,7 @@ Configured Voltage: Unknown
 	</article><!-- ./wrap -->
 </div><!-- /#main -->
 
+<script data-ad-client="ca-pub-6597217616610333" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <div id="disqus_thread"></div>
 <script>
 
@@ -412,7 +413,7 @@ s.setAttribute('data-timestamp', +new Date());
 		
 		</ul>
 	</nav><!-- /.bottom-menu -->
-	<p class="copyright">&#169; 2020 <a href="http://localhost:4000">Rocky tech blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+	<p class="copyright">&#169; 2022 <a href="http://localhost:4000">Rocky tech blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
 </footer>
 
     </div>
