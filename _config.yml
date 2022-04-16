@@ -1,11 +1,11 @@
 # Site wide configuration
 
-title: "Rocky tech blog"
-description: "Explore things taste like developer"
+title: "generousRocky's tech blog"
+description: "대인배 로키의 기술블로그"
 logo: git_icon.png
 teaser: rocky_icon.png # 400x250 px default teaser image used in image archive grid
 locale: en
-url: https://rockylim92.github.io
+url: https://generousrocky.github.io
 url: https://localhost:4000
 url:
 feed:
@@ -30,7 +30,7 @@ plugins:
 owner:
   name: rockylim
   email: rockylim@snu.ac.kr
-  twitter:
+  twitter: generousRocky
   google:
     ad-client: lrocky1229
     ad-slot:

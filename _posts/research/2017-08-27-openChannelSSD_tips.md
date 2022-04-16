@@ -12,7 +12,7 @@ excerpt: "Tips for getting started with CNEX SSD"
 comments: true
 locale: "vn"
 share: true
-ads: true
+ads: false
 ---
 
 <p style="text-align: center;">

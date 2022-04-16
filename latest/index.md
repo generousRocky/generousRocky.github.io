@@ -8,7 +8,7 @@ tags: []
 image:
   feature:
   teaser:
-ads: true
+ads: false
 ---
 
 <div class="tiles">

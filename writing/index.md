@@ -9,7 +9,7 @@ image:
   teaser:
   thumb:
 share: false
-ads: true
+ads: false
 ---
 
 <div class="tiles">
