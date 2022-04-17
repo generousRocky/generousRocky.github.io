@@ -7,20 +7,13 @@ categories: research
 excerpt: "멀티스레드 동기화 방법 비교"
 image:
   feature:
-  teaser: 2019-04-29-synchronization/sync.png
-  path: images/2019-04-29-synchronization/sync.png
+  teaser: 2019-04-29-synchronization/sync.jpeg
+  path: images/2019-04-29-synchronization/sync.jpeg
 comments: true
 locale: "vn"
 share: true
 ads: false
 ---
-
-여러가지 멀티스레드 동기화 기법 중 어느 기법이 가장 성능이 좋을지 확인해봐라.
-
--- 교수님 --
-
-
-
 
 {% include toc.html %}
 
