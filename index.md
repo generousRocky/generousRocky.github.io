@@ -4,7 +4,7 @@ permalink: /
 title: "Latest posts in all categories"
 excerpt:
 image:
-  feature: library.jpg
+  feature: wallpaper.jpg
 ads: false
 ---
 
