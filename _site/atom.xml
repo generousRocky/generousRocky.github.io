@@ -1,4 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-04-18T21:22:47+09:00</updated><id>http://localhost:4000/</id><title type="html">generousRocky’s tech blog</title><subtitle>대인배 로키의 기술블로그</subtitle><entry><title type="html">Rules of memory VS storage in Solidity</title><link href="http://localhost:4000/development/sol1/" rel="alternate" type="text/html" title="Rules of memory VS storage in Solidity" /><published>2022-04-15T19:00:00+09:00</published><updated>2022-04-15T19:00:00+09:00</updated><id>http://localhost:4000/development/sol1</id><content type="html" xml:base="http://localhost:4000/development/sol1/">&lt;nav class=&quot;toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-04-19T00:50:29+09:00</updated><id>http://localhost:4000/</id><title type="html">generousRocky’s tech blog</title><subtitle>대인배 로키의 기술블로그</subtitle><entry><title type="html">Total gas is really smaller in using memory?</title><link href="http://localhost:4000/development/sol2/" rel="alternate" type="text/html" title="Total gas is really smaller in using memory?" /><published>2022-04-17T19:00:00+09:00</published><updated>2022-04-17T19:00:00+09:00</updated><id>http://localhost:4000/development/sol2</id><content type="html" xml:base="http://localhost:4000/development/sol2/">&lt;nav class=&quot;toc&quot;&gt;
+
+&lt;/nav&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://app.magicdragon.lol/&quot;&gt;Magic Dragon Dao&lt;/a&gt;의 컨트랙트를 스터디하던 중 removeZeroStakes 함수에서 이상한점을 발견했다. for loop 내부의 struct Stake 타입의 변수 s가 storage 키워드로 표시되어 있었다. 아래 s.amount에서 값을 읽어오는 부분 외에는 쓰이는 부분이 없으니 당연히 체인에 기록되는 storage가 아닌 memory를 써야 gas 소모량을 줄일 수 있지 않을까? (Q)&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_removeZeroStakes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;internal&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shouldRecurse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stakes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uint256&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stakes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;_updateStakeDepositAmount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;Stake&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;storage&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stakes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// here!!!
+&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;amount&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;_removeStake&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;// Stop looping and start again - we will skip
+&lt;/span&gt;                &lt;span class=&quot;c1&quot;&gt;// out of the look and recurse
+&lt;/span&gt;                &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stakes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;c1&quot;&gt;// We didn't remove anything, so stop recursing
+&lt;/span&gt;                &lt;span class=&quot;n&quot;&gt;shouldRecurse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shouldRecurse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;_removeZeroStakes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;더 공부를 하고 난 뒤에 얻어내 위 Q의 정답은 “항상 그런것은 아니다” 이다.&lt;/p&gt;
+
+&lt;p&gt;솔리디티에서 memory 참조 변수에 storage 참조 변수를 어사인(=)하면, 메모리 공간을 확보하기 위한 추가적인 gas를 지불해야한다. 즉, 변수에 access 할 떄 마다 SLOAD보다 코스트가 낮은 MLOAD를 사용할 수 있지만, 메모리 할당을 위한 코스트가 추가적으로 지출된다.&lt;/p&gt;
+
+&lt;p&gt;반대로, storage 참조 변수로 선언하면, 메모리 할당과 관련된 코스트는 없고 한 번의 SLOAD만 실행하면 된다.&lt;/p&gt;
+
+&lt;p&gt;일반적으로 4번의 변수 access 까지는 storage로 선언하는게 좋고, 그 보다 많은 수의 access가 예상될 때에는 memory 로 변수를 선언하는것이 좋다고 한다. [1]&lt;/p&gt;
+
+&lt;p&gt;위 예제에서는 한 번의 access만 있기때문에 &lt;em&gt;Stake storage s&lt;/em&gt; 로 해주는게 이제는 맞아보인다.&lt;/p&gt;
+
+&lt;p&gt;[1] https://ethereum.stackexchange.com/questions/66382/switching-from-storage-to-memory-increases-the-gas-cost&lt;/p&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">가스비는 정말 memory 변수가 storage 변수보다 저렴할까?</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/sol2_1.png" /></entry><entry><title type="html">Rules of memory VS storage in Solidity</title><link href="http://localhost:4000/development/sol1/" rel="alternate" type="text/html" title="Rules of memory VS storage in Solidity" /><published>2022-04-15T19:00:00+09:00</published><updated>2022-04-15T19:00:00+09:00</updated><id>http://localhost:4000/development/sol1</id><content type="html" xml:base="http://localhost:4000/development/sol1/">&lt;nav class=&quot;toc&quot;&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#memory-vs-storage&quot; id=&quot;markdown-toc-memory-vs-storage&quot;&gt;memory vs storage&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -992,349 +1036,4 @@ dev_ppaf_mask:
 
 &lt;p&gt;[5] Swanson, S., &amp;amp; Caulfield, A. M. (2013). Refactor, reduce, recycle: Restructuring the i/o stack for the future of storage. Computer, 46(8), 52-59.&lt;/p&gt;
 
-&lt;p&gt;[6] AXBOE, J. Fio - Flexible I/O tester. URL http://freecode.com/projects/fio (2014).&lt;/p&gt;</content><author><name>Rocky Lim</name></author><summary type="html">Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/2018-02-01-openChannelSSD_ksc01.png" /></entry><entry><title type="html">커멘드라인 개발환경 팁</title><link href="http://localhost:4000/development/devEnvTip/" rel="alternate" type="text/html" title="커멘드라인 개발환경 팁" /><published>2017-09-20T19:00:00+09:00</published><updated>2017-09-20T19:00:00+09:00</updated><id>http://localhost:4000/development/devEnvTip</id><content type="html" xml:base="http://localhost:4000/development/devEnvTip/">&lt;p style=&quot;text-align: center;&quot;&gt;
-  &lt;img src=&quot;http://localhost:4000/images/devEnvTip_01.png &quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
-&lt;/p&gt;
-
-&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#vim&quot; id=&quot;markdown-toc-vim&quot;&gt;vim&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#기본-단축키&quot; id=&quot;markdown-toc-기본-단축키&quot;&gt;기본 단축키&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#창-생성&quot; id=&quot;markdown-toc-창-생성&quot;&gt;창 생성&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#창삭제&quot; id=&quot;markdown-toc-창삭제&quot;&gt;창삭제&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#창이동&quot; id=&quot;markdown-toc-창이동&quot;&gt;창이동&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#창이동-1&quot; id=&quot;markdown-toc-창이동-1&quot;&gt;창이동&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#창-크기-조정&quot; id=&quot;markdown-toc-창-크기-조정&quot;&gt;창 크기 조정&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#실행-취소&quot; id=&quot;markdown-toc-실행-취소&quot;&gt;실행 취소&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#탭생성-이동&quot; id=&quot;markdown-toc-탭생성-이동&quot;&gt;탭생성, 이동&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#tips&quot; id=&quot;markdown-toc-tips&quot;&gt;Tips&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#헤더-파일-바로-읽어-오기&quot; id=&quot;markdown-toc-헤더-파일-바로-읽어-오기&quot;&gt;헤더 파일 바로 읽어 오기&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#찾고-싶은-글자-찾기&quot; id=&quot;markdown-toc-찾고-싶은-글자-찾기&quot;&gt;[찾고 싶은 글자 찾기]&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#ctags&quot; id=&quot;markdown-toc-ctags&quot;&gt;ctags&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#설치&quot; id=&quot;markdown-toc-설치&quot;&gt;설치&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#시작&quot; id=&quot;markdown-toc-시작&quot;&gt;시작&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#단축키&quot; id=&quot;markdown-toc-단축키&quot;&gt;단축키&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#cscope&quot; id=&quot;markdown-toc-cscope&quot;&gt;cscope&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#설치-및-편한-사용&quot; id=&quot;markdown-toc-설치-및-편한-사용&quot;&gt;설치 및 편한 사용&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#cscope-with-vim&quot; id=&quot;markdown-toc-cscope-with-vim&quot;&gt;cscope with vim&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#명령어&quot; id=&quot;markdown-toc-명령어&quot;&gt;명령어&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#tmux&quot; id=&quot;markdown-toc-tmux&quot;&gt;tmux&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#tmux-구성&quot; id=&quot;markdown-toc-tmux-구성&quot;&gt;tmux 구성&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#명령어-1&quot; id=&quot;markdown-toc-명령어-1&quot;&gt;명령어&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;p&gt;본 포스팅에서는 개발환경 자체에 대한 설치 및 세팅 과정은 다루지 않고, 효과적인 활용법에 대해서만 정리 했습니다.&lt;/p&gt;
-
-&lt;h1 id=&quot;vim&quot;&gt;vim&lt;/h1&gt;
-&lt;h2 id=&quot;기본-단축키&quot;&gt;기본 단축키&lt;/h2&gt;
-&lt;p style=&quot;text-align: center;&quot;&gt;
-  &lt;img src=&quot;http://localhost:4000/images/devEnvTip_02.png &quot; alt=&quot;Drawing&quot; style=&quot;width: 600;&quot; /&gt;
-&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://kldp.org/node/102947&quot;&gt;https://kldp.org/node/102947&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;창-생성&quot;&gt;창 생성&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;CTRL-W s
-:[N]sp[plit]
-현재 파일을 두 개의 수평 창으로 나눔&lt;/li&gt;
-  &lt;li&gt;CTRL-W v
-:[N]vs[plit]
-현재 파일을 두 개의 수직 창으로 나눔&lt;/li&gt;
-  &lt;li&gt;CTRL-W n
-:new
-새로운 수평 창 생성&lt;/li&gt;
-  &lt;li&gt;CTRL-W ^ 또는 CTRL-W CTRL-^ 수평 창으로 나누고 이전 파일의 오픈&lt;/li&gt;
-  &lt;li&gt;CTRL-W f 창을 수평으로 나누고 커서 위치의 파일 오픈&lt;/li&gt;
-  &lt;li&gt;CTRL-W i 커서 위치의 단어가 정의된 파일을 오픈&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;창삭제&quot;&gt;창삭제&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;CTRL-W q :q[uit]! 현재 커서의 창을 종료&lt;/li&gt;
-  &lt;li&gt;CTRL-W c :close 현재 커서의 창 닫기&lt;/li&gt;
-  &lt;li&gt;CTRL-W o :on[ly] 현재 커서의 창만 남기고 모든 창 삭제&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;창이동&quot;&gt;창이동&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;CTRL-W h 왼쪽 창으로 커서 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W j 아래쪽 창으로 커서 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W k 위쪽 창으로 커서 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W l 오른쪽 창으로 커서 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W w 창을 순차적으로 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W p 가장 최근에 이동한 방향으로 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W t 최상위 창으로 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W b 최하위 창으로 이동&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;창이동-1&quot;&gt;창이동&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;CTRL-W r 순착으로 창의 위치를 순환&lt;/li&gt;
-  &lt;li&gt;CTRL-W x 이전 창과 위치를 바꿈&lt;/li&gt;
-  &lt;li&gt;CTRL-W H 현재창을 왼쪽 큰화면으로 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W J 현재창을 아래쪽 큰화면으로 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W K 현재창을 위쪽 큰화면으로 이동&lt;/li&gt;
-  &lt;li&gt;CTRL-W L 현재창을 오른쪽 큰화면으로 이동&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;창-크기-조정&quot;&gt;창 크기 조정&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;CTRL-W + 창의 크기를 모두 균등하게 함&lt;/li&gt;
-  &lt;li&gt;CTRL-W _ 수평 분할에서 창의 크기를 최대화&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;CTRL-W&lt;/td&gt;
-          &lt;td&gt;수직 분할에서 창의 크기를 최대화&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;CTRL-W [N]+
-창의 크기를 N행 만큼 증가&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;CTRL-W [N]-
-창의 크기를 N행 만큼 감소&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;CTRL-W [N]&amp;gt;
-창의 크기를 오른쪽으로 N칸 만큼 증가&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;CTRL-W [N]&amp;lt;
-창의 크기를 오른쪽으로 N칸 만큼 감소&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;실행-취소&quot;&gt;실행 취소&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;u 실행 취소&lt;/li&gt;
-  &lt;li&gt;ctrl-r 재실행(실행취소의 취소)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;탭생성-이동&quot;&gt;탭생성, 이동&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:tabnew [file path]&lt;/code&gt; 탭생성&lt;/li&gt;
-  &lt;li&gt;gt, gT 탭 간 이동&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;tips&quot;&gt;Tips&lt;/h1&gt;
-
-&lt;h2 id=&quot;헤더-파일-바로-읽어-오기&quot;&gt;헤더 파일 바로 읽어 오기&lt;/h2&gt;
-&lt;p&gt;#include &amp;lt;linux/kernel.h&amp;gt; &amp;lt;- 헤더파일 이름에 커서를 위치 한후  &lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl + wf&lt;/code&gt;를 누르면 창이 수평 분할되어 헤더파일이 열립니다&lt;/p&gt;
-
-&lt;h2 id=&quot;찾고-싶은-글자-찾기&quot;&gt;[찾고 싶은 글자 찾기]&lt;/h2&gt;
-&lt;p&gt;찾으려는 문자열에 커서를 두고 #을 누른다. 검색 결과를 왔다갔다 하려면, n또는 N으로 이동 할 수 있다.&lt;/p&gt;
-
-&lt;h1 id=&quot;ctags&quot;&gt;ctags&lt;/h1&gt;
-
-&lt;h2 id=&quot;설치&quot;&gt;설치&lt;/h2&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install ctags
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;시작&quot;&gt;시작&lt;/h2&gt;
-&lt;p&gt;분석하려는 소스코드 최상위 디렉토리에서&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ctags -R .
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;단축키&quot;&gt;단축키&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl + ]&lt;/code&gt; : 해당 함수나 변수의 정의 된 부분으로 이동&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl + t&lt;/code&gt; : 이동하기 전으로 이동&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:tags&lt;/code&gt; : 명령어 모드에서 “tags”를 입력하면 현재 tags의 stack구조를 볼 수 있다.&lt;/li&gt;
-  &lt;li&gt;ctag는 앞의 두 단축키를 통해 c코드들의 호출 구조 또는 정의 구조를 따라 코드를 surfing할 수 있으며, 각각의 이동은 stack에 push, pop하는 구조로 구현되어 있다.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:tj&lt;/code&gt; :  심볼 이름(함수, 변수명 등) 입력하면 찾고자하는 정보들이 나타난다.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:sts&lt;/code&gt; : tj와 흡사하나, 새창에 관련 정보들이 나타난다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&quot;cscope&quot;&gt;cscope&lt;/h1&gt;
-
-&lt;h2 id=&quot;설치-및-편한-사용&quot;&gt;설치 및 편한 사용&lt;/h2&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo apt-get install cscope&lt;/code&gt; command를 통해 설치가 가능하다.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mycscope.sh&lt;/code&gt;와 같은 쉘 스크립트를 만들고 /usr/bin과 같은 디렉토리(맥의 경우 local/bin 이었던 것 같음.)에 복사 해 두면 편하게 사용 가능하다.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mycscope.sh&lt;/code&gt;의 내용은 다음과 같음.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
-rm -rf cscope.files cscope.files
-find . &lt;span class=&quot;se&quot;&gt;\(&lt;/span&gt; -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.c’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.cpp’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.cc’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.h’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.s’ -o -name ‘&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.S’ &lt;span class=&quot;se&quot;&gt;\)&lt;/span&gt; -print&amp;gt;cscope.files
-cscope -i cscope.files
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;cscope-with-vim&quot;&gt;cscope with vim&lt;/h2&gt;
-
-&lt;p&gt;vim에서 편리하게 cscope를 사용하기 위해 .vimrc 파일에 다음과 같은 내용을 추가한다.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;csprg&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/bin/cscope
-
-&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;csto&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0 “&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;숫자 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;cst
-&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;nocsverb
-
-&lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;filereadable&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;“./cscope.out”&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-cs add cscope.out
-&lt;span class=&quot;k&quot;&gt;else
-&lt;/span&gt;cs add /usr/src/linux/cscope.out
-endif
-&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;csverb
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;명령어&quot;&gt;명령어&lt;/h2&gt;
-
-&lt;p&gt;vim에서 cscope를 사용하기 위해 명령어 모드(:)에서 다음과 같은 명령어를 통해 사용이 가능하다.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;:cs find &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;질의종류&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;symbol_name&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-ex&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; cs find s main
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;0 or s&lt;/code&gt; : symbol_name 중 검색 (Cntl-‘’ + s)&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;1 or g&lt;/code&gt; : symbol_name의 정의를 검색 (Cntl-‘’ + g)&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;2 or d&lt;/code&gt; : symbol_name에 해당하는 함수에서 호출된 함수를 검색 (Cntl-‘’ + d)&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;3 or c&lt;/code&gt; : symbol_name에 해당하는 함수를 호출하는 함수를 검색 (Cntl-‘’ + c)&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;4 or t&lt;/code&gt; : symbol_name에 해당하는 text문자열을 검색 (Cntl-‘’ + t)&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;6 or e&lt;/code&gt; : 확장 정규식을 사용하여 symbol_name을 검색 (Cntl-‘’ + e)&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;7 or f&lt;/code&gt; : 파일 이름중에서 symbol_name을 검색 (Cntl-‘’ + f)&lt;br /&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;8 or i&lt;/code&gt; : symbol_name을 include하는 파일을 검색 (Cntl-‘’ + i)&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;참고 - &lt;a href=&quot;http://hochulshin.com/tool-vi-ctags-cscope-on-osx/&quot;&gt;http://hochulshin.com/tool-vi-ctags-cscope-on-osx/&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;tmux&quot;&gt;tmux&lt;/h1&gt;
-
-&lt;p&gt;ssh원격 접속시 세션이 끊기면 사용하던 job들도 종료가 되는 것을 방지함 = 개꿀&lt;/p&gt;
-
-&lt;h2 id=&quot;tmux-구성&quot;&gt;tmux 구성&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;session : tmux 실행 단위. 여러개의 window로 구성.&lt;/li&gt;
-  &lt;li&gt;window : 터미널 화면. 세션 내에서 탭처럼 사용할 수 있음.&lt;/li&gt;
-  &lt;li&gt;pane : 하나의 window 내에서 화면 분할.&lt;/li&gt;
-  &lt;li&gt;status bar : 화면 아래 표시되는 상태 막대.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;명령어-1&quot;&gt;명령어&lt;/h2&gt;
-
-&lt;p&gt;tmux는 prefix 키인 &lt;code class=&quot;highlighter-rouge&quot;&gt;ctrl+b&lt;/code&gt;를 누른 후 다음 명령 키를 눌러야 동작할 수 있다.&lt;/p&gt;
-
-&lt;h3 id=&quot;session&quot;&gt;Session&lt;/h3&gt;
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 새 세션 생성&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tmux new -s &amp;lt;session-name&amp;gt;
-
-&lt;span class=&quot;c&quot;&gt;# 세션 이름 수정&lt;/span&gt;
-ctrl + b, &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 세션 종료&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;tmux에서&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 세션 중단하기 (detached)&lt;/span&gt;
-ctrl + b, d
-
-&lt;span class=&quot;c&quot;&gt;# 세션 목록 보기 (list-session)&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tmux ls
-
-&lt;span class=&quot;c&quot;&gt;# 세션 다시 시작&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tmux attach -t &amp;lt;session-number or session-name&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;window&quot;&gt;Window&lt;/h3&gt;
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 새 윈도우 생성&lt;/span&gt;
-ctrl + b, c
-
-&lt;span class=&quot;c&quot;&gt;# 세션 생성시 윈도우랑 같이 생성&lt;/span&gt;
-&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;tmux new -s &amp;lt;session-name&amp;gt; -n &amp;lt;window-name&amp;gt;
-
-&lt;span class=&quot;c&quot;&gt;# 윈도우 이름 수정&lt;/span&gt;
-ctrl + b, ,
-
-&lt;span class=&quot;c&quot;&gt;# 윈도우 종료&lt;/span&gt;
-ctrl + b, &amp;amp;
-ctrl + d
-
-&lt;span class=&quot;c&quot;&gt;# 윈도우 이동&lt;/span&gt;
-ctrl + b, 0-9 : window number
-n : next window
-p : prev window
-l : last window
-w : window selector
-f : find by name
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;pane&quot;&gt;Pane&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 틀 나누기
-ctrl + b, % : 횡 분할
-          &quot; : 종 분할
-
-# 틀 이동
-ctrl + b, q 그리고 화면에 나오는 숫자키
-ctrl + b, o : 순서대로 이동
-ctrl + b, arrow : 방향키로 숑숑
-
-# 틀 삭제
-ctrl + b, x
-ctrl + d
-
-# 틀 사이즈 조절
-(ctrl + b, :)
-resize-pane -L 10
--R 10
--D 10
--U 10
-
-# 틀 레이아웃 변경
-ctrl + b, spacebar
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;shortcut-key&quot;&gt;Shortcut key&lt;/h3&gt;
-
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 단축키 목록&lt;/span&gt;
-ctrl + b, ?
-
-&lt;span class=&quot;c&quot;&gt;# 키 연결 및 해제 bind and unbind&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ctrl + b, :&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;bind&lt;/span&gt;-key &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-cnr] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-t key-table] key &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;arguments]
-unbind-key &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;-acn] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;t key-table] key
-
-&lt;span class=&quot;c&quot;&gt;# 옵션 설정 `set` and `setw`&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -g &amp;lt;option-name&amp;gt; &amp;lt;option-value&amp;gt;  : &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-option
-setw -g &amp;lt;option-name&amp;gt; &amp;lt;option-value&amp;gt; : &lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt;-window-option
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;code-mode&quot;&gt;Code Mode&lt;/h3&gt;
-
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# copy mode 진입&lt;/span&gt;
-ctrl + b, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 빠져나오기&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;copy mode에서&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; q or ESC
-
-&lt;span class=&quot;c&quot;&gt;# 이동&lt;/span&gt;
-arrow : 커서 이동
-pageUp, pageDown : 페이지 이동 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;iTerm에서는 fn + up, down, terminal에서는 alt + up, down&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">Tips for vim, tmux, ctags, cscope, etc.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/devEnvTip_01.png" /></entry></feed>
+&lt;p&gt;[6] AXBOE, J. Fio - Flexible I/O tester. URL http://freecode.com/projects/fio (2014).&lt;/p&gt;</content><author><name>Rocky Lim</name></author><summary type="html">Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/2018-02-01-openChannelSSD_ksc01.png" /></entry></feed>

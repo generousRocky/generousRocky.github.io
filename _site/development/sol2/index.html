@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Total gas is really smaller in using memory? • generousRocky's tech blog</title>
+    <meta name="description" content="가스비는 정말 memory 변수가 storage 변수보다 저렴할까?">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="Total gas is really smaller in using memory?">
+	<meta name="twitter:description" content="가스비는 정말 memory 변수가 storage 변수보다 저렴할까?">
+	<meta name="twitter:site" content="@generousRocky">
+	<meta name="twitter:creator" content="@generousRocky">
+	
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="http://localhost:4000/images/sol2_1.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Total gas is really smaller in using memory?">
+	<meta property="og:description" content="가스비는 정말 memory 변수가 storage 변수보다 저렴할까?">
+	<meta property="og:url" content="http://localhost:4000/development/sol2/">
+	<meta property="og:site_name" content="generousRocky's tech blog">
+
+    <link rel="canonical" href="http://localhost:4000/development/sol2/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="generousRocky's tech blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <script data-ad-client="ca-pub-6597217616610333" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">generousRocky's tech blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">generousRocky's tech blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/development/" >Development</a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/writing/" >Writing</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>generousRocky's tech blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/development/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Development</div>
+        <p class="excerpt">Taste like developer</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">When I was in M.S., B.S.</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/writing/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Writing</div>
+        <p class="excerpt">things not related to above.</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon2.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">Better Gear, Better Life</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		<div class="page-feature">
+			<div class="page-image">
+				<img src="http://localhost:4000/images/sol2_1.png" class="page-feature-image" alt="Total gas is really smaller in using memory?" itemprop="image">
+				
+			</div><!-- /.page-image -->
+		</div><!-- /.page-feature -->
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/development/" itemprop="url">
+        <span itemprop="title">Development</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>Total gas is really smaller in using memory?</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<nav class="toc">
+
+</nav>
+
+<p><a href="https://app.magicdragon.lol/">Magic Dragon Dao</a>의 컨트랙트를 스터디하던 중 removeZeroStakes 함수에서 이상한점을 발견했다. for loop 내부의 struct Stake 타입의 변수 s가 storage 키워드로 표시되어 있었다. 아래 s.amount에서 값을 읽어오는 부분 외에는 쓰이는 부분이 없으니 당연히 체인에 기록되는 storage가 아닌 memory를 써야 gas 소모량을 줄일 수 있지 않을까? (Q)</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code>    <span class="n">function</span> <span class="n">_removeZeroStakes</span><span class="p">()</span> <span class="n">internal</span> <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">shouldRecurse</span> <span class="o">=</span> <span class="n">stakes</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">uint256</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">stakes</span><span class="p">.</span><span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">_updateStakeDepositAmount</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+
+            <span class="n">Stake</span> <span class="n">storage</span> <span class="n">s</span> <span class="o">=</span> <span class="n">stakes</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="c1">// here!!!
+</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">amount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">_removeStake</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+                <span class="c1">// Stop looping and start again - we will skip
+</span>                <span class="c1">// out of the look and recurse
+</span>                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">stakes</span><span class="p">.</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// We didn't remove anything, so stop recursing
+</span>                <span class="n">shouldRecurse</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">shouldRecurse</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">_removeZeroStakes</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre>
+</div>
+
+<p>더 공부를 하고 난 뒤에 얻어내 위 Q의 정답은 “항상 그런것은 아니다” 이다.</p>
+
+<p>솔리디티에서 memory 참조 변수에 storage 참조 변수를 어사인(=)하면, 메모리 공간을 확보하기 위한 추가적인 gas를 지불해야한다. 즉, 변수에 access 할 떄 마다 SLOAD보다 코스트가 낮은 MLOAD를 사용할 수 있지만, 메모리 할당을 위한 코스트가 추가적으로 지출된다.</p>
+
+<p>반대로, storage 참조 변수로 선언하면, 메모리 할당과 관련된 코스트는 없고 한 번의 SLOAD만 실행하면 된다.</p>
+
+<p>일반적으로 4번의 변수 access 까지는 storage로 선언하는게 좋고, 그 보다 많은 수의 access가 예상될 때에는 memory 로 변수를 선언하는것이 좋다고 한다. [1]</p>
+
+<p>위 예제에서는 한 번의 access만 있기때문에 <em>Stake storage s</em> 로 해주는게 이제는 맞아보인다.</p>
+
+<p>[1] https://ethereum.stackexchange.com/questions/66382/switching-from-storage-to-memory-increases-the-gas-cost</p>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="generousRocky">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">generousRocky</span></h3>
+	<p class="author-bio">Better Gear, Better Life</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Total%20gas%20is%20really%20smaller%20in%20using%20memory?&amp;url=http://localhost:4000/development/sol2/&amp;via=generousRocky" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/development/sol2/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/development/sol2/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2022-04-17T10:00:00Z" itemprop="datePublished">April 17, 2022</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<script data-ad-client="ca-pub-6597217616610333" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.youtube.com/channel/UCpY9pb4-S0PwCJBp2r6nOvg" target="_blank">Youtube</a></li>
+		
+      
+			<li><a href="https://github.com/generousRocky" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2022 <a href="http://localhost:4000">generousRocky's tech blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>
