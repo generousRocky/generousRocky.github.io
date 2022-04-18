@@ -2,7 +2,7 @@
 layout: article
 title:  "performance Comparion of synchroniztion Operations + Intel Transactional Memory Operation"
 date:   2019-04-29 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 excerpt: "멀티스레드 동기화 방법 비교"
 image:

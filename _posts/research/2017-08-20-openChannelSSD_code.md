@@ -2,7 +2,7 @@
 layout: article
 title:  "Linux Open-Channel SSD Subsystem - Read Path"
 date:   2017-08-20 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 excerpt: "Kernel Code Analysis - Read path"
 image:

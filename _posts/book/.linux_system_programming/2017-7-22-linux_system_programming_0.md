@@ -2,7 +2,7 @@
 layout: article
 title: "Linux System Programming [0]: Prologue"
 date: 2017-07-22 13:44:20 Z
-author: Rocky Lim
+author: generousRocky
 categories: book
 excerpt: "리눅스 시스템 프로그래밍 [0]: 프롤로그"
 image:

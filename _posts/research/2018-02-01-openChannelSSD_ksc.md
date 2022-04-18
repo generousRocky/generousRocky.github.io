@@ -2,7 +2,7 @@
 layout: article
 title:  "Performance Analysis Based on Write Buffer and Thread Configuration in Open Channel SSD Platforms"
 date:   2018-02-01 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 excerpt: "Open Channel SSD 플랫폼에서 쓰기 버퍼 및 스레드 구성에 따른 성능 분석"
 image:

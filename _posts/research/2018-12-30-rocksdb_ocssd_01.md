@@ -2,7 +2,7 @@
 layout: article
 title:  "MWDS'18 accepted paper"
 date:   2018-12-30 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 excerpt: "Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation"
 image:

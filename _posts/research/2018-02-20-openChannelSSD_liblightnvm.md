@@ -2,7 +2,7 @@
 layout: article
 title:  "liblightnvm(work in progress)"
 date:   2018-02-20 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 excerpt: "유저스페이스에서 Open Channel SSD 컨트롤 하기"
 image:

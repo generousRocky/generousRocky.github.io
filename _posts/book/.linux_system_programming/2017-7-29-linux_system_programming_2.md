@@ -2,7 +2,7 @@
 layout: article
 title: "Linux System Programming [2]: File Input/Output"
 date: 2017-07-29 13:44:20 Z
-author: Rocky Lim
+author: generousRocky
 categories: book
 excerpt: "리눅스 시스템 프로그래밍 [2]: 파일 입출력"
 image:

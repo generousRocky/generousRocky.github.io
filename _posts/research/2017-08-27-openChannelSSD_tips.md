@@ -2,7 +2,7 @@
 layout: article
 title:  "Getting started with Open-Channel-SSD with CNEX SSD(CNEX Labs Westlake ASIC)"
 date:   2017-08-28 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 image:
   feature:

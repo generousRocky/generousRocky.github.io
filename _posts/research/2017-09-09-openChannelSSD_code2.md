@@ -2,7 +2,7 @@
 layout: article
 title:  "The Linux Open-Channel SSD Subsystem - Write Path"
 date:   2017-09-09 11:00:00
-author: Rocky Lim
+author: generousRocky
 categories: research
 excerpt: "Kernel Code Analysis - Write path"
 image:

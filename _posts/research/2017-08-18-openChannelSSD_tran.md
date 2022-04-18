@@ -2,7 +2,7 @@
 layout: article
 title:  "번역) Open-Channel SSD Subsystem Docs"
 date:   2017-08-18 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 image:
   feature:

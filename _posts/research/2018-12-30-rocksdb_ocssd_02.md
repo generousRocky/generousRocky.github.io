@@ -2,7 +2,7 @@
 layout: article
 title:  "KSC'18 accepted paper"
 date:   2018-12-30 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 excerpt: "플래시 내 I/O 분리 처리를 통한 LSM-tree 기반 데이터베이스 성능 최적화"
 image:

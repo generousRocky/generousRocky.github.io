@@ -2,7 +2,7 @@
 layout: article
 title:  "YCSB benchmark for modified RocksDB(not for YCSB's default version)"
 date:   2019-08-17 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: research
 excerpt: "코드를 수정한 RocksDB 버전에 YCSB 벤치마크 돌리기"
 image:
