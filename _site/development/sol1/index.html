@@ -2,23 +2,23 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Solidity memory VS storage with reference/value type var • generousRocky's tech blog</title>
+    <title>Rules of memory VS storage in Solidity • generousRocky's tech blog</title>
     <meta name="description" content="솔리디티 memory, storage 변수 규칙 모든것">
     <meta name="keywords" content="">
     
     	<!-- Twitter Cards -->
-	<meta name="twitter:title" content="Solidity memory VS storage with reference/value type var">
+	<meta name="twitter:title" content="Rules of memory VS storage in Solidity">
 	<meta name="twitter:description" content="솔리디티 memory, storage 변수 규칙 모든것">
 	<meta name="twitter:site" content="@generousRocky">
+	<meta name="twitter:creator" content="@generousRocky">
 	
-	
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:image" content="http://localhost:4000/images/git_icon.png">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="http://localhost:4000/images/sol1_1.png">
 	
 	<!-- Open Graph -->
 	<meta property="og:locale" content="en">
 	<meta property="og:type" content="article">
-	<meta property="og:title" content="Solidity memory VS storage with reference/value type var">
+	<meta property="og:title" content="Rules of memory VS storage in Solidity">
 	<meta property="og:description" content="솔리디티 memory, storage 변수 규칙 모든것">
 	<meta property="og:url" content="http://localhost:4000/development/sol1/">
 	<meta property="og:site_name" content="generousRocky's tech blog">
@@ -109,6 +109,13 @@
       <div id="main" role="main">
 	<article class="wrap" itemscope itemtype="http://schema.org/Article">
 		
+		<div class="page-feature">
+			<div class="page-image">
+				<img src="http://localhost:4000/images/sol1_1.png" class="page-feature-image" alt="Rules of memory VS storage in Solidity" itemprop="image">
+				
+			</div><!-- /.page-image -->
+		</div><!-- /.page-feature -->
+		
 		
   <nav class="breadcrumbs">
     <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
@@ -123,123 +130,128 @@
   </nav><!-- /.breadcrumbs -->
 
 		<div class="page-title">
-			<h1>Solidity memory VS storage with reference/value type var</h1>
+			<h1>Rules of memory VS storage in Solidity</h1>
 		</div>
 		<div class="inner-wrap">
 			<div id="content" class="page-content" itemprop="articleBody">
-				<p style="text-align: center;">
-  <img src="http://localhost:4000/images/sol1.png " alt="Drawing" style="max-width: 100%; height: auto;" />
-</p>
-
-<nav class="toc">
+				<nav class="toc">
 <ul id="markdown-toc">
-  <li><a href="#memory-vs-storage" id="markdown-toc-memory-vs-storage">memory vs storage</a>    <ul>
-      <li><a href="#컨트렉트-내-사용되는-각각의-변수가--evm-내에서-저장되는-위치는-다음과-같음" id="markdown-toc-컨트렉트-내-사용되는-각각의-변수가--evm-내에서-저장되는-위치는-다음과-같음">컨트렉트 내 사용되는 각각의 변수가  EVM 내에서 저장되는 위치는 다음과 같음.</a></li>
-      <li><a href="#variable의-저장-위치를-정하는-규칙" id="markdown-toc-variable의-저장-위치를-정하는-규칙">variable의 저장 위치를 정하는 규칙</a></li>
-    </ul>
-  </li>
+  <li><a href="#memory-vs-storage" id="markdown-toc-memory-vs-storage">memory vs storage</a></li>
 </ul>
 
 </nav>
 
 <h1 id="memory-vs-storage">memory vs storage</h1>
 
-<h2 id="컨트렉트-내-사용되는-각각의-변수가--evm-내에서-저장되는-위치는-다음과-같음">컨트렉트 내 사용되는 각각의 변수가  EVM 내에서 저장되는 위치는 다음과 같음.</h2>
+<h5 id="컨트렉트-내-사용되는-각각의-변수가--evm-내에서-저장되는-위치는-다음과-같음">컨트렉트 내 사용되는 각각의 변수가  EVM 내에서 저장되는 위치는 다음과 같음.</h5>
 
-<ol>
-  <li>storage: 컨트렉트 내 모든 함수가 사용할 수 있는 전역 메모리 영역, 네트워크 내 모든 노드에 영구적으로 저장된다.</li>
-  <li>memory: 컨트렉트 내 모든 함수가 사용가능한 로컬 메모리, function 이 끝나면 사라짐, 휘발성</li>
-</ol>
+<ul>
+  <li>1 storage: 컨트렉트 내 모든 함수가 사용할 수 있는 전역 메모리 영역, 네트워크 내 모든 노드에 영구적으로 저장된다.</li>
+  <li>2 memory: 컨트렉트 내 모든 함수가 사용가능한 로컬 메모리, function 이 끝나면 사라짐, 휘발성</li>
+</ul>
 
-<h2 id="variable의-저장-위치를-정하는-규칙">variable의 저장 위치를 정하는 규칙</h2>
+<h5 id="variable의-저장-위치를-정하는-규칙">variable의 저장 위치를 정하는 규칙</h5>
 
-<ol>
-  <li>state variable(global variable)로 선언되는 변수들은 <strong>항상</strong> 스토리지에 저장</li>
-  <li>함수 파라미터로 선언되는 변수들은 <strong>항상</strong> 메모리에 저장</li>
-  <li>함수 내에서 선언되는 변수들은 <strong>기본적으로</strong> 메모리에 저장,
-    <ol>
-      <li>reference 타입(array, struct, string, mapping)의 변수는 <strong>기본적으로</strong> 스토리지, value 타입(int등 그 외)은 <strong>기본이</strong> 메모리</li>
-      <li>reference 타입 변수의 기본 위치를 무시하고 메모리에 저장할 수 있다.</li>
-      <li>함수 내에서 선언된 reference 타입 &amp; 스토리지 변수는 state variable을 가르켜야 한다.</li>
-      <li>함수 내에서 선언된 value타입 변수는 스토리지 위치에 저장할 수 없다.</li>
-    </ol>
+<ul>
+  <li>1 state variable(global variable)로 선언되는 변수들은 <strong>항상</strong> 스토리지에 저장</li>
+  <li>2 함수 파라미터로 선언되는 변수들은 <strong>항상</strong> 메모리에 저장</li>
+  <li>3 함수 내에서 선언되는 변수들은 <strong>기본적으로</strong> 메모리에 저장,
+    <ul>
+      <li>3.1 reference 타입(array, struct, string, mapping)의 변수는 <strong>기본적으로</strong> 스토리지, value 타입(int등 그 외)은 <strong>기본이</strong> 메모리</li>
+      <li>3.2 reference 타입 변수의 기본 위치를 무시하고 메모리에 저장할 수 있다.</li>
+      <li>3.3 함수 내에서 선언된 reference 타입 &amp; 스토리지 변수는 state variable을 가르켜야 한다.</li>
+      <li>3.4 함수 내에서 선언된 value타입 변수는 스토리지 위치에 저장할 수 없다.</li>
+    </ul>
   </li>
-</ol>
+</ul>
 
-<pre><code class="language-solidity">function test() return (uint) {
-    int storage myInt; // error
-}
-</code></pre>
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>5. 매핑은 **항상** 스토리지 위치에 선언된다. 즉, 함수 내에서 메모리로 선언될 수 없음(컴파일 안된다. 스토리지 변수로 만들고, 글로벌 변수를 참조시켜주면 가능.
+<span class="n">function</span> <span class="n">test</span><span class="p">()</span> <span class="k">return</span> <span class="p">(</span><span class="n">uint</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">storage</span> <span class="n">myInt</span><span class="p">;</span> <span class="c1">// error
+</span><span class="p">}</span>
 </code></pre>
 </div>
 
-<pre><code class="language-solidity">...
-mapping(int =&gt; int) public intMapp;
+<ul>
+  <li>
+    <ul>
+      <li>3.5 매핑은 <strong>항상</strong> 스토리지 위치에 선언된다. 즉, 함수 내에서 메모리로 선언될 수 없음(컴파일 안된다. 스토리지 변수로 만들고, 글로벌 변수를 참조시켜주면 가능.</li>
+    </ul>
+  </li>
+</ul>
 
-function test() public returns (int) {
-    mapping(int =&gt; int) memory map = intMapp; // error
-  map[0] = 11;
-  return map[0];
-}
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
 
-function test() public returns (int) {
-  mapping(int =&gt; int) storage map = intMapp; // OK
-  map[0] = 11;
-  return map[0];
-}
+<span class="n">mapping</span><span class="p">(</span><span class="kt">int</span> <span class="o">=&gt;</span> <span class="kt">int</span><span class="p">)</span> <span class="n">public</span> <span class="n">intMapp</span><span class="p">;</span>
+
+<span class="n">function</span> <span class="nf">test</span><span class="p">()</span> <span class="n">public</span> <span class="n">returns</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">mapping</span><span class="p">(</span><span class="kt">int</span> <span class="o">=&gt;</span> <span class="kt">int</span><span class="p">)</span> <span class="n">memory</span> <span class="n">map</span> <span class="o">=</span> <span class="n">intMapp</span><span class="p">;</span> <span class="c1">// error
+</span>  <span class="n">map</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">map</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="n">function</span> <span class="nf">test</span><span class="p">()</span> <span class="n">public</span> <span class="n">returns</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">mapping</span><span class="p">(</span><span class="kt">int</span> <span class="o">=&gt;</span> <span class="kt">int</span><span class="p">)</span> <span class="n">storage</span> <span class="n">map</span> <span class="o">=</span> <span class="n">intMapp</span><span class="p">;</span> <span class="c1">// OK
+</span>  <span class="n">map</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">map</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="p">}</span>
 </code></pre>
+</div>
 
-<ol>
-  <li>function 내에서 한 글로벌 변수에 다른 글로벌 변수를 할당하면, 레퍼런스 카피가 아니라 벨류 카피</li>
-</ol>
+<ul>
+  <li>4 function 내에서 한 글로벌 변수에 다른 글로벌 변수를 할당하면, 레퍼런스 카피가 아니라 벨류 카피</li>
+</ul>
 
-<pre><code class="language-solidity">...
-uint stateVal1 = 10;
-uint stateVal2 = 20;
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
 
-function test() return (uint) {
-    stateVal1 = stateVal2; // now both are 20.
-    stateVal2 = 30; // stateVal1 is still 20, only stateVal2 is 30
-    return stateVal1; // return 20
-}
+<span class="n">uint</span> <span class="n">stateVal1</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">uint</span> <span class="n">stateVal2</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+<span class="n">function</span> <span class="nf">test</span><span class="p">()</span> <span class="k">return</span> <span class="p">(</span><span class="n">uint</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">stateVal1</span> <span class="o">=</span> <span class="n">stateVal2</span><span class="p">;</span> <span class="c1">// now both are 20.
+</span>    <span class="n">stateVal2</span> <span class="o">=</span> <span class="mi">30</span><span class="p">;</span> <span class="c1">// stateVal1 is still 20, only stateVal2 is 30
+</span>    <span class="k">return</span> <span class="n">stateVal1</span><span class="p">;</span> <span class="c1">// return 20
+</span><span class="p">}</span>
 </code></pre>
+</div>
 
-<ol>
-  <li>메모리 변수를 스토리지 변수에 할당할 때 에는 레퍼런스 카피가 아니라 벨류 카피</li>
-</ol>
+<ul>
+  <li>5 메모리 변수를 스토리지 변수에 할당할 때 에는 레퍼런스 카피가 아니라 벨류 카피</li>
+</ul>
 
-<pre><code class="language-solidity">...
-uint[2] stateArr;
+<div class="language-c highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
 
-function test() return (uint) {
-    uint[2] memory localArr = [uint(1), 2];
-    stateArr = localArr; // now, both are [1, 2], [1, 2]
+<span class="n">uint</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">stateArr</span><span class="p">;</span>
 
-    localArr[1] = 10;
-    return stateArr[1]; // return 2, not 10
-}
+<span class="n">function</span> <span class="nf">test</span><span class="p">()</span> <span class="k">return</span> <span class="p">(</span><span class="n">uint</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">uint</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">memory</span> <span class="n">localArr</span> <span class="o">=</span> <span class="p">[</span><span class="n">uint</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">];</span>
+    <span class="n">stateArr</span> <span class="o">=</span> <span class="n">localArr</span><span class="p">;</span> <span class="c1">// now, both are [1, 2], [1, 2]
+</span>
+    <span class="n">localArr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">stateArr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="c1">// return 2, not 10
+</span><span class="p">}</span>
 </code></pre>
+</div>
 
-<ol>
-  <li>함수 내 메모리 변수에 global 변수를 할당하면 벨류 카피</li>
-  <li>함수 내 메모리 변수에 다른 메모리 변수 할당하면 벨류 카피</li>
-</ol>
+<ul>
+  <li>6 함수 내 메모리 변수에 global 변수를 할당하면 벨류 카피</li>
+  <li>7 함수 내 메모리 변수에 다른 메모리 변수 할당하면 벨류 카피</li>
+</ul>
 
 				<hr />
 				<footer class="page-footer">
 					
 
 <div class="author-image">
-	<img src="http://localhost:4000/images/" alt="">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="generousRocky">
 </div><!-- ./author-image -->
 <div class="author-content">
-	<h3 class="author-name" >Written by <span itemprop="author"></span></h3>
-	<p class="author-bio"></p>
+	<h3 class="author-name" >Written by <span itemprop="author">generousRocky</span></h3>
+	<p class="author-bio">Better Gear, Better Life</p>
 </div><!-- ./author-content -->
 					<div class="inline-btn">
-	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Solidity%20memory%20VS%20storage%20with%20reference/value%20type%20var&amp;url=http://localhost:4000/development/sol1/&amp;via=generousRocky" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Rules%20of%20memory%20VS%20storage%20in%20Solidity&amp;url=http://localhost:4000/development/sol1/&amp;via=generousRocky" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
 	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/development/sol1/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
 	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/development/sol1/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
 </div><!-- /.share-this -->
