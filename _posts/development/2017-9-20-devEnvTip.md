@@ -2,7 +2,7 @@
 layout: article
 title:  "커멘드라인 개발환경 팁"
 date:   2017-9-20 10:00:00 Z
-author: Rocky Lim
+author: generousRocky
 categories: development
 excerpt: "Tips for vim, tmux, ctags, cscope, etc."
 image:
