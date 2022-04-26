@@ -1,4 +1,139 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-04-21T00:31:34+09:00</updated><id>http://localhost:4000/</id><title type="html">generousRocky’s tech blog</title><subtitle>대인배 로키의 기술블로그</subtitle><entry><title type="html">유튜브를 접으면서</title><link href="http://localhost:4000/writing/youtube/" rel="alternate" type="text/html" title="유튜브를 접으면서" /><published>2022-04-20T22:44:20+09:00</published><updated>2022-04-20T22:44:20+09:00</updated><id>http://localhost:4000/writing/youtube</id><content type="html" xml:base="http://localhost:4000/writing/youtube/">&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCpY9pb4-S0PwCJBp2r6nOvg&quot;&gt;개발자 맛&lt;/a&gt; 이라는 채널을 2년정도 운영하고 있었다. 사실 마지막 영상이 벌써 10달 전이니 1년 조금 넘게 활동했던 것 같고, 영상은 15개 정도 만들었다. 생각보다 채널이 금방 커져서 2-3달 쯤 되었을 때 바로 수익창출 신청을 할 수 있었고, 지금은 6,400명 정도가 구독하고 있다.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-04-27T02:43:59+09:00</updated><id>http://localhost:4000/</id><title type="html">generousRocky’s tech blog</title><subtitle>대인배 로키의 기술블로그</subtitle><entry><title type="html">Proxy-patterns and Upgradable contract in Solidity</title><link href="http://localhost:4000/development/sol3/" rel="alternate" type="text/html" title="Proxy-patterns and Upgradable contract in Solidity" /><published>2022-04-21T19:00:00+09:00</published><updated>2022-04-21T19:00:00+09:00</updated><id>http://localhost:4000/development/sol3</id><content type="html" xml:base="http://localhost:4000/development/sol3/">&lt;nav class=&quot;toc&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#proxy-pattern&quot; id=&quot;markdown-toc-proxy-pattern&quot;&gt;Proxy pattern&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#writing-upgradable-contracts-using-openzeppelin&quot; id=&quot;markdown-toc-writing-upgradable-contracts-using-openzeppelin&quot;&gt;Writing Upgradable Contracts using OpenZeppelin&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#unstructured-stoage-proxies&quot; id=&quot;markdown-toc-unstructured-stoage-proxies&quot;&gt;Unstructured Stoage Proxies&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#storage-collisions-between-implementation-versions&quot; id=&quot;markdown-toc-storage-collisions-between-implementation-versions&quot;&gt;Storage Collisions Between Implementation Versions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ref&quot; id=&quot;markdown-toc-ref&quot;&gt;Ref&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/nav&gt;
+
+&lt;h2 id=&quot;proxy-pattern&quot;&gt;Proxy pattern&lt;/h2&gt;
+
+&lt;p&gt;이더리움 스마트 컨트랙트의 가장 큰 단점은 컨트랙트가 배포된 이후에는 소스코드를 수정할 수 없다는것이다. 기존의 중앙화된 서비스들의 대부분은 지속적으로 새로운 기능이 추가되고, 발견되는 버그들의 픽스가 들어가는 등 업데이트가 되지만, 전통적인 이더리움 개발 패턴에서는 이런것들은 불가능하다.&lt;/p&gt;
+
+&lt;p&gt;프록시 패턴은 이러한 업그레이드를 ‘어느정도’ 가능하게 해준다. 키 컨셉은 프록시 컨트렉트가 유저로부터의 access point가 되고, 실제 구현한 logic이 담긴 컨트랙트는 프록시 컨트렉트가 참조한다다. 따라서 logic 컨트랙트에 새로운 기능을 추가하거나 변경하여 새로운 version2 를 만들었다면, 프록시 컨트렉트가 새로운 컨트렉트를 가르키도록 해주기만 하면 된다.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/sol3_2.png&quot; alt=&quot;Drawing&quot; style=&quot;max-width: 80%; height: auto;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;솔리디티의 fallback function과 delegatecall 은 이러한 프록시 컨트랙을 가능하게 해준다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fallback function: 스마트 컨트랙트 내에 존재하지 않는 함수를 호출하면 컨트랙트 내 구현된 fallback function이 대신 호출된다. fallback function은 컨트랙트 내 함수의 이름 없이 아래와 같이 구현한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;contract&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myContract&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;delegatecall: 솔리디티의 저수준 함수로 호출하려는 컨트랙트의 함수를 현재 컨트랙트의 환경에서 실행한다. 즉, 호출하는 함수에 의한 스토리지 변화는 현재 컨트랙트(프록시 컨트랙트)에서의 스토리지에 영향을 미치고 로직컨트렉트의 스토리지에는 영향을 미치지 않는다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;위와 같은 두 기능을 사용해서 프록시 컨트랙트에 다음과 같은 코드가 들어가있다면(실제로 OpenZeppelin이 제공하는 proxy), 이 코드는 어떤 function call이 들어오던 그것을 파라미터와 함께 logic 컨트랙트로 포워딩 해 줄 것이다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;assembly&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x40&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// (1) copy incoming call data
+&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;calldatacopy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;calldatasize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// (2) forward call to logic contract
+&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;delegatecall&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_impl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;calldatasize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;returndatasize&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// (3) retrieve return data
+&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;returndatacopy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;// (4) forward return data back to caller
+&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;revert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;위의 저수준 코드가 어떻게 동작하는지는 &lt;a href=&quot;https://blog.openzeppelin.com/proxy-patterns/&quot;&gt;Proxy Patterns&lt;/a&gt;과 &lt;a href=&quot;https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies&quot;&gt;Proxy Upgrade Pattern&lt;/a&gt; 문서에 자세하게 설명되어 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;writing-upgradable-contracts-using-openzeppelin&quot;&gt;Writing Upgradable Contracts using OpenZeppelin&lt;/h2&gt;
+
+&lt;p&gt;위와 같은 이유로, 프록시 기반의 upgraadable contract 에서는 constructor를 쓸 수 없다(contructor를 proxy를 통해 대신 불러줄 수 없으니). 따라서 constructor에서 해주어야 하는 것들을 regular function에서 대신 해주어야 한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;contract&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyContract&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;uint256&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uint256&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;regular function은 contructor와 다르게 여러번 호출될 수 있기에 이를 막기 위해 OpenZeppelin은 &lt;code class=&quot;highlighter-rouge&quot;&gt;initialier&lt;/code&gt; modifier 를 구현해 놓은 &lt;code class=&quot;highlighter-rouge&quot;&gt;Initializable&lt;/code&gt; contract를 제공한다.&lt;/p&gt;
+
+&lt;p&gt;constructor은 호출될 때 상속 구조가 있으면, 해당 contract의 base contract의 constructor까지 호출해 준다. 하지만 이를 regular function으로 대체하였기 때문에 아래와 같이 명시적으로 base contract의 initialize function을 호출 해 주어야 한다.&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// contracts/MyContract.sol
+// SPDX-License-Identifier: MIT
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pragma&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;solidity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.6.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;contract&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BaseContract&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Initializable&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;uint256&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initializer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;contract&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MyContract&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BaseContract&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;uint256&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uint256&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initializer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;BaseContract&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Do not forget this call!
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;unstructured-stoage-proxies&quot;&gt;Unstructured Stoage Proxies&lt;/h2&gt;
+
+&lt;p&gt;프록시 구조를 통해 storage variable들은 proxy contrat에 저장이 된다. 하지만 procxy contract는 logic contract를 참조하기 위한 address 타입의 변수 &lt;code class=&quot;highlighter-rouge&quot;&gt;_implementation&lt;/code&gt;를 추가적으로 가지고 있어야하는데, 만약 slot1에 이 variable이 저장된다면 다음과 같은 stroage collision 을 발생시킨다.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/sol3_3.png&quot; alt=&quot;Drawing&quot; style=&quot;max-width: 80%; height: auto;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;OpenZeppelin의 “unstructuted stroage” 프록시 패턴에서는 이 &lt;code class=&quot;highlighter-rouge&quot;&gt;_implementation&lt;/code&gt; 변수를 slot1에 저장하지 않고, Randomized 된 slot에 저장한다. 따라서 Implementation(logic contract)와 storage가 겹칠 가능성은 없다(slot은 2^256만큼 있으므로 수학적으로 매우 낮음).&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/sol3_4.png&quot; alt=&quot;Drawing&quot; style=&quot;max-width: 80%; height: auto;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;storage-collisions-between-implementation-versions&quot;&gt;Storage Collisions Between Implementation Versions&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;_implementaion&lt;/code&gt; 변수와의 collision외에도 upgrade version 간의 collision도 발생할 수 있다. 이전 버전의 implementaion에서 사용하고 있는 slot에 새로운 변수를 추가하거나, 변수간의 위치를 변경한다면 collision이 발생한다. 따라서 새로운 stoage variable의 변경은 extension하는 방향으로 upgrade가 되어야 한다.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;
+	&lt;img src=&quot;http://localhost:4000/images/sol3_5.png&quot; alt=&quot;Drawing&quot; style=&quot;max-width: 80%; height: auto;&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;ref&quot;&gt;Ref&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies&lt;/li&gt;
+  &lt;li&gt;https://docs.openzeppelin.com/learn/upgrading-smart-contracts&lt;/li&gt;
+  &lt;li&gt;https://docs.openzeppelin.com/upgrades-plugins/1.x/writing-upgradeable&lt;/li&gt;
+&lt;/ol&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">솔리디티 프록시 패턴과 업그레이드 가능한 컨트랙트</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/sol3_1.png" /></entry><entry><title type="html">유튜브를 접으면서</title><link href="http://localhost:4000/writing/youtube/" rel="alternate" type="text/html" title="유튜브를 접으면서" /><published>2022-04-20T22:44:20+09:00</published><updated>2022-04-20T22:44:20+09:00</updated><id>http://localhost:4000/writing/youtube</id><content type="html" xml:base="http://localhost:4000/writing/youtube/">&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCpY9pb4-S0PwCJBp2r6nOvg&quot;&gt;개발자 맛&lt;/a&gt; 이라는 채널을 2년정도 운영하고 있었다. 사실 마지막 영상이 벌써 10달 전이니 1년 조금 넘게 활동했던 것 같고, 영상은 15개 정도 만들었다. 생각보다 채널이 금방 커져서 2-3달 쯤 되었을 때 바로 수익창출 신청을 할 수 있었고, 지금은 6,400명 정도가 구독하고 있다.&lt;/p&gt;
 
 &lt;p&gt;개발할 때 잘 사용하던 장비나 도구들을 주로 영상으로 만들어서 올렸는데, 정말 심취해서 할때는 퇴근하고 편집, 주말에도 하루종일 편집만 했던 것 같다. 그렇게 몇달 하다보니 책을 읽거나 공부할 시간이 너무 없다는 생각이 들었다. 개인적인 발전 없이 영상만 만들어내는게 별로 좋은 취미같지 않은 생각이 들어서 점점 흥미가 떨어졌고, 광고비를 미리 받은 컨텐츠만 올리고 업로드를 멈췄다.&lt;/p&gt;
 
@@ -858,127 +993,4 @@ at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;or . . .&lt;/p&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">InooDB basic concept and function call trace(function call stack, read write path)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/innodb_01.jpg" /></entry><entry><title type="html">liblightnvm(work in progress)</title><link href="http://localhost:4000/research/openChannelSSD_liblightnvm/" rel="alternate" type="text/html" title="liblightnvm(work in progress)" /><published>2018-02-20T19:00:00+09:00</published><updated>2018-02-20T19:00:00+09:00</updated><id>http://localhost:4000/research/openChannelSSD_liblightnvm</id><content type="html" xml:base="http://localhost:4000/research/openChannelSSD_liblightnvm/">&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#obtaining-device-information&quot; id=&quot;markdown-toc-obtaining-device-information&quot;&gt;Obtaining device information&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#physical-addressing&quot; id=&quot;markdown-toc-physical-addressing&quot;&gt;Physical Addressing&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#vectorized-io&quot; id=&quot;markdown-toc-vectorized-io&quot;&gt;vectorized IO&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#write-constraint&quot; id=&quot;markdown-toc-write-constraint&quot;&gt;write constraint&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#read-constraint&quot; id=&quot;markdown-toc-read-constraint&quot;&gt;read constraint&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#virtual-block&quot; id=&quot;markdown-toc-virtual-block&quot;&gt;virtual block&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#block-line&quot; id=&quot;markdown-toc-block-line&quot;&gt;Block Line&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;h1 id=&quot;obtaining-device-information&quot;&gt;Obtaining device information&lt;/h1&gt;
-
-&lt;p&gt;다음과 같은 명령어를 통해서 Open Channel SSD의 physical geometry를 알 수 있다. 즉, 디바이스의 정보를 얻을 수 있음.&lt;/p&gt;
-
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvm_dev info /dev/nvme0n1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Device information -- nvm_dev_pr&lt;/span&gt;
-dev:
-  verid: 0x02
-  be_id: 0x02
-  name: &lt;span class=&quot;s1&quot;&gt;'nvme0n1'&lt;/span&gt;
-  path: &lt;span class=&quot;s1&quot;&gt;'/dev/nvme0n1'&lt;/span&gt;
-  fd: 3
-  ssw: 12
-  pmode: &lt;span class=&quot;s1&quot;&gt;'DUAL'&lt;/span&gt;
-  erase_naddrs_max: 64
-  read_naddrs_max: 64
-  write_naddrs_max: 64
-  meta_mode: 0
-  bbts_cached: 0
-dev_geo:
-  nchannels: 16
-  nluns: 8
-  nplanes: 2
-  nblocks: 1020
-  npages: 512
-  nsectors: 4
-  page_nbytes: 16384
-  sector_nbytes: 4096
-  meta_nbytes: 16
-  tbytes: 2190433320960
-  tmbytes: 2088960
-dev_ppaf:
-  ch_off: 25
-  ch_len: 04
-  lun_off: 22
-  lun_len: 03
-  pl_off: 02
-  pl_len: 01
-  blk_off: 12
-  blk_len: 10
-  pg_off: 03
-  pg_len: 09
-  sec_off: 00
-  sec_len: 02
-dev_ppaf_mask:
-  ch:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000011110000000000000000000000000'&lt;/span&gt;
-  lun: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000001110000000000000000000000'&lt;/span&gt;
-  pl:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000000000000100'&lt;/span&gt;
-  blk: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000001111111111000000000000'&lt;/span&gt;
-  pg:  &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000111111111000'&lt;/span&gt;
-  sec: &lt;span class=&quot;s1&quot;&gt;'0000000000000000000000000000000000000000000000000000000000000011'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&quot;physical-addressing&quot;&gt;Physical Addressing&lt;/h1&gt;
-
-&lt;p&gt;struct nvm_addr 라는 자료구조로 물리 페이지 주소가 표현된다.&lt;/p&gt;
-
-&lt;p&gt;Construct an address for sector 3 within page 11 in block 200 on plane 0 of LUN 1 in channel 4:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nvm_addr from_geo /dev/nvme0n1 4 1 0 200 10 3
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Yielding:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0x04010003000a00c8: {ch: 04, lun: 01, pl: 0, blk: 0200, pg: 010, sec: 3}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;플래시 메모리에 I/O 할 수 있도록 해주는  유저스페이스 라이브러리, I/O 인텐시브한 어플리케이션이 어플리케이션에서 FTL을 구현할 수 있도록 도와줄 수 있다.&lt;/p&gt;
-
-&lt;p&gt;liblightnvm is a user space library that manages provisioning of and I/O submission to physical flash. The motivation is to enable I/O-intensive applications to implement their own Flash Translation Layer (FTLs) using the internal application data structures. The design is based on the principle that high-performance I/O applications often use structures that assimilates structures found within a Flash translation layer. This include log-structured data structures that provides their own mechanisms for data placement, garbage collection, and I/O scheduling strategies.&lt;/p&gt;
-
-&lt;p&gt;For example, popular key-value stores often use a form of Log Structured Merge Trees (LSMs) as their base data structure (including RocksDB, MongoDB, Apache Cassandra). The LSM is in itself a form of FTL, which manages data placement and garbage collection. This class of applications can benefit from a direct path to physical flash to take full advantage of the optimizations they do and spend host resources on, instead of missing them through the several levels of indirection that the traditional I/O stack imposes to enable genericity: page cache, VFS, file system, and device physical - logical translation table. liblightnvm exposes append-only primitives using direct physical flash to support this class of applications.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/OpenChannelSSD/liblightnvm&quot;&gt;https://github.com/OpenChannelSSD/liblightnvm&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;vectorized-io&quot;&gt;vectorized IO&lt;/h1&gt;
-
-&lt;h2 id=&quot;write-constraint&quot;&gt;write constraint&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Erase before write&lt;/li&gt;
-  &lt;li&gt;they must be at the granularity of a full flash page&lt;/li&gt;
-  &lt;li&gt;they must be contiguous within a block&lt;/li&gt;
-  &lt;li&gt;writes must be performed to the block accross all planes(minimum write)
-  한 die에 plane이 두 개 있을때, 쓰기는 이 plane에 모두 이루어져야 한다. 따라서, 이 조건을 만족하도록 쓰기를 하거나 &lt;em&gt;plane-mode&lt;/em&gt;를 꺼 주는 옵션을 써야 한다.&lt;/li&gt;
-  &lt;li&gt;we can construct a command with 64 addresses.(maximum write)
-  한 nvme command에 64개의 ppa를 지정 해 줄 수 있다. 따라서, 4k X 64크기 만큼의 데이터 쓰기를 한 커멘드를 통해 요청할 수 있다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;read-constraint&quot;&gt;read constraint&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The granularity of a read is a single sector (the smallest addressable unit) and can be performed non-contiguously.&lt;/li&gt;
-  &lt;li&gt;The primary constraint for a read to adhere to is that the block which is read from must be closed. That is, all pages within the block must have been written
-  읽기 전에 해당 블록은 모든 페이지가 다 쓰여져 있는 상태 이어야 한다.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;virtual-block&quot;&gt;virtual block&lt;/h1&gt;
-&lt;p&gt;liblightnvm, therefore, introduces a pure software abstraction, a virtual block, to reduce the cognitive load for application developers.&lt;/p&gt;
-
-&lt;p&gt;A virtual block behaves as a physical, that is, the constraints of working with NAND media also apply to a virtual block. However, the abstraction encapsulates the command and address construction of parallel vectorized IO and exposes a flat address space which is read/written in a manner equivalent to the read/write primitives offered by libc.&lt;/p&gt;
-
-&lt;h1 id=&quot;block-line&quot;&gt;Block Line&lt;/h1&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">유저스페이스에서 Open Channel SSD 컨트롤 하기</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/liblightnvm_01_01.png" /></entry></feed>
+&lt;p&gt;or . . .&lt;/p&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">InooDB basic concept and function call trace(function call stack, read write path)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/innodb_01.jpg" /></entry></feed>

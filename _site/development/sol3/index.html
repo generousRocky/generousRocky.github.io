@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Proxy-patterns and Upgradable contract in Solidity • generousRocky's tech blog</title>
+    <meta name="description" content="솔리디티 프록시 패턴과 업그레이드 가능한 컨트랙트">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="Proxy-patterns and Upgradable contract in Solidity">
+	<meta name="twitter:description" content="솔리디티 프록시 패턴과 업그레이드 가능한 컨트랙트">
+	<meta name="twitter:site" content="@generousRocky">
+	<meta name="twitter:creator" content="@generousRocky">
+	
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="http://localhost:4000/images/sol3_1.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Proxy-patterns and Upgradable contract in Solidity">
+	<meta property="og:description" content="솔리디티 프록시 패턴과 업그레이드 가능한 컨트랙트">
+	<meta property="og:url" content="http://localhost:4000/development/sol3/">
+	<meta property="og:site_name" content="generousRocky's tech blog">
+
+    <link rel="canonical" href="http://localhost:4000/development/sol3/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="generousRocky's tech blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <script data-ad-client="ca-pub-6597217616610333" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">generousRocky's tech blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">generousRocky's tech blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/development/" >Development</a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/writing/" >Writing</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>generousRocky's tech blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/development/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Development</div>
+        <p class="excerpt">Taste like developer</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">When I was in M.S., B.S.</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/writing/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Writing</div>
+        <p class="excerpt">things not related to above.</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon2.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">Better Gear, Better Life</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		<div class="page-feature">
+			<div class="page-image">
+				<img src="http://localhost:4000/images/sol3_1.png" class="page-feature-image" alt="Proxy-patterns and Upgradable contract in Solidity" itemprop="image">
+				
+			</div><!-- /.page-image -->
+		</div><!-- /.page-feature -->
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/development/" itemprop="url">
+        <span itemprop="title">Development</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>Proxy-patterns and Upgradable contract in Solidity</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<nav class="toc">
+<ul id="markdown-toc">
+  <li><a href="#proxy-pattern" id="markdown-toc-proxy-pattern">Proxy pattern</a></li>
+  <li><a href="#writing-upgradable-contracts-using-openzeppelin" id="markdown-toc-writing-upgradable-contracts-using-openzeppelin">Writing Upgradable Contracts using OpenZeppelin</a></li>
+  <li><a href="#unstructured-stoage-proxies" id="markdown-toc-unstructured-stoage-proxies">Unstructured Stoage Proxies</a></li>
+  <li><a href="#storage-collisions-between-implementation-versions" id="markdown-toc-storage-collisions-between-implementation-versions">Storage Collisions Between Implementation Versions</a></li>
+  <li><a href="#ref" id="markdown-toc-ref">Ref</a></li>
+</ul>
+
+</nav>
+
+<h2 id="proxy-pattern">Proxy pattern</h2>
+
+<p>이더리움 스마트 컨트랙트의 가장 큰 단점은 컨트랙트가 배포된 이후에는 소스코드를 수정할 수 없다는것이다. 기존의 중앙화된 서비스들의 대부분은 지속적으로 새로운 기능이 추가되고, 발견되는 버그들의 픽스가 들어가는 등 업데이트가 되지만, 전통적인 이더리움 개발 패턴에서는 이런것들은 불가능하다.</p>
+
+<p>프록시 패턴은 이러한 업그레이드를 ‘어느정도’ 가능하게 해준다. 키 컨셉은 프록시 컨트렉트가 유저로부터의 access point가 되고, 실제 구현한 logic이 담긴 컨트랙트는 프록시 컨트렉트가 참조한다다. 따라서 logic 컨트랙트에 새로운 기능을 추가하거나 변경하여 새로운 version2 를 만들었다면, 프록시 컨트렉트가 새로운 컨트렉트를 가르키도록 해주기만 하면 된다.</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/sol3_2.png" alt="Drawing" style="max-width: 80%; height: auto;" />
+</p>
+
+<p>솔리디티의 fallback function과 delegatecall 은 이러한 프록시 컨트랙을 가능하게 해준다.</p>
+
+<ul>
+  <li>fallback function: 스마트 컨트랙트 내에 존재하지 않는 함수를 호출하면 컨트랙트 내 구현된 fallback function이 대신 호출된다. fallback function은 컨트랙트 내 함수의 이름 없이 아래와 같이 구현한다.</li>
+</ul>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">contract</span> <span class="n">myContract</span> <span class="p">{</span>
+  <span class="n">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>delegatecall: 솔리디티의 저수준 함수로 호출하려는 컨트랙트의 함수를 현재 컨트랙트의 환경에서 실행한다. 즉, 호출하는 함수에 의한 스토리지 변화는 현재 컨트랙트(프록시 컨트랙트)에서의 스토리지에 영향을 미치고 로직컨트렉트의 스토리지에는 영향을 미치지 않는다.</li>
+</ul>
+
+<p>위와 같은 두 기능을 사용해서 프록시 컨트랙트에 다음과 같은 코드가 들어가있다면(실제로 OpenZeppelin이 제공하는 proxy), 이 코드는 어떤 function call이 들어오던 그것을 파라미터와 함께 logic 컨트랙트로 포워딩 해 줄 것이다.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">assembly</span> <span class="p">{</span>
+  <span class="n">let</span> <span class="n">ptr</span> <span class="o">:=</span> <span class="n">mload</span><span class="p">(</span><span class="mh">0x40</span><span class="p">)</span>
+
+  <span class="c1">// (1) copy incoming call data
+</span>  <span class="n">calldatacopy</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">calldatasize</span><span class="p">)</span>
+
+  <span class="c1">// (2) forward call to logic contract
+</span>  <span class="n">let</span> <span class="n">result</span> <span class="o">:=</span> <span class="n">delegatecall</span><span class="p">(</span><span class="n">gas</span><span class="p">,</span> <span class="n">_impl</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">calldatasize</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="n">let</span> <span class="n">size</span> <span class="o">:=</span> <span class="n">returndatasize</span>
+
+  <span class="c1">// (3) retrieve return data
+</span>  <span class="n">returndatacopy</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+  <span class="c1">// (4) forward return data back to caller
+</span>  <span class="k">switch</span> <span class="n">result</span>
+  <span class="k">case</span> <span class="mi">0</span> <span class="err">{</span> <span class="n">revert</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="err">}</span>
+  <span class="k">default</span> <span class="err">{</span> <span class="k">return</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span> <span class="err">}</span>
+<span class="err">}</span>
+</code></pre>
+</div>
+
+<p>위의 저수준 코드가 어떻게 동작하는지는 <a href="https://blog.openzeppelin.com/proxy-patterns/">Proxy Patterns</a>과 <a href="https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies">Proxy Upgrade Pattern</a> 문서에 자세하게 설명되어 있다.</p>
+
+<h2 id="writing-upgradable-contracts-using-openzeppelin">Writing Upgradable Contracts using OpenZeppelin</h2>
+
+<p>위와 같은 이유로, 프록시 기반의 upgraadable contract 에서는 constructor를 쓸 수 없다(contructor를 proxy를 통해 대신 불러줄 수 없으니). 따라서 constructor에서 해주어야 하는 것들을 regular function에서 대신 해주어야 한다.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="n">contract</span> <span class="n">MyContract</span> <span class="p">{</span>
+    <span class="n">uint256</span> <span class="k">public</span> <span class="n">x</span><span class="p">;</span>
+
+    <span class="n">function</span> <span class="n">initialize</span><span class="p">(</span><span class="n">uint256</span> <span class="n">_x</span><span class="p">)</span> <span class="k">public</span> <span class="p">{</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">_x</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>regular function은 contructor와 다르게 여러번 호출될 수 있기에 이를 막기 위해 OpenZeppelin은 <code class="highlighter-rouge">initialier</code> modifier 를 구현해 놓은 <code class="highlighter-rouge">Initializable</code> contract를 제공한다.</p>
+
+<p>constructor은 호출될 때 상속 구조가 있으면, 해당 contract의 base contract의 constructor까지 호출해 준다. 하지만 이를 regular function으로 대체하였기 때문에 아래와 같이 명시적으로 base contract의 initialize function을 호출 해 주어야 한다.</p>
+
+<div class="language-c++ highlighter-rouge"><pre class="highlight"><code><span class="c1">// contracts/MyContract.sol
+// SPDX-License-Identifier: MIT
+</span><span class="n">pragma</span> <span class="n">solidity</span> <span class="o">^</span><span class="mf">0.6.0</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="s">"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol"</span><span class="p">;</span>
+
+<span class="n">contract</span> <span class="n">BaseContract</span> <span class="n">is</span> <span class="n">Initializable</span> <span class="p">{</span>
+    <span class="n">uint256</span> <span class="k">public</span> <span class="n">y</span><span class="p">;</span>
+
+    <span class="n">function</span> <span class="n">initialize</span><span class="p">()</span> <span class="k">public</span> <span class="n">initializer</span> <span class="p">{</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">contract</span> <span class="n">MyContract</span> <span class="n">is</span> <span class="n">BaseContract</span> <span class="p">{</span>
+    <span class="n">uint256</span> <span class="k">public</span> <span class="n">x</span><span class="p">;</span>
+
+    <span class="n">function</span> <span class="n">initialize</span><span class="p">(</span><span class="n">uint256</span> <span class="n">_x</span><span class="p">)</span> <span class="k">public</span> <span class="n">initializer</span> <span class="p">{</span>
+        <span class="n">BaseContract</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span> <span class="c1">// Do not forget this call!
+</span>        <span class="n">x</span> <span class="o">=</span> <span class="n">_x</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h2 id="unstructured-stoage-proxies">Unstructured Stoage Proxies</h2>
+
+<p>프록시 구조를 통해 storage variable들은 proxy contrat에 저장이 된다. 하지만 procxy contract는 logic contract를 참조하기 위한 address 타입의 변수 <code class="highlighter-rouge">_implementation</code>를 추가적으로 가지고 있어야하는데, 만약 slot1에 이 variable이 저장된다면 다음과 같은 stroage collision 을 발생시킨다.</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/sol3_3.png" alt="Drawing" style="max-width: 80%; height: auto;" />
+</p>
+
+<p>OpenZeppelin의 “unstructuted stroage” 프록시 패턴에서는 이 <code class="highlighter-rouge">_implementation</code> 변수를 slot1에 저장하지 않고, Randomized 된 slot에 저장한다. 따라서 Implementation(logic contract)와 storage가 겹칠 가능성은 없다(slot은 2^256만큼 있으므로 수학적으로 매우 낮음).</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/sol3_4.png" alt="Drawing" style="max-width: 80%; height: auto;" />
+</p>
+
+<h2 id="storage-collisions-between-implementation-versions">Storage Collisions Between Implementation Versions</h2>
+
+<p><code class="highlighter-rouge">_implementaion</code> 변수와의 collision외에도 upgrade version 간의 collision도 발생할 수 있다. 이전 버전의 implementaion에서 사용하고 있는 slot에 새로운 변수를 추가하거나, 변수간의 위치를 변경한다면 collision이 발생한다. 따라서 새로운 stoage variable의 변경은 extension하는 방향으로 upgrade가 되어야 한다.</p>
+
+<p style="text-align: center;">
+	<img src="http://localhost:4000/images/sol3_5.png" alt="Drawing" style="max-width: 80%; height: auto;" />
+</p>
+
+<h2 id="ref">Ref</h2>
+
+<ol>
+  <li>https://docs.openzeppelin.com/upgrades-plugins/1.x/proxies</li>
+  <li>https://docs.openzeppelin.com/learn/upgrading-smart-contracts</li>
+  <li>https://docs.openzeppelin.com/upgrades-plugins/1.x/writing-upgradeable</li>
+</ol>
+
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="generousRocky">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">generousRocky</span></h3>
+	<p class="author-bio">Better Gear, Better Life</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=Proxy-patterns%20and%20Upgradable%20contract%20in%20Solidity&amp;url=http://localhost:4000/development/sol3/&amp;via=generousRocky" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/development/sol3/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/development/sol3/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2022-04-21T10:00:00Z" itemprop="datePublished">April 21, 2022</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<script data-ad-client="ca-pub-6597217616610333" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.youtube.com/channel/UCpY9pb4-S0PwCJBp2r6nOvg" target="_blank">Youtube</a></li>
+		
+      
+			<li><a href="https://github.com/generousRocky" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2022 <a href="http://localhost:4000">generousRocky's tech blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>
