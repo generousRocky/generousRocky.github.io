@@ -1,4 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-04-27T02:43:59+09:00</updated><id>http://localhost:4000/</id><title type="html">generousRocky’s tech blog</title><subtitle>대인배 로키의 기술블로그</subtitle><entry><title type="html">Proxy-patterns and Upgradable contract in Solidity</title><link href="http://localhost:4000/development/sol3/" rel="alternate" type="text/html" title="Proxy-patterns and Upgradable contract in Solidity" /><published>2022-04-21T19:00:00+09:00</published><updated>2022-04-21T19:00:00+09:00</updated><id>http://localhost:4000/development/sol3</id><content type="html" xml:base="http://localhost:4000/development/sol3/">&lt;nav class=&quot;toc&quot;&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-05-01T02:02:23+09:00</updated><id>http://localhost:4000/</id><title type="html">generousRocky’s tech blog</title><subtitle>대인배 로키의 기술블로그</subtitle><entry><title type="html">EIP-4337 – Ethereum Account Abstraction Audit</title><link href="http://localhost:4000/development/sol4/" rel="alternate" type="text/html" title="EIP-4337 – Ethereum Account Abstraction Audit" /><published>2022-04-29T19:00:00+09:00</published><updated>2022-04-29T19:00:00+09:00</updated><id>http://localhost:4000/development/sol4</id><content type="html" xml:base="http://localhost:4000/development/sol4/">&lt;nav class=&quot;toc&quot;&gt;
+
+&lt;/nav&gt;
+
+&lt;h3 id=&quot;오딧-시리즈-시작하며&quot;&gt;오딧 시리즈 시작하며,&lt;/h3&gt;
+
+&lt;p&gt;솔리디티 책도 2권 정도 읽었고, &lt;a href=&quot;https://docs.soliditylang.org/&quot;&gt;https://docs.soliditylang.org/&lt;/a&gt; 문서도 궁금한 부분은 다 챙겨보았다.&lt;/p&gt;
+
+&lt;p&gt;그동안 스터디를 하면서 Treasure Dao 프로젝트의 Market, Mining 컨트랙트와 Magic Dragon Dao 프로젝트의 Staking &amp;amp; Reward 관련 컨트렉트를 분석해봤는데, 이제는 코드에서 특별히 신택스나 솔리디티 동작을 모르는 경우가 많지는 않았다.&lt;/p&gt;
+
+&lt;p&gt;그래서 좀 더 많은 프로젝트의 코드를, 특히 security와 관련된 부분을 보기 위해서 오픈제플린의 오딧 리포트를 보고 인사이트를 좀 남겨보기로 했다. 오딧 리포트의 모든 항목을 살펴보기 보단 공부 하면서 도움이 될 만한 것들만 볼 예정이다. 리포트에는 단순한 오타나 계산 실수같은것들도 많아서 전체를 다 보는건 큰 의미가 없을 것 같다.&lt;/p&gt;
+
+&lt;h3 id=&quot;eip-4337--ethereum-account-abstraction-audit&quot;&gt;EIP-4337 – Ethereum Account Abstraction Audit&lt;/h3&gt;
+
+&lt;p&gt;이 시리즈의 첫번째 포스트는 &lt;strong&gt;EIP-4337 – Ethereum Account Abstraction Audit&lt;/strong&gt; 이다. 이더리움에서 계정에 추가적인 기능이 들어가는것으로 보인다. 실제로 제안을 살펴본 것은 아니지만, 오딧 리포트를 보니 stake등의 기능이 생기는 것 같다.&lt;/p&gt;
+
+&lt;h4 id=&quot;deposit-manipulation&quot;&gt;Deposit manipulation&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;audit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Firstly, the new funds &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/StakeManager.sol#L88&quot;&gt;are added to the caller’s current balance&lt;/a&gt; instead of the current &lt;code class=&quot;highlighter-rouge&quot;&gt;account&lt;/code&gt; balance. This effectively allows anyone to delete the deposit from any account.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fix&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Fixed in pull request &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/pull/50/files&quot;&gt;#50&lt;/a&gt;. The &lt;code class=&quot;highlighter-rouge&quot;&gt;addStakeTo&lt;/code&gt; function was renamed to &lt;code class=&quot;highlighter-rouge&quot;&gt;addStake&lt;/code&gt; and updated such that the caller can only add value to their own stake.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;note&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;addStakeTo 함수에서 address파라미터를 가지고 deposit mapping에 접근이 가능하다. 따라서 누구나 다른사람 계정의 deposit을 가지고 staking을 할 수 있다. address를 키로 가지는 mapping 변수에 대한 access가 있을 때 에는 msg.sender 혹은 onlyOwner 같은 modifier 로 privilege 체크가 잘 되어있는지 확인해야 한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;token-transfers-may-fail-silently&quot;&gt;Token transfers may fail silently&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;audit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;DepositPaymaster&lt;/code&gt;
+ ignores the token transfer return value when &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/samples/DepositPaymaster.sol#L53&quot;&gt;adding deposits&lt;/a&gt;, &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/samples/DepositPaymaster.sol#L89&quot;&gt;withdrawing tokens from the contract&lt;/a&gt; and &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/samples/DepositPaymaster.sol#L122&quot;&gt;recovering gas costs&lt;/a&gt;. Although many tokens revert on failure, the &lt;a href=&quot;https://eips.ethereum.org/EIPS/eip-20&quot;&gt;token standard&lt;/a&gt; only specifies a boolean return value indicating success or failure. For tokens that return &lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;, such as the &lt;a href=&quot;https://etherscan.io/address/0xe41d2489571d322189246dafa5ebde1f4699f498&quot;&gt;0x Protocol Token&lt;/a&gt;, these transfers may fail silently, leading to incorrect internal accounting.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fix&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Fixed in pull request &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/pull/54/files&quot;&gt;#54&lt;/a&gt;. The &lt;code class=&quot;highlighter-rouge&quot;&gt;DepositPaymaster&lt;/code&gt; contract now uses OpenZeppelin’s &lt;code class=&quot;highlighter-rouge&quot;&gt;[SafeERC20](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.5.0/contracts/token/ERC20/utils/SafeERC20.sol)&lt;/code&gt; library functions for token transfers.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;note:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;ERC20&lt;/em&gt; 에서 transfer 함수의 return값이 true/false인지 체크해봐야 한다. 혹은 오픈제플린의 &lt;em&gt;SafaERC20&lt;/em&gt; 을 쓴다.(실패 시 throw 함)&lt;/p&gt;
+
+&lt;h4 id=&quot;use-of-transfer-function-is-potentially-unsafe&quot;&gt;Use of transfer function is potentially unsafe&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;audit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;withdrawTo&lt;/code&gt; function in &lt;code class=&quot;highlighter-rouge&quot;&gt;StakeManager&lt;/code&gt; and the &lt;code class=&quot;highlighter-rouge&quot;&gt;transfer&lt;/code&gt; function in &lt;code class=&quot;highlighter-rouge&quot;&gt;SimpleWallet&lt;/code&gt; both uses Solidity’s built-in &lt;code class=&quot;highlighter-rouge&quot;&gt;transfer&lt;/code&gt; function (on &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/StakeManager.sol#L129&quot;&gt;line 129&lt;/a&gt; and &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/samples/SimpleWallet.sol#L52&quot;&gt;line 52&lt;/a&gt;, respectively) to send ether to a destination address. The use of &lt;code class=&quot;highlighter-rouge&quot;&gt;transfer&lt;/code&gt; for this purpose is &lt;a href=&quot;https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/&quot;&gt;no longer recommended&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Consider using the &lt;code class=&quot;highlighter-rouge&quot;&gt;call&lt;/code&gt; function or OpenZeppelin’s &lt;a href=&quot;https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.5.0/contracts/utils/Address.sol#L60&quot;&gt;sendValue function&lt;/a&gt;, and adhere to the checks-effects-interactions pattern when sending value to an external address. This pattern is already implemented in &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/EntryPoint.sol#L80&quot;&gt;the &lt;code class=&quot;highlighter-rouge&quot;&gt;compensate&lt;/code&gt; function&lt;/a&gt; of the &lt;code class=&quot;highlighter-rouge&quot;&gt;EntryPoint&lt;/code&gt; contract.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Update&lt;/strong&gt;: Partially fixed in pull request &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/pull/57/files&quot;&gt;#57&lt;/a&gt;. The &lt;code class=&quot;highlighter-rouge&quot;&gt;SimpleWallet&lt;/code&gt; contract’s &lt;code class=&quot;highlighter-rouge&quot;&gt;transfer&lt;/code&gt; function was left unchanged.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fix&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Partially fixed in pull request &lt;a href=&quot;https://github.com/eth-infinitism/account-abstraction/pull/57/files&quot;&gt;#57&lt;/a&gt;. The &lt;code class=&quot;highlighter-rouge&quot;&gt;SimpleWallet&lt;/code&gt; contract’s &lt;code class=&quot;highlighter-rouge&quot;&gt;transfer&lt;/code&gt; function was left unchanged.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;note&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;[https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/](https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/)&quot;&gt;LINK&lt;/a&gt; 에 따르면 solidity의 내장 함수인 transfer는 더이상 쓰는것이 권장되지 않는다. call을 쓰거나 OpenZeppelin의 라이브러리가 제공하는 function을 쓰는게 좋다.&lt;/p&gt;
+
+&lt;h3 id=&quot;ref&quot;&gt;Ref&lt;/h3&gt;
+
+&lt;p&gt;https://blog.openzeppelin.com/eth-foundation-account-abstraction-audit/&lt;/p&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">OpenZeppelin 오딧 리포트 리뷰#1: EIP-4377</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/sol4_1.png" /></entry><entry><title type="html">Proxy-patterns and Upgradable contract in Solidity</title><link href="http://localhost:4000/development/sol3/" rel="alternate" type="text/html" title="Proxy-patterns and Upgradable contract in Solidity" /><published>2022-04-21T19:00:00+09:00</published><updated>2022-04-21T19:00:00+09:00</updated><id>http://localhost:4000/development/sol3</id><content type="html" xml:base="http://localhost:4000/development/sol3/">&lt;nav class=&quot;toc&quot;&gt;
 &lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#proxy-pattern&quot; id=&quot;markdown-toc-proxy-pattern&quot;&gt;Proxy pattern&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#writing-upgradable-contracts-using-openzeppelin&quot; id=&quot;markdown-toc-writing-upgradable-contracts-using-openzeppelin&quot;&gt;Writing Upgradable Contracts using OpenZeppelin&lt;/a&gt;&lt;/li&gt;
@@ -705,292 +788,4 @@ Configured Voltage: Unknown
 &lt;p&gt;The role of high-performance storage devices is becoming increasingly important in the web-scale infrastructure. In particular, nextgeneration storage devices such as Non Volatile Memory Express (NVMe) based solid state devices (SSDs) are being actively introduced to data centers. However, applications running on data centers do not take into account the characteristics of these high-performance storage devices. We focus on the performance degradation of the mixed workload of reads and writes when using high-performance storage devices in the log-structured merge tree (LSM-tree) based database systems. To address this problem, we propose application-driven flash management scheme to isolate read/write operation.&lt;/p&gt;
 
 &lt;h1 id=&quot;2-get-paper-from-here&quot;&gt;2. get paper from here&lt;/h1&gt;
-&lt;p&gt;LINK: &lt;a href=&quot;https://github.com/generousRocky/generousRocky.github.io/blob/master/publication/rocky_mwds18.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/rocksdb_01.png" /></entry><entry><title type="html">InnoDB basic and i/o path</title><link href="http://localhost:4000/research/innodb_01/" rel="alternate" type="text/html" title="InnoDB basic and i/o path" /><published>2018-03-01T19:00:00+09:00</published><updated>2018-03-01T19:00:00+09:00</updated><id>http://localhost:4000/research/innodb_01</id><content type="html" xml:base="http://localhost:4000/research/innodb_01/">&lt;nav class=&quot;toc&quot;&gt;
-&lt;ul id=&quot;markdown-toc&quot;&gt;
-  &lt;li&gt;&lt;a href=&quot;#1-innodb-background&quot; id=&quot;markdown-toc-1-innodb-background&quot;&gt;1. InnoDB background&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#2-innodb-function-call-tracefunction-call-stack&quot; id=&quot;markdown-toc-2-innodb-function-call-tracefunction-call-stack&quot;&gt;2. InnoDB Function Call Trace(Function Call Stack)&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#pread&quot; id=&quot;markdown-toc-pread&quot;&gt;pread&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#pwrite&quot; id=&quot;markdown-toc-pwrite&quot;&gt;pwrite&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/nav&gt;
-
-&lt;h1 id=&quot;1-innodb-background&quot;&gt;1. InnoDB background&lt;/h1&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;InnoDB - Default storage engine of MySQL DB&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;InnoDB tables arrange your data on disk to optimize queries based on primary keys. Each InnoDB table has a primary key index called the clustered index that organizes the data to minimize I/O for primary key lookups&lt;/p&gt;
-
-&lt;p&gt;Inserts, updates, and deletes are optimized by an automatic mechanism called change buffering. InnoDB not only allows concurrent read and write access to the same table, it caches changed data to streamline disk I/O.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;file-per-table&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;A general name for the setting controlled by the &lt;em&gt;innodb_file_per_table&lt;/em&gt; option, which is an important configuration option that affects aspects of InnoDB file storage, availability of features, and I/O characteristics. As of MySQL 5.6.7, &lt;em&gt;innodb_file_per_table&lt;/em&gt; is enabled by default.&lt;/p&gt;
-
-&lt;p&gt;With the &lt;em&gt;innodb_file_per_table&lt;/em&gt; option enabled, you can create a table in its own &lt;strong&gt;.ibd file&lt;/strong&gt; rather than in the shared &lt;strong&gt;ibdata files&lt;/strong&gt; of the &lt;strong&gt;system tablespace&lt;/strong&gt;. When table data is stored in an individual &lt;strong&gt;.ibd file&lt;/strong&gt;, you have more flexibility to choose &lt;strong&gt;row formats&lt;/strong&gt; required for features such as data &lt;strong&gt;compression&lt;/strong&gt;. The TRUNCATE TABLE operation is also faster, and reclaimed space can be used by the operating system rather than remaining reserved for InnoDB.&lt;/p&gt;
-
-&lt;p&gt;You can monitor the internal workings of the storage engine by querying &lt;strong&gt;INFORMATION_SCHEMA&lt;/strong&gt; tables.&lt;/p&gt;
-
-&lt;p&gt;You can monitor the performance details of the storage engine by querying &lt;strong&gt;Performance Schema&lt;/strong&gt; tables.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;system tablespace&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;One or more data files (&lt;strong&gt;ibdata files&lt;/strong&gt;) containing metadata for InnoDB-related objects (&lt;strong&gt;the InnoDB data dictionary&lt;/strong&gt;), and the storage areas for the &lt;strong&gt;change buffer&lt;/strong&gt;, the &lt;strong&gt;doublewrite buffer&lt;/strong&gt;, and possibly &lt;strong&gt;undo logs&lt;/strong&gt;. It may also contain table and index data for InnoDB tables if tables were created in the system tablespace instead of &lt;strong&gt;file-per-table&lt;/strong&gt; or &lt;strong&gt;general tablespaces&lt;/strong&gt;. The data and metadata in the system tablespace apply to all &lt;strong&gt;databases&lt;/strong&gt; in a MySQL &lt;strong&gt;instance&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;In MySQL 5.7, the default is &lt;strong&gt;&lt;em&gt;file-per-table mode&lt;/em&gt;&lt;/strong&gt;, where each table and its associated indexes are stored in a separate &lt;strong&gt;&lt;em&gt;.ibd file&lt;/em&gt;&lt;/strong&gt;. This default makes it easier to use InnoDB features that rely on the Barracuda file format, such as table compression, efficient storage of off-page columns, and large index key prefixes (innodb_large_prefix).&lt;/p&gt;
-
-&lt;h1 id=&quot;2-innodb-function-call-tracefunction-call-stack&quot;&gt;2. InnoDB Function Call Trace(Function Call Stack)&lt;/h1&gt;
-
-&lt;p&gt;The following function call trace comes from &lt;strong&gt;gdb&lt;/strong&gt; while processing tpcc-h workload. I sampled from start points of i/o thread  to &lt;strong&gt;pread&lt;/strong&gt; and &lt;strong&gt;pwrite&lt;/strong&gt; systeam call(the end of mysql layer).&lt;/p&gt;
-
-&lt;h2 id=&quot;pread&quot;&gt;pread&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#0  pread64 () at ../sysdeps/unix/syscall-template.S:84
-#1  0x0000000001ab1d0f in SyncFileIO::execute (this=0x7f7f2c0d1500, request=...) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:2185
-#2  0x0000000001ab442d in os_file_io (in_type=..., file=47, buf=0x7f7f247dc000, n=16384, offset=24133632, err=0x7f7f2c0d1904) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5445
-#3  0x0000000001ab4ea1 in os_file_pread (type=..., file=47, buf=0x7f7f247dc000, n=16384, offset=24133632, err=0x7f7f2c0d1904) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5627
-#4  0x0000000001ab504b in os_file_read_page (type=..., file=47, buf=0x7f7f247dc000, offset=24133632, n=16384, o=0x0, exit_on_err=true) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5666
-#5  0x0000000001ab5ebd in os_file_read_func (type=..., file=47, buf=0x7f7f247dc000, offset=24133632, n=16384) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6058
-#6  0x0000000001ab8230 in os_aio_func (type=..., mode=24, name=0x418fb98 &quot;./tpcc1000/customer.ibd&quot;, file=..., buf=0x7f7f247dc000, offset=24133632, n=16384, read_only=false, m1=0x418fab8, m2=0x7f7f1fd3b398) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7465
-#7  0x0000000001d24f3b in pfs_os_aio_func (type=..., mode=24, name=0x418fb98 &quot;./tpcc1000/customer.ibd&quot;, file=..., buf=0x7f7f247dc000, offset=24133632, n=16384, read_only=false,  m1=0x418fab8, m2=0x7f7f1fd3b398, src_file=0x243c520 &quot;/home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc&quot;, src_line=5781) at /home/rocky/mysql-5.7.22/storage/innobase/include/os0file.ic:261
-#8  0x0000000001d3671a in fil_io (type=..., sync=true, page_id=..., page_size=..., byte_offset=0, len=16384, buf=0x7f7f247dc000, message=0x7f7f1fd3b398) at /home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc:5781
-#9  0x0000000001cce2ad in buf_read_page_low (err=0x7f7f2c0d2474, sync=true, type=0, mode=132, page_id=..., page_size=..., unzip=false) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0rea.cc:193
-#10 0x0000000001ccecf5 in buf_read_page (page_id=..., page_size=...) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0rea.cc:447
-#11 0x0000000001ca2b7a in buf_page_get_gen (page_id=..., page_size=..., rw_latch=1, guess=0x0, mode=10, file=0x23e6d10 &quot;/home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc&quot;, line=3518, mtr=0x7f7f2c0d4770, dirty_with_no_latch=false) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0buf.cc:4201
-#12 0x0000000001c6877d in btr_cur_search_to_nth_level (index=0x7f7eb41ce6a0, level=0, tuple=0x7f7eb4b14d98, mode=PAGE_CUR_LE, latch_mode=1, cursor=0x7f7eb4b147d8, has_search_latch=0, file=0x23e6d10 &quot;/home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc&quot;, line=3518, mtr=0x7f7f2c0d4770) at /home/rocky/mysql-5.7.22/storage/innobase/btr/btr0cur.cc:1109
-#13 0x0000000001b8271d in btr_pcur_open_with_no_init_func (index=0x7f7eb41ce6a0, tuple=0x7f7eb4b14d98, mode=PAGE_CUR_LE, latch_mode=1, cursor=0x7f7eb4b147d8, has_search_latch=0, file=0x23e6d10 &quot;/home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc&quot;, line=3518, mtr=0x7f7f2c0d4770) at /home/rocky/mysql-5.7.22/storage/innobase/include/btr0pcur.ic:521
-#14 0x0000000001b8a5a9 in row_sel_get_clust_rec_for_mysql (prebuilt=0x7f7eb4b144c0, sec_index=0x7f7eb41cf260, rec=0x7f7f20e08adc &quot;\200\002\203PRESABLEESEjI2hiwAAWrsy\200&quot;, thr=0x7f7eb4b14ff0, out_rec=0x7f7f2c0d3bb0, offsets=0x7f7f2c0d3bd0, offset_heap=0x7f7f2c0d3bc8, vrow=0x0, mtr=0x7f7f2c0d4770) at /home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc:3518
-#15 0x0000000001b8f964 in row_search_mvcc (buf=0x7f7eb41bfec0 &quot;&quot;, mode=PAGE_CUR_GE, prebuilt=0x7f7eb4b144c0, match_mode=1, direction=0) at /home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc:5769
-#16 0x00000000019ea5fa in ha_innobase::index_read (this=0x7f7eb4013590, buf=0x7f7eb41bfec0 &quot;&quot;, key_ptr=0x7f7eb40109b8 &quot;\002&quot;, key_len=54, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/storage/innobase/handler/ha_innodb.cc:8708
-#17 0x0000000000fd150e in handler::index_read_map (this=0x7f7eb4013590, buf=0x7f7eb41bfec0 &quot;&quot;, key=0x7f7eb40109b8 &quot;\002&quot;, keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.h:2785
-#18 0x0000000000fc22a7 in handler::ha_index_read_map (this=0x7f7eb4013590, buf=0x7f7eb41bfec0 &quot;&quot;, key=0x7f7eb40109b8 &quot;\002&quot;, keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.cc:3031
-#19 0x00000000015f571f in join_read_always_key (tab=0x7f7eb4be0ec8) at /home/rocky/mysql-5.7.22/sql/sql_executor.cc:2424
-#20 0x00000000015f306b in sub_select (join=0x7f7eb400eee8, qep_tab=0x7f7eb4be0ec8, end_of_records=false) at /home/rocky/mysql-5.7.22/sql/sql_executor.cc:1434
-#21 0x00000000015f297e in do_select (join=0x7f7eb400eee8) at /home/rocky/mysql-5.7.22/sql/sql_executor.cc:1107
-#22 0x00000000015f0760 in JOIN::exec (this=0x7f7eb400eee8) at /home/rocky/mysql-5.7.22/sql/sql_executor.cc:356
-#23 0x0000000001693116 in handle_query (thd=0x7f7eb4000950, lex=0x7f7eb4b38970, result=0x7f7eb4b3c8c8, added_options=0, removed_options=0) at /home/rocky/mysql-5.7.22/sql/sql_select.cc:184
-#24 0x0000000001642fc4 in execute_sqlcom_select (thd=0x7f7eb4000950, all_tables=0x7f7eb4b3ba80) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:5309
-#25 0x000000000163c02b in mysql_execute_command (thd=0x7f7eb4000950, first_level=true) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:2945
-#26 0x000000000167f4ce in Prepared_statement::execute (this=0x7f7eb4b385c0, expanded_query=0x7f7f2c0d63e0, open_cursor=false) at /home/rocky/mysql-5.7.22/sql/sql_prepare.cc:3955
-#27 0x000000000167e30c in Prepared_statement::execute_loop (this=0x7f7eb4b385c0, expanded_query=0x7f7f2c0d63e0, open_cursor=false, packet=0x7f7eb40153da &quot;def\btpcc1000\bcustomer\bcustomer\tc_balance\tc_balance\f?&quot;, packet_end=0x7f7eb40153f6 &quot;er\tc_balance\tc_balance\f?&quot;) at /home/rocky/mysql-5.7.22/sql/sql_prepare.cc:3563
-#28 0x000000000167ba79 in mysqld_stmt_execute (thd=0x7f7eb4000950, stmt_id=22, flags=0, params=0x7f7eb40153da &quot;def\btpcc1000\bcustomer\bcustomer\tc_balance\tc_balance\f?&quot;, params_length=28) at /home/rocky/mysql-5.7.22/sql/sql_prepare.cc:2551
-#29 0x0000000001638977 in dispatch_command (thd=0x7f7eb4000950, com_data=0x7f7f2c0d6e00, command=COM_STMT_EXECUTE) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:1544
-#30 0x0000000001637b1e in do_command (thd=0x7f7eb4000950) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:1148
-#31 0x000000000177b5d5 in handle_connection (arg=0x4282990) at /home/rocky/mysql-5.7.22/sql/conn_handler/connection_handler_per_thread.cc:300
-#32 0x0000000001dfe398 in pfs_spawn_thread (arg=0x41f37d0) at /home/rocky/mysql-5.7.22/storage/perfschema/pfs.cc:2190
-#33 0x00007f7f375496ba in start_thread (arg=0x7f7f2c0d7700) at pthread_create.c:333
-#34 0x00007f7f369de41d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#0  pread64 () at ../sysdeps/unix/syscall-template.S:84
-#1  0x0000000001ab1d0f in SyncFileIO::execute (this=0x7f7f2c0d1380, request=...) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:2185
-#2  0x0000000001ab442d in os_file_io (in_type=..., file=49, buf=0x7f7f247e8000, n=16384, offset=2048000, err=0x7f7f2c0d1784) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5445
-#3  0x0000000001ab4ea1 in os_file_pread (type=..., file=49, buf=0x7f7f247e8000, n=16384, offset=2048000, err=0x7f7f2c0d1784) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5627
-#4  0x0000000001ab504b in os_file_read_page (type=..., file=49, buf=0x7f7f247e8000, offset=2048000, n=16384, o=0x0, exit_on_err=true) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5666
-#5  0x0000000001ab5ebd in os_file_read_func (type=..., file=49, buf=0x7f7f247e8000, offset=2048000, n=16384) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6058
-#6  0x0000000001ab8230 in os_aio_func (type=..., mode=24, name=0x4191248 &quot;./tpcc1000/orders.ibd&quot;, file=..., buf=0x7f7f247e8000, offset=2048000, n=16384, read_only=false, m1=0x4192408, m2=0x7f7f1fd3bd10) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7465
-#7  0x0000000001d24f3b in pfs_os_aio_func (type=..., mode=24, name=0x4191248 &quot;./tpcc1000/orders.ibd&quot;, file=..., buf=0x7f7f247e8000, offset=2048000, n=16384, read_only=false, m1=0x4192408, m2=0x7f7f1fd3bd10, src_file=0x243c520 &quot;/home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc&quot;, src_line=5781) at /home/rocky/mysql-5.7.22/storage/innobase/include/os0file.ic:261
-#8  0x0000000001d3671a in fil_io (type=..., sync=true, page_id=..., page_size=..., byte_offset=0, len=16384, buf=0x7f7f247e8000, message=0x7f7f1fd3bd10) at /home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc:5781
-#9  0x0000000001cce2ad in buf_read_page_low (err=0x7f7f2c0d22f4, sync=true, type=0, mode=132, page_id=..., page_size=..., unzip=false) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0rea.cc:193
-#10 0x0000000001ccecf5 in buf_read_page (page_id=..., page_size=...) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0rea.cc:447
-#11 0x0000000001ca2b7a in buf_page_get_gen (page_id=..., page_size=..., rw_latch=1, guess=0x0, mode=10, file=0x23e6d10 &quot;/home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc&quot;, line=4066, mtr=0x7f7f2c0d43d0, dirty_with_no_latch=false) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0buf.cc:4201
-#12 0x0000000001c6877d in btr_cur_search_to_nth_level (index=0x7f7eb41d44c0, level=0, tuple=0x7f7eb4b281a8, mode=PAGE_CUR_GE, latch_mode=1, cursor=0x7f7eb4b27fb8, has_search_latch=1, file=0x23e6d10 &quot;/home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc&quot;, line=4066, mtr=0x7f7f2c0d43d0) at /home/rocky/mysql-5.7.22/storage/innobase/btr/btr0cur.cc:1109
-#13 0x0000000001b8271d in btr_pcur_open_with_no_init_func (index=0x7f7eb41d44c0, tuple=0x7f7eb4b281a8, mode=PAGE_CUR_GE, latch_mode=1, cursor=0x7f7eb4b27fb8, has_search_latch=1, file=0x23e6d10 &quot;/home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc&quot;, line=4066, mtr=0x7f7f2c0d43d0) at /home/rocky/mysql-5.7.22/storage/innobase/include/btr0pcur.ic:521
-#14 0x0000000001b8b92f in row_sel_try_search_shortcut_for_mysql (out_rec=0x7f7f2c0d37f8, prebuilt=0x7f7eb4b27d90, offsets=0x7f7f2c0d3830, heap=0x7f7f2c0d3828, mtr=0x7f7f2c0d43d0) at /home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc:4066
-#15 0x0000000001b8d728 in row_search_mvcc (buf=0x7f7eb4b273e0 '\217' &amp;lt;repeats 48 times&amp;gt;, mode=PAGE_CUR_GE, prebuilt=0x7f7eb4b27d90, match_mode=1, direction=0) at /home/rocky/mysql-5.7.22/storage/innobase/row/row0sel.cc:4878
-#16 0x00000000019ea5fa in ha_innobase::index_read (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' &amp;lt;repeats 48 times&amp;gt;, key_ptr=0x7f7eb4010b88 &quot;\002&quot;, key_len=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/storage/innobase/handler/ha_innodb.cc:8708
-#17 0x0000000000fd150e in handler::index_read_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' &amp;lt;repeats 48 times&amp;gt;, key=0x7f7eb4010b88 &quot;\002&quot;, keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.h:2785
-#18 0x0000000000fcd11d in handler::index_read_idx_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' &amp;lt;repeats 48 times&amp;gt;, index=0, key=0x7f7eb4010b88 &quot;\002&quot;, keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.cc:7519
-#19 0x0000000000fc29ec in handler::ha_index_read_idx_map (this=0x7f7eb4b270f0, buf=0x7f7eb4b273e0 '\217' &amp;lt;repeats 48 times&amp;gt;, index=0, key=0x7f7eb4010b88 &quot;\002&quot;, keypart_map=7, find_flag=HA_READ_KEY_EXACT) at /home/rocky/mysql-5.7.22/sql/handler.cc:3083
-#20 0x00000000015f4d24 in read_const (table=0x7f7eb4b26740, ref=0x7f7eb400ff38) at /home/rocky/mysql-5.7.22/sql/sql_executor.cc:2174
-#21 0x00000000015f47da in join_read_const_table (tab=0x7f7eb400fe68, pos=0x7f7eb4010000) at /home/rocky/mysql-5.7.22/sql/sql_executor.cc:2059
-#22 0x0000000001621eee in JOIN::extract_func_dependent_tables (this=0x7f7eb400f120) at /home/rocky/mysql-5.7.22/sql/sql_optimizer.cc:5580
-#23 0x00000000016208c0 in JOIN::make_join_plan (this=0x7f7eb400f120) at /home/rocky/mysql-5.7.22/sql/sql_optimizer.cc:5044
-#24 0x00000000016148cf in JOIN::optimize (this=0x7f7eb400f120) at /home/rocky/mysql-5.7.22/sql/sql_optimizer.cc:368
-#25 0x0000000001694c5b in st_select_lex::optimize (this=0x7f7eb4b460e8, thd=0x7f7eb4000950) at /home/rocky/mysql-5.7.22/sql/sql_select.cc:1009
-#26 0x00000000016930a0 in handle_query (thd=0x7f7eb4000950, lex=0x7f7eb4b45130, result=0x7f7eb4b4be48, added_options=0, removed_options=0) at /home/rocky/mysql-5.7.22/sql/sql_select.cc:164
-#27 0x0000000001642fc4 in execute_sqlcom_select (thd=0x7f7eb4000950, all_tables=0x7f7eb4b492f0) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:5309
-#28 0x000000000163c02b in mysql_execute_command (thd=0x7f7eb4000950, first_level=true) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:2945
-#29 0x000000000167f4ce in Prepared_statement::execute (this=0x7f7eb4b44d80, expanded_query=0x7f7f2c0d63e0, open_cursor=false) at /home/rocky/mysql-5.7.22/sql/sql_prepare.cc:3955
-#30 0x000000000167e30c in Prepared_statement::execute_loop (this=0x7f7eb4b44d80, expanded_query=0x7f7f2c0d63e0, open_cursor=false, packet=0x7f7eb40153da &quot;&quot;, packet_end=0x7f7eb4015400 &quot;&quot;) at /home/rocky/mysql-5.7.22/sql/sql_prepare.cc:3563
-#31 0x000000000167ba79 in mysqld_stmt_execute (thd=0x7f7eb4000950, stmt_id=24, flags=0, params=0x7f7eb40153da &quot;&quot;, params_length=38) at /home/rocky/mysql-5.7.22/sql/sql_prepare.cc:2551
-#32 0x0000000001638977 in dispatch_command (thd=0x7f7eb4000950, com_data=0x7f7f2c0d6e00, command=COM_STMT_EXECUTE) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:1544
-#33 0x0000000001637b1e in do_command (thd=0x7f7eb4000950) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:1148
-#34 0x000000000177b5d5 in handle_connection (arg=0x4282990) at /home/rocky/mysql-5.7.22/sql/conn_handler/connection_handler_per_thread.cc:300
-#35 0x0000000001dfe398 in pfs_spawn_thread (arg=0x41f37d0) at /home/rocky/mysql-5.7.22/storage/perfschema/pfs.cc:2190
-#36 0x00007f7f375496ba in start_thread (arg=0x7f7f2c0d7700) at pthread_create.c:333
-#37 0x00007f7f369de41d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;p&gt;or
-.
-.
-.&lt;/p&gt;
-
-&lt;h2 id=&quot;pwrite&quot;&gt;pwrite&lt;/h2&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pwrite
-# SyncFileIO::execute
-# os_file_io
-#0  os_file_pwrite (type=..., file=3, buf=0x7f59d19af200 &quot;\200\037y\276\002&quot;, n=1024, offset=49545216, err=0x7f59c67fb38c) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
-#1  0x0000000001ab4ae7 in os_file_write_page (type=..., name=0x54bc148 &quot;./ib_logfile0&quot;, file=3, buf=0x7f59d19af200 &quot;\200\037y\276\002&quot;, offset=49545216, n=1024)
-at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
-#2  0x0000000001ab600e in os_file_write_func (type=..., name=0x54bc148 &quot;./ib_logfile0&quot;, file=3, buf=0x7f59d19af200, offset=49545216, n=1024) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6115
-#3  0x0000000001ab828b in os_aio_func (type=..., mode=24, name=0x54bc148 &quot;./ib_logfile0&quot;, file=..., buf=0x7f59d19af200, offset=49545216, n=1024, read_only=false, m1=0x54bc068, m2=0x54bc3c8)
-at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
-#4  0x0000000001d24f3b in pfs_os_aio_func (type=..., mode=24, name=0x54bc148 &quot;./ib_logfile0&quot;, file=..., buf=0x7f59d19af200, offset=49545216, n=1024, read_only=false, m1=0x54bc068, m2=0x54bc3c8, src_file=0x243c520 &quot;/home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc&quot;, src_line=5781) at /home/rocky/mysql-5.7.22/storage/innobase/include/os0file.ic:261
-#5  0x0000000001d3671a in fil_io (type=..., sync=true, page_id=..., page_size=..., byte_offset=0, len=1024, buf=0x7f59d19af200, message=0x54bc3c8) at /home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc:5781
-#6  0x0000000001a8d548 in log_group_write_buf (group=0x54bc3c8, buf=0x7f59d19af200 &quot;\200\037y\276\002&quot;, len=1024, pad_len=0, start_lsn=1056143872, new_data_offset=300) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1124
-#7  0x0000000001a8e144 in log_write_up_to (lsn=1056144429, flush_to_disk=true) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1389
-#8  0x0000000001a8f5ca in log_checkpoint (sync=true, write_always=false) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1844
-#9  0x0000000001bc8c86 in srv_master_do_idle_tasks () at /home/rocky/mysql-5.7.22/storage/innobase/srv/srv0srv.cc:2249
-#10 0x0000000001bc910d in srv_master_thread (arg=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/srv/srv0srv.cc:2385
-#11 0x00007f59ea9cf6ba in start_thread (arg=0x7f59c67fc700) at pthread_create.c:333
-#12 0x00007f59e9e6441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pwrite
-# SyncFileIO::execute
-# os_file_io
-#0  os_file_pwrite (type=..., file=3, buf=0x7f59d29af200 &quot;\200\037y\274\002&quot;, n=1024, offset=49544192, err=0x7f59c67fb37c) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
-#1  0x0000000001ab4ae7 in os_file_write_page (type=..., name=0x54bc148 &quot;./ib_logfile0&quot;, file=3, buf=0x7f59d29af200 &quot;\200\037y\274\002&quot;, offset=49544192, n=1024)
-at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
-#2  0x0000000001ab600e in os_file_write_func (type=..., name=0x54bc148 &quot;./ib_logfile0&quot;, file=3, buf=0x7f59d29af200, offset=49544192, n=1024) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6115
-#3  0x0000000001ab828b in os_aio_func (type=..., mode=24, name=0x54bc148 &quot;./ib_logfile0&quot;, file=..., buf=0x7f59d29af200, offset=49544192, n=1024, read_only=false, m1=0x54bc068, m2=0x54bc3c8)
-at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
-#4  0x0000000001d24f3b in pfs_os_aio_func (type=..., mode=24, name=0x54bc148 &quot;./ib_logfile0&quot;, file=..., buf=0x7f59d29af200, offset=49544192, n=1024, read_only=false, m1=0x54bc068, m2=0x54bc3c8, src_file=0x243c520 &quot;/home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc&quot;, src_line=5781) at /home/rocky/mysql-5.7.22/storage/innobase/include/os0file.ic:261
-#5  0x0000000001d3671a in fil_io (type=..., sync=true, page_id=..., page_size=..., byte_offset=15360, len=1024,  buf=0x7f59d29af200, message=0x54bc3c8) at /home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc:5781
-#6  0x0000000001a8d548 in log_group_write_buf (group=0x54bc3c8, buf=0x7f59d29af200 &quot;\200\037y\274\002&quot;, len=1024, pad_len=0, start_lsn=1056142848, new_data_offset=477) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1124
-#7  0x0000000001a8e144 in log_write_up_to (lsn=1056143561, flush_to_disk=true) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1389
-#8  0x0000000001a8e307 in log_buffer_sync_in_background (flush=true) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1447
-#9  0x0000000001bc7f25 in srv_sync_log_buffer_in_background () at /home/rocky/mysql-5.7.22/storage/innobase/srv/srv0srv.cc:1965
-#10 0x0000000001bc8bd3 in srv_master_do_idle_tasks () at /home/rocky/mysql-5.7.22/storage/innobase/srv/srv0srv.cc:2239
-#11 0x0000000001bc910d in srv_master_thread (arg=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/srv/srv0srv.cc:2385
-#12 0x00007f59ea9cf6ba in start_thread (arg=0x7f59c67fc700) at pthread_create.c:333
-#13 0x00007f59e9e6441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pwrite
-# SyncFileIO::execute
-# os_file_io
-#0  os_file_pwrite (type=..., file=9, buf=0x7f59e03a0000 &quot;2\257\224&quot;, &amp;lt;incomplete sequence \343&amp;gt;, n=1048576, offset=1048576, err=0x7f59cd1a41dc) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
-#1  0x0000000001ab4ae7 in os_file_write_page (type=..., name=0x54bbac8 &quot;./ibdata1&quot;, file=9, buf=0x7f59e03a0000 &quot;2\257\224&quot;, &amp;lt;incomplete sequence \343&amp;gt;, offset=1048576, n=1048576)
-at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
-#2  0x0000000001ab600e in os_file_write_func (type=..., name=0x54bbac8 &quot;./ibdata1&quot;, file=9, buf=0x7f59e03a0000, offset=1048576, n=1048576) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6115
-#3  0x0000000001ab828b in os_aio_func (type=..., mode=24, name=0x54bbac8 &quot;./ibdata1&quot;, file=..., buf=0x7f59e03a0000,,offset=1048576, n=1048576, read_only=false, m1=0x54bb9e8, m2=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
-#4  0x0000000001d24f3b in pfs_os_aio_func (type=..., mode=24, name=0x54bbac8 &quot;./ibdata1&quot;, file=..., buf=0x7f59e03a0000, offset=1048576, n=1048576, read_only=false, m1=0x54bb9e8, m2=0x0, src_file=0x243c520 &quot;/home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc&quot;, src_line=5781) at /home/rocky/mysql-5.7.22/storage/innobase/include/os0file.ic:261
-#5  0x0000000001d3671a in fil_io (type=..., sync=true, page_id=..., page_size=..., byte_offset=0, len=1048576, buf=0x7f59e03a0000, message=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc:5781
-#6  0x0000000001cb25b0 in buf_dblwr_flush_buffered_writes () at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0dblwr.cc:1029
-#7  0x0000000001cbce29 in buf_flush_end (buf_pool=0x4e3da98, flush_type=BUF_FLUSH_LRU) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:1951
-#8  0x0000000001cbcfd8 in buf_flush_do_batch (buf_pool=0x4e3da98, type=BUF_FLUSH_LRU, min_n=1024, lsn_limit=0, n_processed=0x7f59cd1a4c48) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:2020
-#9  0x0000000001cbd909 in buf_flush_LRU_list (buf_pool=0x4e3da98) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:2293
-#10 0x0000000001cbfe3e in pc_flush_slot () at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:2855
-#11 0x0000000001cc0ee8 in buf_flush_page_cleaner_coordinator (arg=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:3298
-#12 0x00007f59ea9cf6ba in start_thread (arg=0x7f59cd1a5700) at pthread_create.c:333
-#13 0x00007f59e9e6441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pwrite
-# SyncFileIO::execute
-# os_file_io
-#0  os_file_pwrite (type=..., file=8, buf=0x7fd5a69af200 &quot;\200\037\312\312\002&quot;, n=2048, offset=9838592, err=0x7fd5b41c74fc) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
-#1  0x0000000001ab4ab2 in os_file_write_page (type=..., name=0x42f32f8 &quot;./ib_logfile1&quot;, file=8, buf=0x7fd5a69af200 &quot;\200\037\312\312\002&quot;, offset=9838592, n=2048) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
-#2  0x0000000001ab5ff6 in os_file_write_func (type=..., name=0x42f32f8 &quot;./ib_logfile1&quot;, file=8, buf=0x7fd5a69af200, offset=9838592, n=2048) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6115
-#3  0x0000000001ab8273 in os_aio_func (type=..., mode=24, name=0x42f32f8 &quot;./ib_logfile1&quot;, file=..., buf=0x7fd5a69af200, offset=9838592, n=2048, read_only=false, m1=0x42f3218, m2=0x42f33c8) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
-#4  0x0000000001d24f23 in pfs_os_aio_func (type=..., mode=24, name=0x42f32f8 &quot;./ib_logfile1&quot;, file=..., buf=0x7fd5a69af200, offset=9838592, n=2048, read_only=false, m1=0x42f3218, m2=0x42f33c8, src_file=0x243ba20 &quot;/home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc&quot;, src_line=5781) at /home/rocky/mysql-5.7.22/storage/innobase/include/os0file.ic:261
-#5  0x0000000001d36702 in fil_io (type=..., sync=true, page_id=..., page_size=..., byte_offset=8192, len=2048, buf=0x7fd5a69af200, message=0x42f33c8) at /home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc:5781
-#6  0x0000000001a8d4f6 in log_group_write_buf (group=0x42f33c8, buf=0x7fd5a69af200 &quot;\200\037\312\312\002&quot;, len=2048, pad_len=0, start_lsn=1066766848, new_data_offset=438) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1124
-#7  0x0000000001a8e0f2 in log_write_up_to (lsn=1066768494, flush_to_disk=true) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1389
-#8  0x0000000001c25309 in trx_flush_log_if_needed_low (lsn=1066768494) at /home/rocky/mysql-5.7.22/storage/innobase/trx/trx0trx.cc:1794
-#9  0x0000000001c25352 in trx_flush_log_if_needed (lsn=1066768494, trx=0x7fd5b4cd08d0) at /home/rocky/mysql-5.7.22/storage/innobase/trx/trx0trx.cc:1816
-#10 0x0000000001c26e03 in trx_commit_complete_for_mysql (trx=0x7fd5b4cd08d0) at /home/rocky/mysql-5.7.22/storage/innobase/trx/trx0trx.cc:2451
-#11 0x00000000019e0d70 in innobase_commit (hton=0x38307a0, thd=0x7fd534000950, commit_trx=true) at /home/rocky/mysql-5.7.22/storage/innobase/handler/ha_innodb.cc:4416
-#12 0x0000000000fbf04b in ha_commit_low (thd=0x7fd534000950, all=true, run_after_commit=true) at /home/rocky/mysql-5.7.22/sql/handler.cc:1900
-#13 0x0000000001745cbe in TC_LOG_DUMMY::commit (this=0x2ed3e08 &amp;lt;tc_log_dummy&amp;gt;, thd=0x7fd534000950, all=true) at /home/rocky/mysql-5.7.22/sql/tc_log.cc:28
-#14 0x0000000000fbece4 in ha_commit_trans (thd=0x7fd534000950, all=true, ignore_global_read_lock=false) at /home/rocky/mysql-5.7.22/sql/handler.cc:1796
-#15 0x0000000001748310 in trans_commit (thd=0x7fd534000950) at /home/rocky/mysql-5.7.22/sql/transaction.cc:239
-#16 0x00000000016405f3 in mysql_execute_command (thd=0x7fd534000950, first_level=true) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:4418
-#17 0x0000000001643ef0 in mysql_parse (thd=0x7fd534000950, parser_state=0x7fd5b41c9550) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:5737
-#18 0x0000000001638c3d in dispatch_command (thd=0x7fd534000950, com_data=0x7fd5b41c9e00, command=COM_QUERY) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:1609
-#19 0x0000000001637acc in do_command (thd=0x7fd534000950) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:1150
-#20 0x000000000177b583 in handle_connection (arg=0x44153f0) at /home/rocky/mysql-5.7.22/sql/conn_handler/connection_handler_per_thread.cc:300
-#21 0x0000000001dfe380 in pfs_spawn_thread (arg=0x4386580) at /home/rocky/mysql-5.7.22/storage/perfschema/pfs.cc:2190
-#22 0x00007fd5be83f6ba in start_thread (arg=0x7fd5b41ca700) at pthread_create.c:333
-#23 0x00007fd5bdcd441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pwrite
-# SyncFileIO::execute
-# os_file_io
-#0  os_file_pwrite (type=..., file=8, buf=0x7fd5a69af200 &quot;\200\037\312\312\002&quot;, n=2048, offset=9838592, err=0x7fd5b41c74fc) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
-#1  0x0000000001ab4ab2 in os_file_write_page (type=..., name=0x42f32f8 &quot;./ib_logfile1&quot;, file=8, buf=0x7fd5a69af200 &quot;\200\037\312\312\002&quot;, offset=9838592, n=2048) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
-#2  0x0000000001ab5ff6 in os_file_write_func (type=..., name=0x42f32f8 &quot;./ib_logfile1&quot;, file=8, buf=0x7fd5a69af200, offset=9838592, n=2048) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6115
-#3  0x0000000001ab8273 in os_aio_func (type=..., mode=24, name=0x42f32f8 &quot;./ib_logfile1&quot;, file=..., buf=0x7fd5a69af200, offset=9838592, n=2048, read_only=false, m1=0x42f3218, m2=0x42f33c8) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
-#4  0x0000000001d24f23 in pfs_os_aio_func (type=..., mode=24, name=0x42f32f8 &quot;./ib_logfile1&quot;, file=..., buf=0x7fd5a69af200, offset=9838592, n=2048, read_only=false, m1=0x42f3218, m2=0x42f33c8, src_file=0x243ba20 &quot;/home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc&quot;, src_line=5781) at /home/rocky/mysql-5.7.22/storage/innobase/include/os0file.ic:261
-#5  0x0000000001d36702 in fil_io (type=..., sync=true, page_id=..., page_size=..., byte_offset=8192, len=2048, buf=0x7fd5a69af200, message=0x42f33c8) at /home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc:5781
-#6  0x0000000001a8d4f6 in log_group_write_buf (group=0x42f33c8, buf=0x7fd5a69af200 &quot;\200\037\312\312\002&quot;, len=2048, pad_len=0, start_lsn=1066766848, new_data_offset=438) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1124
-#7  0x0000000001a8e0f2 in log_write_up_to (lsn=1066768494, flush_to_disk=true) at /home/rocky/mysql-5.7.22/storage/innobase/log/log0log.cc:1389
-#8  0x0000000001c25309 in trx_flush_log_if_needed_low (lsn=1066768494) at /home/rocky/mysql-5.7.22/storage/innobase/trx/trx0trx.cc:1794
-#9  0x0000000001c25352 in trx_flush_log_if_needed (lsn=1066768494, trx=0x7fd5b4cd08d0) at /home/rocky/mysql-5.7.22/storage/innobase/trx/trx0trx.cc:1816
-#10 0x0000000001c26e03 in trx_commit_complete_for_mysql (trx=0x7fd5b4cd08d0) at /home/rocky/mysql-5.7.22/storage/innobase/trx/trx0trx.cc:2451
-#11 0x00000000019e0d70 in innobase_commit (hton=0x38307a0, thd=0x7fd534000950, commit_trx=true) at /home/rocky/mysql-5.7.22/storage/innobase/handler/ha_innodb.cc:4416
-#12 0x0000000000fbf04b in ha_commit_low (thd=0x7fd534000950, all=true, run_after_commit=true) at /home/rocky/mysql-5.7.22/sql/handler.cc:1900
-#13 0x0000000001745cbe in TC_LOG_DUMMY::commit (this=0x2ed3e08 &amp;lt;tc_log_dummy&amp;gt;, thd=0x7fd534000950, all=true) at /home/rocky/mysql-5.7.22/sql/tc_log.cc:28
-#14 0x0000000000fbece4 in ha_commit_trans (thd=0x7fd534000950, all=true, ignore_global_read_lock=false) at /home/rocky/mysql-5.7.22/sql/handler.cc:1796
-#15 0x0000000001748310 in trans_commit (thd=0x7fd534000950) at /home/rocky/mysql-5.7.22/sql/transaction.cc:239
-#16 0x00000000016405f3 in mysql_execute_command (thd=0x7fd534000950, first_level=true) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:4418
-#17 0x0000000001643ef0 in mysql_parse (thd=0x7fd534000950, parser_state=0x7fd5b41c9550) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:5737
-#18 0x0000000001638c3d in dispatch_command (thd=0x7fd534000950, com_data=0x7fd5b41c9e00, command=COM_QUERY) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:1609
-#19 0x0000000001637acc in do_command (thd=0x7fd534000950) at /home/rocky/mysql-5.7.22/sql/sql_parse.cc:1150
-#20 0x000000000177b583 in handle_connection (arg=0x44153f0) at /home/rocky/mysql-5.7.22/sql/conn_handler/connection_handler_per_thread.cc:300
-#21 0x0000000001dfe380 in pfs_spawn_thread (arg=0x4386580) at /home/rocky/mysql-5.7.22/storage/perfschema/pfs.cc:2190
-#22 0x00007fd5be83f6ba in start_thread (arg=0x7fd5b41ca700) at pthread_create.c:333
-#23 0x00007fd5bdcd441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# pwrite
-# SyncFileIO::execute
-# os_file_io
-#0  os_file_pwrite (type=..., file=9, buf=0x7fd5b4210000 &quot;\231xח&quot;, n=49152, offset=1048576, err=0x7fd5a11a422c) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5536
-#1  0x0000000001ab4ab2 in os_file_write_page (type=..., name=0x42f2ac8 &quot;./ibdata1&quot;, file=9, buf=0x7fd5b4210000 &quot;\231xח&quot;, offset=1048576, n=49152) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:5573
-#2  0x0000000001ab5ff6 in os_file_write_func (type=..., name=0x42f2ac8 &quot;./ibdata1&quot;, file=9, buf=0x7fd5b4210000, offset=1048576, n=49152) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:6115
-#3  0x0000000001ab8273 in os_aio_func (type=..., mode=24, name=0x42f2ac8 &quot;./ibdata1&quot;, file=..., buf=0x7fd5b4210000, offset=1048576, n=49152, read_only=false, m1=0x42f29e8, m2=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/os/os0file.cc:7471
-#4  0x0000000001d24f23 in pfs_os_aio_func (type=..., mode=24, name=0x42f2ac8 &quot;./ibdata1&quot;, file=..., buf=0x7fd5b4210000, offset=1048576, n=49152, read_only=false, m1=0x42f29e8, m2=0x0, src_file=0x243ba20 &quot;/home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc&quot;, src_line=5781) at /home/rocky/mysql-5.7.22/storage/innobase/include/os0file.ic:261
-#5  0x0000000001d36702 in fil_io (type=..., sync=true, page_id=..., page_size=..., byte_offset=0, len=49152, buf=0x7fd5b4210000, message=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/fil/fil0fil.cc:5781
-#6  0x0000000001cb2598 in buf_dblwr_flush_buffered_writes () at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0dblwr.cc:1029
-#7  0x0000000001cbce11 in buf_flush_end (buf_pool=0x3c74a98, flush_type=BUF_FLUSH_LIST) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:1951
-#8  0x0000000001cbcfc0 in buf_flush_do_batch (buf_pool=0x3c74a98, type=BUF_FLUSH_LIST, min_n=2, lsn_limit=18446744073709551615, n_processed=0x42f2480) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:2020
-#9  0x0000000001cbfeb2 in pc_flush_slot () at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:2870
-#10 0x0000000001cc0ed0 in buf_flush_page_cleaner_coordinator (arg=0x0) at /home/rocky/mysql-5.7.22/storage/innobase/buf/buf0flu.cc:3298
-#11 0x00007fd5be83f6ba in start_thread (arg=0x7fd5a11a5700) at pthread_create.c:333
-#12 0x00007fd5bdcd441d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;or . . .&lt;/p&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">InooDB basic concept and function call trace(function call stack, read write path)</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/innodb_01.jpg" /></entry></feed>
+&lt;p&gt;LINK: &lt;a href=&quot;https://github.com/generousRocky/generousRocky.github.io/blob/master/publication/rocky_mwds18.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>generousRocky</name><email>rockylim@snu.ac.kr</email><uri>https://generousrocky.github.io/</uri></author><summary type="html">Application-Driven Flash Management: LSM-tree based Database Optimization through Read/Write Isolation</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/images/rocksdb_01.png" /></entry></feed>

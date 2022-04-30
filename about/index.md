@@ -15,7 +15,10 @@ ads: false
 {% include toc.html %}
 
 <p style="text-align: center;">
-	<img src="{{ site.url }}/images/rocky_icon.png" alt="Drawing" style="width: 230px;"/>
+	<img src="{{ site.url }}/images/rocky_icon.png" alt="Drawing" style="width: 110px;"/>
+    <font size="20em">
+    Heerak Lim
+    </font>
 </p>
 
 ## I am interested in followings

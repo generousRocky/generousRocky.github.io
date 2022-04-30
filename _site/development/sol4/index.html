@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>EIP-4337 – Ethereum Account Abstraction Audit • generousRocky's tech blog</title>
+    <meta name="description" content="OpenZeppelin 오딧 리포트 리뷰#1: EIP-4377">
+    <meta name="keywords" content="">
+    
+    	<!-- Twitter Cards -->
+	<meta name="twitter:title" content="EIP-4337 – Ethereum Account Abstraction Audit">
+	<meta name="twitter:description" content="OpenZeppelin 오딧 리포트 리뷰#1: EIP-4377">
+	<meta name="twitter:site" content="@generousRocky">
+	<meta name="twitter:creator" content="@generousRocky">
+	
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:image" content="http://localhost:4000/images/sol4_1.png">
+	
+	<!-- Open Graph -->
+	<meta property="og:locale" content="en">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="EIP-4337 – Ethereum Account Abstraction Audit">
+	<meta property="og:description" content="OpenZeppelin 오딧 리포트 리뷰#1: EIP-4377">
+	<meta property="og:url" content="http://localhost:4000/development/sol4/">
+	<meta property="og:site_name" content="generousRocky's tech blog">
+
+    <link rel="canonical" href="http://localhost:4000/development/sol4/">
+
+    <link href="http://localhost:4000/atom.xml" type="application/atom+xml" rel="alternate" title="generousRocky's tech blog Atom Feed">
+    <link href="http://localhost:4000/sitemap.xml" type="application/xml" rel="sitemap" title="Sitemap">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cleartype" content="on">
+
+    <link rel="stylesheet" href="http://localhost:4000/css/main.css">
+    <!-- HTML5 Shiv and Media Query Support for IE -->
+    <!--[if lt IE 9]>
+      <script src="http://localhost:4000/js/vendor/html5shiv.min.js"></script>
+      <script src="http://localhost:4000/js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <script data-ad-client="ca-pub-6597217616610333" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  </head>
+
+  <body id="js-body">
+    <!--[if lt IE 9]><div class="upgrade notice-warning"><strong>Your browser is quite old!</strong> Why not <a href="http://whatbrowser.org/">upgrade to a newer one</a> to better enjoy this site?</div><![endif]-->
+
+    <header id="masthead">
+  <div class="inner-wrap">
+    <a href="http://localhost:4000/" class="site-title">generousRocky's tech blog</a>
+    <nav role="navigation" class="menu top-menu">
+        <ul class="menu-item">
+	<li class="home"><a href="/">generousRocky's tech blog</a></li>
+	
+    
+    <li><a href="http://localhost:4000/development/" >Development</a></li>
+  
+    
+    <li><a href="http://localhost:4000/research/" >Research</a></li>
+  
+    
+    <li><a href="http://localhost:4000/writing/" >Writing</a></li>
+  
+    
+    <li><a href="http://localhost:4000/about/" >About Me</a></li>
+  
+</ul>
+    </nav>
+  </div><!-- /.inner-wrap -->
+</header><!-- /.masthead -->
+    <nav role="navigation" id="js-menu" class="sliding-menu-content">
+  <h5>generousRocky's tech blog <span>Table of Contents</span></h5>
+  <ul class="menu-item">
+    <li>
+      <a href="http://localhost:4000/development/">
+        <img src="http://localhost:4000/images/study.jpeg" alt="teaser" class="teaser">
+        <div class="title">Development</div>
+        <p class="excerpt">Taste like developer</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/research/">
+        <img src="http://localhost:4000/images/research.jpeg" alt="teaser" class="teaser">
+        <div class="title">Research</div>
+        <p class="excerpt">When I was in M.S., B.S.</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/writing/">
+        <img src="http://localhost:4000/images/300x200.png" alt="teaser" class="teaser">
+        <div class="title">Writing</div>
+        <p class="excerpt">things not related to above.</p>
+      </a>
+    </li><li>
+      <a href="http://localhost:4000/about/">
+        <img src="http://localhost:4000/images/rocky_icon2.png" alt="teaser" class="teaser">
+        <div class="title">About Me</div>
+        <p class="excerpt">Better Gear, Better Life</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+<button type="button" id="js-menu-trigger" class="sliding-menu-button lines-button x2" role="button" aria-label="Toggle Navigation">
+  <span class="nav-lines"></span>
+</button>
+
+<div id="js-menu-screen" class="menu-screen"></div>
+
+
+    <div id="page-wrapper">
+      <div id="main" role="main">
+	<article class="wrap" itemscope itemtype="http://schema.org/Article">
+		
+		<div class="page-feature">
+			<div class="page-image">
+				<img src="http://localhost:4000/images/sol4_1.png" class="page-feature-image" alt="EIP-4337 – Ethereum Account Abstraction Audit" itemprop="image">
+				
+			</div><!-- /.page-image -->
+		</div><!-- /.page-feature -->
+		
+		
+  <nav class="breadcrumbs">
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000" itemprop="url">
+        <span itemprop="title">Home</span>
+      </a> › 
+    <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+      <a href="http://localhost:4000/development/" itemprop="url">
+        <span itemprop="title">Development</span>
+      </a>
+    </span>
+  </nav><!-- /.breadcrumbs -->
+
+		<div class="page-title">
+			<h1>EIP-4337 – Ethereum Account Abstraction Audit</h1>
+		</div>
+		<div class="inner-wrap">
+			<div id="content" class="page-content" itemprop="articleBody">
+				<nav class="toc">
+
+</nav>
+
+<h3 id="오딧-시리즈-시작하며">오딧 시리즈 시작하며,</h3>
+
+<p>솔리디티 책도 2권 정도 읽었고, <a href="https://docs.soliditylang.org/">https://docs.soliditylang.org/</a> 문서도 궁금한 부분은 다 챙겨보았다.</p>
+
+<p>그동안 스터디를 하면서 Treasure Dao 프로젝트의 Market, Mining 컨트랙트와 Magic Dragon Dao 프로젝트의 Staking &amp; Reward 관련 컨트렉트를 분석해봤는데, 이제는 코드에서 특별히 신택스나 솔리디티 동작을 모르는 경우가 많지는 않았다.</p>
+
+<p>그래서 좀 더 많은 프로젝트의 코드를, 특히 security와 관련된 부분을 보기 위해서 오픈제플린의 오딧 리포트를 보고 인사이트를 좀 남겨보기로 했다. 오딧 리포트의 모든 항목을 살펴보기 보단 공부 하면서 도움이 될 만한 것들만 볼 예정이다. 리포트에는 단순한 오타나 계산 실수같은것들도 많아서 전체를 다 보는건 큰 의미가 없을 것 같다.</p>
+
+<h3 id="eip-4337--ethereum-account-abstraction-audit">EIP-4337 – Ethereum Account Abstraction Audit</h3>
+
+<p>이 시리즈의 첫번째 포스트는 <strong>EIP-4337 – Ethereum Account Abstraction Audit</strong> 이다. 이더리움에서 계정에 추가적인 기능이 들어가는것으로 보인다. 실제로 제안을 살펴본 것은 아니지만, 오딧 리포트를 보니 stake등의 기능이 생기는 것 같다.</p>
+
+<h4 id="deposit-manipulation">Deposit manipulation</h4>
+
+<ul>
+  <li>audit</li>
+</ul>
+
+<p>Firstly, the new funds <a href="https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/StakeManager.sol#L88">are added to the caller’s current balance</a> instead of the current <code class="highlighter-rouge">account</code> balance. This effectively allows anyone to delete the deposit from any account.</p>
+
+<ul>
+  <li>fix</li>
+</ul>
+
+<p><em>Fixed in pull request <a href="https://github.com/eth-infinitism/account-abstraction/pull/50/files">#50</a>. The <code class="highlighter-rouge">addStakeTo</code> function was renamed to <code class="highlighter-rouge">addStake</code> and updated such that the caller can only add value to their own stake.</em></p>
+
+<ul>
+  <li>note</li>
+</ul>
+
+<p>addStakeTo 함수에서 address파라미터를 가지고 deposit mapping에 접근이 가능하다. 따라서 누구나 다른사람 계정의 deposit을 가지고 staking을 할 수 있다. address를 키로 가지는 mapping 변수에 대한 access가 있을 때 에는 msg.sender 혹은 onlyOwner 같은 modifier 로 privilege 체크가 잘 되어있는지 확인해야 한다.</p>
+
+<h4 id="token-transfers-may-fail-silently">Token transfers may fail silently</h4>
+
+<ul>
+  <li>audit</li>
+</ul>
+
+<p>The <code class="highlighter-rouge">DepositPaymaster</code>
+ ignores the token transfer return value when <a href="https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/samples/DepositPaymaster.sol#L53">adding deposits</a>, <a href="https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/samples/DepositPaymaster.sol#L89">withdrawing tokens from the contract</a> and <a href="https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/samples/DepositPaymaster.sol#L122">recovering gas costs</a>. Although many tokens revert on failure, the <a href="https://eips.ethereum.org/EIPS/eip-20">token standard</a> only specifies a boolean return value indicating success or failure. For tokens that return <code class="highlighter-rouge">false</code>, such as the <a href="https://etherscan.io/address/0xe41d2489571d322189246dafa5ebde1f4699f498">0x Protocol Token</a>, these transfers may fail silently, leading to incorrect internal accounting.</p>
+
+<ul>
+  <li>fix</li>
+</ul>
+
+<p><em>Fixed in pull request <a href="https://github.com/eth-infinitism/account-abstraction/pull/54/files">#54</a>. The <code class="highlighter-rouge">DepositPaymaster</code> contract now uses OpenZeppelin’s <code class="highlighter-rouge">[SafeERC20](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.5.0/contracts/token/ERC20/utils/SafeERC20.sol)</code> library functions for token transfers.</em></p>
+
+<ul>
+  <li>note:</li>
+</ul>
+
+<p><em>ERC20</em> 에서 transfer 함수의 return값이 true/false인지 체크해봐야 한다. 혹은 오픈제플린의 <em>SafaERC20</em> 을 쓴다.(실패 시 throw 함)</p>
+
+<h4 id="use-of-transfer-function-is-potentially-unsafe">Use of transfer function is potentially unsafe</h4>
+
+<ul>
+  <li>audit</li>
+</ul>
+
+<p>The <code class="highlighter-rouge">withdrawTo</code> function in <code class="highlighter-rouge">StakeManager</code> and the <code class="highlighter-rouge">transfer</code> function in <code class="highlighter-rouge">SimpleWallet</code> both uses Solidity’s built-in <code class="highlighter-rouge">transfer</code> function (on <a href="https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/StakeManager.sol#L129">line 129</a> and <a href="https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/samples/SimpleWallet.sol#L52">line 52</a>, respectively) to send ether to a destination address. The use of <code class="highlighter-rouge">transfer</code> for this purpose is <a href="https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/">no longer recommended</a>.</p>
+
+<p>Consider using the <code class="highlighter-rouge">call</code> function or OpenZeppelin’s <a href="https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.5.0/contracts/utils/Address.sol#L60">sendValue function</a>, and adhere to the checks-effects-interactions pattern when sending value to an external address. This pattern is already implemented in <a href="https://github.com/eth-infinitism/account-abstraction/blob/8832d6e04b9f4f706f612261c6e46b3f1745d61a/contracts/EntryPoint.sol#L80">the <code class="highlighter-rouge">compensate</code> function</a> of the <code class="highlighter-rouge">EntryPoint</code> contract.</p>
+
+<p><em><strong>Update</strong>: Partially fixed in pull request <a href="https://github.com/eth-infinitism/account-abstraction/pull/57/files">#57</a>. The <code class="highlighter-rouge">SimpleWallet</code> contract’s <code class="highlighter-rouge">transfer</code> function was left unchanged.</em></p>
+
+<ul>
+  <li>fix</li>
+</ul>
+
+<p><em>Partially fixed in pull request <a href="https://github.com/eth-infinitism/account-abstraction/pull/57/files">#57</a>. The <code class="highlighter-rouge">SimpleWallet</code> contract’s <code class="highlighter-rouge">transfer</code> function was left unchanged.</em></p>
+
+<ul>
+  <li>note</li>
+</ul>
+
+<p><a href="[https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/](https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/)">LINK</a> 에 따르면 solidity의 내장 함수인 transfer는 더이상 쓰는것이 권장되지 않는다. call을 쓰거나 OpenZeppelin의 라이브러리가 제공하는 function을 쓰는게 좋다.</p>
+
+<h3 id="ref">Ref</h3>
+
+<p>https://blog.openzeppelin.com/eth-foundation-account-abstraction-audit/</p>
+
+				<hr />
+				<footer class="page-footer">
+					
+
+<div class="author-image">
+	<img src="http://localhost:4000/images/rocky_icon.png" alt="generousRocky">
+</div><!-- ./author-image -->
+<div class="author-content">
+	<h3 class="author-name" >Written by <span itemprop="author">generousRocky</span></h3>
+	<p class="author-bio">Better Gear, Better Life</p>
+</div><!-- ./author-content -->
+					<div class="inline-btn">
+	<a class="btn-social twitter" href="https://twitter.com/intent/tweet?text=EIP-4337%20–%20Ethereum%20Account%20Abstraction%20Audit&amp;url=http://localhost:4000/development/sol4/&amp;via=generousRocky" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> Share on Twitter</a>
+	<a class="btn-social facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/development/sol4/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> Share on Facebook</a>
+	<a class="btn-social google-plus"  href="https://plus.google.com/share?url=http://localhost:4000/development/sol4/" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i> Share on Google+</a>
+</div><!-- /.share-this -->
+
+					<div class="page-meta">
+	<p>Updated <time datetime="2022-04-29T10:00:00Z" itemprop="datePublished">April 29, 2022</time></p>
+</div><!-- /.page-meta -->
+				</footer><!-- /.footer -->
+				<aside>
+					<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+				</aside>
+			</div><!-- /.content -->
+		</div><!-- /.inner-wrap -->
+		
+	</article><!-- ./wrap -->
+</div><!-- /#main -->
+
+<script data-ad-client="ca-pub-6597217616610333" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://https-rockylim92-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      <footer role="contentinfo" id="site-footer">
+	<nav role="navigation" class="menu bottom-menu">
+		<ul class="menu-item">
+		
+      
+			<li><a href="https://www.youtube.com/channel/UCpY9pb4-S0PwCJBp2r6nOvg" target="_blank">Youtube</a></li>
+		
+      
+			<li><a href="https://github.com/generousRocky" target="_blank">GitHub</a></li>
+		
+      
+			<li><a href="https://www.linkedin.com/in/heerak-lim-6a6989137/" target="_blank">Linked In</a></li>
+		
+		</ul>
+	</nav><!-- /.bottom-menu -->
+	<p class="copyright">&#169; 2022 <a href="http://localhost:4000">generousRocky's tech blog</a> powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> + <a href="http://mmistakes.github.io/skinny-bones-jekyll/" rel="nofollow">Skinny Bones</a>.</p>
+</footer>
+
+    </div>
+
+    <script src="http://localhost:4000/js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="http://localhost:4000/js/main.js"></script>
+
+
+  </body>
+
+</html>
