@@ -22,7 +22,7 @@ ads: false
 </p>
 
 ## I am interested in followings
-* Solidity and smart constract (thesedays, I'm really in to)
+* Solidity and smart contract (thesedays, I'm really in to)
 * Database, Storage system
 * Distributed(Parallel) Computing
 * System performance optimization
