@@ -49,6 +49,10 @@ Email : lrocky1229@gmail.com<br />
 	&nbsp; &nbsp;
 </p>
 
+## Resume
+[LINK 🠔 click me](https://docs.google.com/document/d/1-79cPjdAarrAvAMaos5PqpzlYth3hbIs/edit?usp=sharing&ouid=114285829940535876923&rtpof=true&sd=true)
+
+
 ## Education and Career
 
 
@@ -117,5 +121,4 @@ Common Wealth Scientific and Industrial Research Organisation, Research Intern,
 * The Jasmine OpenSSD Platform: Technical Reference Manual (v1.4, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_Tech_Ref_Manual_v.1.4e.pdf>
 
 * The Jasmine OpenSSD Platform: FTL Developer's Guide (v1.2, in English): <http://www.openssd-project.org/mediawiki/images/Jasmine_FTL_Dev_Guide_v.1.2e.pdf>
-
 
